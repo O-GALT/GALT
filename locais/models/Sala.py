@@ -8,7 +8,7 @@ class Sala(models.Model):
     numero = models.IntegerField(null=False)
     estado_sala = models.CharField(null=False, blank=False, choices=EstadoSala.choices, default=EstadoSala.LIBERADA, max_length=40)
     localizacao = models.CharField(null=False, blank=False, max_length=6)
-    predio_setor = models.ForeignKey(PredioSetor, on_delete=models.RESTRICT, null=False, related_name='salas')
+    predio_setor = models.ForeignKey(PredioSetor, on_delete=models.CASCADE, null=False, related_name='salas')
 
     class Meta:
         constraints = [

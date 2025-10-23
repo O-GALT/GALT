@@ -9,7 +9,7 @@ class Agendamento(models.Model):
     fim = models.TimeField(null=False)
     data = models.DateField(null=False)
     estado_agendamento = models.CharField(null=False, blank=False, choices=EstadoAgendamento.choices, default=EstadoAgendamento.A_SER_REALIZADO, max_length=40)
-    sala = models.ForeignKey(Sala, on_delete=models.RESTRICT, null=False, related_name='agendamentos')
+    sala = models.ForeignKey(Sala, on_delete=models.CASCADE, null=False, related_name='agendamentos')
 
     class Meta:
         verbose_name = 'Agendamento'

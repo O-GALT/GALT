@@ -11,7 +11,7 @@ class Equipamento(models.Model):
     posicao = models.CharField(null=False, blank=False, max_length=6)
     estado_equipamento = models.CharField(null=False, blank=False, choices=EstadoEquipamento.choices, default=EstadoEquipamento.FUNCIONANDO, max_length=40)
     manutencoes = models.IntegerField(null=False, default=0)
-    sala = models.ForeignKey(Sala, on_delete=models.RESTRICT, null=False, related_name='equipamentos')
+    sala = models.ForeignKey(Sala, on_delete=models.CASCADE, null=False, related_name='equipamentos')
 
     class Meta:
         constraints = [
