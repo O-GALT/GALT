@@ -1,0 +1,34 @@
+{% extends 'core/pages/base/headers/header_content_base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/estado/estado_header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/nome_objeto/nome_objeto_header.css' %}">
+    <link rel="stylesheet" href="{% static 'locais/css/partials/headers/partials_do_header/responsavel/responsavel.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/descricao/descricao_header.css' %}">
+{% endblock %}
+
+{% block nome_objeto %}
+    {% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome='Sala A17' %}
+{% endblock %}
+
+{% block estado %}
+    {% include 'core/partials/partials_do_headers/estado/estado_header.html' with classe='MANUTENCAO' estado='Em manutenção' %}
+{% endblock %}
+
+{% block descricao %}
+    {% include 'core/partials/partials_do_headers/descricao/descricao_header.html' with descricao='No momento esta sala esta passando por manutenções em seus equipamentos, espere a manutenção terminar para visualizar os dados dos equipamentos atualizados.' %}
+{% endblock %}
+
+{% block quantidade_objeto %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='18' objeto='Computadores' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='2' objeto='Projetores' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='3' objeto='Ar condicionados' %}
+{% endblock %}
+
+{% block responsavel %}
+    {% static 'locais/imagens/Avatar.png' as avatar_url %}
+    {% include 'locais/partials/headers/partials_do_header/responsavel/responsavel.html' with foto=avatar_url nome='juliano' email_escolar='juliano@escolar.edu.br.com'%}
+{% endblock %}

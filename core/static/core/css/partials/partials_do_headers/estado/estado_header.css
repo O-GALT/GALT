@@ -1,0 +1,22 @@
+.MANUTENCAO, .LIBERADA, .INAPTA, .DEFEITUOSO, .FUNCIONANDO {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 7vw;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+.MANUTENCAO {
+    color: rgba(220, 166, 59, 1);
+    border: 2px solid rgba(254, 234, 113, 1);
+}
+
+.LIBERADA, .FUNCIONANDO {
+    color: rgb(20, 98, 8);
+    border: 2px solid rgb(28, 143, 14);
+}
+
+.INAPTA, .DEFEITUOSO {
+    color: rgb(131, 7, 7);
+    border: 2px solid rgb(180, 15, 15);
+}

@@ -1,0 +1,6 @@
+.descricao p {
+    color: rgba(102, 102, 102, 0.8);
+    font-weight: bold;
+    width: 45vw;
+    font-size: 1.2rem;
+}

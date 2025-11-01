@@ -8,3 +8,7 @@ def index(request):
 
 def equipamento(request):
     return HttpResponse("Página de equipamentos")
+
+# VIEW QUE CRIEI PARA TESTAR RENDERIZACAO DO HEADER DA PAGINA DE EQUIPAMENTOS(se quiser, pode excluir)
+# def equipamento(request):
+#     return HttpResponse(render(request, 'ativos/partials/headers/equipamento_header.html'))

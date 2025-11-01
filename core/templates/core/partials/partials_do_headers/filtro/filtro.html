@@ -1,0 +1,8 @@
+<label>
+    <select class="filtro-select">
+        <option value="" disabled selected hidden class="titulo-opcao">{{ titulo }}</option>
+        {% for escolha in escolhas %}
+            <option value="{{ escolha }}">{{ escolha }}</option>
+        {% endfor %}
+    </select>
+</label>
