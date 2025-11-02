@@ -1,0 +1,24 @@
+{% extends 'core/pages/base/headers/header_content_base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/nome_objeto/nome_objeto_header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/descricao/descricao_header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.css' %}">
+    <link rel="stylesheet" href="{% static 'locais/css/partials/headers/setor/setor_header.css' %}">
+{% endblock %}
+
+{% block nome_objeto %}
+    {% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome='Setor administrativo' %}
+{% endblock %}
+
+{% block descricao %}
+    {% include 'core/partials/partials_do_headers/descricao/descricao_header.html' with descricao='Acompanhe o desempenho dos equipamentos, o status das salas e o andamento das manutenções do Prédio Principal. Este painel consolida dados de reportes, disponibilidade e histórico de falhas, ajudando técnicos e administradores a tomarem decisões rápidas e eficazes.' %}
+{% endblock %}
+
+{% block quantidade_objeto %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='10' objeto='Salas/Laboratorios' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='75' objeto='Equipamentos' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='20' objeto='Reportes' %}
+{% endblock %}

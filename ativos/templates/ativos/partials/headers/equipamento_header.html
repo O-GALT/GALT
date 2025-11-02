@@ -1,0 +1,29 @@
+{% extends 'core/pages/base/headers/header_content_base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/nome_objeto/nome_objeto_header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/estado/estado_header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/descricao/descricao_header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.css' %}">
+    <link rel="stylesheet" href="{% static 'ativos/css/partials/headers/equipamentos_header.css' %}">
+{% endblock %}
+
+{% block nome_objeto %}
+    {% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome='Thunder V12' %}
+{% endblock %}
+
+{% block estado %}
+    {% include 'core/partials/partials_do_headers/estado/estado_header.html' with classe='DEFEITUOSO' estado='Defeituoso' %}
+{% endblock %}
+
+{% block descricao %}
+    {% include 'core/partials/partials_do_headers/descricao/descricao_header.html' with descricao='No momento esta equipamentos não está funcionando corretamente segundo reports de alunos e professores, é aconselhado uma manutenção o mais rápido possível.' %}
+{% endblock %}
+
+{% block quantidade_objeto %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='18' objeto='Reportes abertos' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='7' objeto='Manutenções realizadas' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='10%' objeto='Confiabilidade' %}
+{% endblock %}
