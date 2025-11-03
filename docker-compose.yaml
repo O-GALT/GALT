@@ -1,6 +1,6 @@
 services:
   galt-database:
-      image: 'postgres:17'
+      image: postgres:17
       container_name: "galt-database"
       env_file:
         - ./env/galtDatabase.env

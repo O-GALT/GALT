@@ -1,0 +1,6 @@
+.filtro-container {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    padding-right: 2.9rem;
+}

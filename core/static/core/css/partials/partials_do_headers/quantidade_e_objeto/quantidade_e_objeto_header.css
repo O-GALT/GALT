@@ -1,0 +1,14 @@
+.estilo-actions-locais-ativos {
+    font-size: 2.3rem;
+    padding-right: 0.5vw;
+    font-weight: bold;
+}
+
+.estilo-actions-locais-ativos {
+    color: rgba(80, 130, 108, 1);
+}
+
+a {
+    font-weight: bold;
+    color: rgba(138, 138, 170, 1);
+}

@@ -1,0 +1,16 @@
+{% extends 'core/pages/base/headers/header_content_base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/nome_objeto/nome_objeto_header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/descricao/descricao_header.css' %}">
+{% endblock %}
+
+{% block nome_objeto %}
+    {% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome='Auditoria de registros' %}
+{% endblock %}
+
+{% block descricao %}
+    {% include 'core/partials/partials_do_headers/descricao/descricao_header.html' with descricao='Nesta página, você pode acompanhar todos os registros automáticos de ações realizadas no sistema — desde a criação, atualização e exclusão de dados até alterações no estado de equipamentos, salas, setores e prédios. ' %}
+    {% include 'core/partials/partials_do_headers/descricao/descricao_header.html' with descricao='Cada entrada no log representa uma atividade registrada em tempo real, garantindo que toda modificação seja auditável, rastreável e protegida contra alterações manuais.' %}
+{% endblock %}

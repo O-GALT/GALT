@@ -1,0 +1,38 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'core/css/base/headers/header_content_base.css' %}">
+    {% block extra_css %}{% endblock %}
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <title>O-GALT</title>
+</head>
+<body>
+    <main>
+            <header class="header">
+                    <div class="container">
+                        <div class="conteudo-esquerda">
+                            <div class="objeto">
+                                {% block nome_objeto %}{% endblock %}
+                                {% block estado %}{% endblock %}
+                            </div>
+
+                            {% block descricao %}{% endblock %}
+                            {% block actions_visao_setores_salas_equipamentos %}{% endblock %}
+                        </div>
+
+                        <div class="conteudo-direita">
+                            <nav class="quantidade-objeto">
+                                {% block quantidade_objeto %}{% endblock %}
+                            </nav>
+                            {% block filtro %}{% endblock %}
+                            {% block responsavel %}{% endblock %}
+                        </div>
+                    </div>
+            </header>
+    </main>
+</body>
+</html>

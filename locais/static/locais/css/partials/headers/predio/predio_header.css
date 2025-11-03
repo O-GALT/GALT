@@ -1,0 +1,8 @@
+.filtro-container {
+    display: flex;
+    gap: 1.5vw;
+}
+
+.conteudo-direita {
+    justify-content: start;
+}
