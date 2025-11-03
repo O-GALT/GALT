@@ -1,0 +1,154 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    background-color: #F5F5F5;
+    color: #333;
+    height: 100vh;
+}
+
+.layout {
+    display: flex;
+    height: 100vh;
+}
+
+
+/* Sidebar */
+
+
+.sidebar {
+    width: 78px;
+    border-right: 1px solid #E5E5E5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 16px 20px 16px;
+    gap: 20px;
+}
+
+
+.sidebar-navigateActions {
+    margin: 16px 0 35px 0;
+    height: fit-content;
+}
+
+
+.sidebar-top {
+    margin: 10px 0 20px 0;
+}
+
+.sidebar-top img {
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+}
+
+
+.sidebar-menu ul {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    list-style: none;
+    gap: 28px;
+}
+
+.sidebar-menu ul i {
+    font-size: 20px;
+    font-weight: 800;
+    color: rgba(28, 28, 28, 0.25);
+}
+
+.sidebar-menu ul i:hover {
+    color: #50826C;
+}
+
+.sidebar-menu i.active {
+    color: #1C1C1C;
+}
+
+
+.sidebar-menu-config {
+    position: absolute;
+    bottom: 20px;
+    cursor: pointer;
+}
+
+.sidebar-menu-config i {
+    font-size: 20px;
+    font-weight: 800;
+    color: rgba(28, 28, 28, 1);
+}
+
+
+/* Main area */
+
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Header */
+
+
+.header {
+    height: 70px;
+    border-bottom: 1px solid #E5E5E5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+
+.breadcrumb {
+    display: flex;
+}
+
+.breadcrumb span {
+    color: rgba(28, 28, 28, 0.4);
+    padding: 4px 8px;
+    font-family: 'Inter', sans-serif;
+}
+
+.breadcrumb .breadcrumb-textFocus {
+    font-weight: 600;
+    color: #1C1C1C;
+    cursor: pointer;
+}
+
+.breadcrumb div {
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notifications i {
+    font-size: 20px;
+    color: rgba(28, 28, 28, 1);
+}
+
+
+/* Content Block */
+
+
+.content {
+    padding: 40px 32px;
+    overflow-y: auto;
+    flex: 1;
+}
