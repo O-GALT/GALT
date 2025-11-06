@@ -7,17 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
 
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
+    <link rel="stylesheet" href="{% static 'core/css/base/estrutura_base/estrutura_base.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_mobile_header/mobile_header.css' %}">
 
-
-    <link rel="stylesheet" href="{% static 'styles/baseStruct/baseStruct.css' %}">
     {% block css %}{% endblock %}
-
 </head>
 <body>
 <div class="layout">
@@ -78,8 +76,12 @@
 
         <header class="header">
             <div class="breadcrumb">
+                <div class="show-left-bar">
+                    <img src="{% static 'assets/icons/Sidebar.svg' %}" alt="Mostar a barra lateral" height="28"/>
+                </div>
+
                 <div>
-                    <i class="fa-regular fa-star"></i>
+                    <img src="{% static 'assets/icons/Star.svg' %}" alt="Favoritar a página" height="24"/>
                 </div>
 
                 <span>Dashboards</span>
@@ -94,13 +96,31 @@
             </div>
         </header>
 
+        <!-- header mobile  -->
+        {% include 'core/partials/partials_estrutura_base/mobile_header/mobile_header.html' %}
+
+
         <!-- Content block -->
         <div class="content">
             {% block content %}
             {% endblock %}
         </div>
 
+
     </main>
 </div>
+
+<script>
+    const sideBar = document.querySelector(".sidebar")
+    const showSideBar = document.querySelector(".show-left-bar")
+
+    showSideBar.addEventListener("click", () => {
+        sideBar.classList.toggle("none")
+    })
+</script>
+
 </body>
 </html>
+
+
+

@@ -1,18 +1,23 @@
 from django.http import HttpResponse
+from django.shortcuts import render
+
 
 # Create your views here.
 def index(request):
-    return render(request , 'locais/pages/locais/locais.html')
-    
+    return HttpResponse(
+        render(request, 'locais/partials/headers/sala/sala_header.html'))
+
+
 def salas(request):
     return HttpResponse("Página de salas funcionando!")
+
 
 def setores(request):
     return HttpResponse("Página de setores funcionando!")
 
+
 def predios(request):
     return HttpResponse("Página de prédios funcionando!")
-
 
 # VIEWS QUE CRIEI PARA TESTAR RENDERIZACAO DE HEADER DAS PAGINAS DE SALAS, SETORES, PREDIOS, E PREDIOS COM SELECAO DE EQUIPAMENTOS E SALAS(se quiser, pode excluir)
 
