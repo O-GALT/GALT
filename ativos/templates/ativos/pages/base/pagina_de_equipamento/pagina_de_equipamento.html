@@ -1,0 +1,90 @@
+{% extends 'core/pages/base/estrutura_base/estrutura_base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'ativos/css/pages/base/pagina_de_equipamento/pagina_de_equipamento.css' %}">
+{% endblock %}
+
+{% block header %}
+    {% include 'ativos/partials/headers/equipamento_header.html' %}
+{% endblock %}
+
+{% block content %}
+    {#  Informacoes do equipamento  #}
+    <div class="informacoes-equipamento">
+        <div class="ficha-tecnica">
+            <p class="ficha-tecnica-titulo">Ficha tecnica do equipamento</p>
+
+            <div>
+                <p class="ficha-tecnica-item">
+                    <b>Modelo: </b>
+                    {{ modelo }}
+                </p>
+                <p class="ficha-tecnica-item">
+                    <b>Tipo: </b>
+                    {{ tipo }}
+                </p>
+                <p class="ficha-tecnica-item">
+                    <b>Numero de serie:</b>
+                    {{ serial }}
+                </p>
+                <p class="ficha-tecnica-item">
+                    <b>Patrimonio: </b>
+                    {{ patrimonio }}
+                </p>
+                <p class="ficha-tecnica-item">
+                    <b>Fabricante:</b>
+                    {{ fabricante }}
+                </p>
+                <p class="ficha-tecnica-item">
+                    <b>Data de aquisicao: </b>
+                    {{ data_aquisicao }}
+                </p>
+                <p class="ficha-tecnica-item">
+                    <b>Garantia ate: </b>
+                    {{ data_garantia }}
+                </p>
+                <p class="ficha-tecnica-item">
+                    <b>Ultima manutencao: </b>
+                    {{ data_ultima_manutencao }}
+                </p>
+            </div>
+        </div>
+
+        <div>
+            {# Componente de telemetria do equipamento #}
+        </div>
+    </div>
+
+    {#  Historico de manutencoes  #}
+    <div class="historico-manutencoes">
+        <p class="historico-manutencoes-titulo">Historico de manutencoes do equipamento</p>
+
+        <div>
+            <table class="tabela-manutencao">
+                <thead>
+                <tr>
+                    <th>Manutencao</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Data</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in historico_manutencoes %}
+                    <tr>
+                        <td>{{ item.manutencao_id }}</td>
+                        <td>{{ item.titulo }}</td>
+                        <td><span class="status em-progresso">{{ item.status }}</span></td>
+                        <td>{{ item.data }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">Nenhuma manutencao registrada.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

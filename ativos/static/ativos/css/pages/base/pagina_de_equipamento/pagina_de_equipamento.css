@@ -1,0 +1,106 @@
+.informacoes-equipamento {
+    display: flex;
+    margin: 30px 0;
+    justify-content: space-between;
+}
+
+.ficha-tecnica {
+    display: flex;
+    max-width: 400px;
+    width: 100%;
+    gap: 16px;
+    padding: 25px 22px;
+    border: 2px solid #dcdada;
+    border-radius: 16px;
+    flex-direction: column;
+}
+
+.ficha-tecnica .ficha-tecnica-titulo {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #50826C;
+}
+
+.ficha-tecnica div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ficha-tecnica div p {
+    font-size: 0.9rem;
+    color: #7B7E7A;
+}
+
+.ficha-tecnica div br {
+    font-size: 0.9rem;
+    color: #64748B;
+}
+
+
+/*  estilos da tabela de manutenções  */
+
+.historico-manutencoes {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+}
+
+.historico-manutencoes-titulo {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #50826C;
+}
+
+
+
+.historico-manutencoes div{
+    border-radius: 8px;
+    border: 2px solid #dcdada;
+}
+
+.tabela-manutencao {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 0.95rem;
+}
+
+.tabela-manutencao thead {
+    color: #64748B;
+    text-align: left;
+}
+
+.tabela-manutencao th,
+.tabela-manutencao td {
+    padding: 14px 18px;
+    border-bottom: 2px solid #dcdada;
+}
+
+.tabela-manutencao th {
+    font-weight: 600;
+}
+
+.tabela-manutencao tr:hover {
+    background-color: #f5f5f5;
+}
+
+.status {
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.status.em-progresso {
+    color: #D7E352;
+}
+
+.status.concluida {
+    color: #57D55B;
+}
+
+.status.cancelada {
+    color: #F46F51;
+}
