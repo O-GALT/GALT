@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static ''locais/css/partials/components_centrais/equipamentos/equipamentos.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="content">
+
+  <div class="container-equipamentos">
+
+    <div class="equipamento-card manutencao">
+      <h2>Thunder V12</h2>
+      <p class="estado"><strong>Estado:</strong> Em manutenção</p>
+      <div class="info"><i class="fa-solid fa-barcode"></i>123B55FG</div>
+      <div class="info"><i class="fa-solid fa-building"></i>Sala 17</div>
+      <div class="info"><i class="fa-solid fa-location-dot"></i>A41</div>
+      <div class="info"><i class="fa-solid fa-laptop"></i>Projetor</div>
+    </div>
+
+    <div class="equipamento-card funcionando">
+      <h2>Thunder V12</h2>
+      <p class="estado"><strong>Estado:</strong> Funcionando</p>
+      <div class="info"><i class="fa-solid fa-barcode"></i>123B55FG</div>
+      <div class="info"><i class="fa-solid fa-building"></i>Sala 17</div>
+      <div class="info"><i class="fa-solid fa-location-dot"></i>A6</div>
+      <div class="info"><i class="fa-solid fa-computer"></i>Computador</div>
+    </div>
+
+    <div class="equipamento-card defeituoso">
+      <h2>Med 47</h2>
+      <p class="estado"><strong>Estado:</strong> Defeituoso</p>
+      <div class="info"><i class="fa-solid fa-barcode"></i>123B55FG</div>
+      <div class="info"><i class="fa-solid fa-building"></i>Sala 17</div>
+      <div class="info"><i class="fa-solid fa-location-dot"></i>A4</div>
+      <div class="info"><i class="fa-solid fa-desktop"></i>Computador</div>
+    </div>
+
+    <div class="equipamento-card manutencao">
+      <h2>F500 Pentium</h2>
+      <p class="estado"><strong>Estado:</strong> Em manutenção</p>
+      <div class="info"><i class="fa-solid fa-barcode"></i>123B55FG</div>
+      <div class="info"><i class="fa-solid fa-building"></i>Sala 17</div>
+      <div class="info"><i class="fa-solid fa-location-dot"></i>A5</div>
+      <div class="info"><i class="fa-solid fa-laptop"></i>Computador</div>
+    </div>
+
+    <div class="equipamento-card funcionando">
+      <h2>Thunder V47</h2>
+      <p class="estado"><strong>Estado:</strong> Funcionando</p>
+      <div class="info"><i class="fa-solid fa-barcode"></i>123B55FG</div>
+      <div class="info"><i class="fa-solid fa-building"></i>Sala 17</div>
+      <div class="info"><i class="fa-solid fa-location-dot"></i>A18</div>
+      <div class="info"><i class="fa-solid fa-laptop"></i>Projetor</div>
+    </div>
+
+    <div class="equipamento-card alerta-report">
+      <h2>F550 Pentium</h2>
+      <p class="estado"><strong>Estado:</strong> Alerta-report</p>
+      <div class="info"><i class="fa-solid fa-barcode"></i>123B99DG</div>
+      <div class="info"><i class="fa-solid fa-building"></i>Sala 17</div>
+      <div class="info"><i class="fa-solid fa-location-dot"></i>A5</div>
+      <div class="info"><i class="fa-solid fa-laptop"></i>Computador</div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

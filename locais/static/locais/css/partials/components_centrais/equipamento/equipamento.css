@@ -1,0 +1,106 @@
+body {
+  font-family: system-ui, 'Open Sans', sans-serif;
+  background-color: #f9f9f9;
+  color: #50826C;
+  margin: 60px;
+}
+
+.container-equipamentos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+}
+
+.equipamento-card {
+  border-radius: 16px;
+  padding: 20px 22px;
+  width: 200px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease-in-out;
+  font-size: 15px;
+  background-color: #C7F6EC;
+  color: #50826C;
+}
+
+.equipamento-card:hover {
+  transform: translateY(-5px);
+}
+
+.equipamento-card h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.equipamento-card .estado {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.equipamento-card .info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  color: #50826C;
+}
+
+.equipamento-card i {
+  width: 20px;
+  font-size: 15px;
+  margin-right: 6px;
+  color: inherit;
+}
+
+/* Cores por Estado */
+.funcionando {
+  background-color: #C7F6EC;
+  color: #50826C;
+}
+
+.funcionando h2 {
+  color: #50826C;
+}
+
+.funcionando strong {
+  color: #50826C;
+}
+
+.manutencao {
+  background-color: #F3E9AB; 
+  color: #6C5C3D;
+}
+
+.manutencao h2 {
+  color: #6C5C3D;
+}
+
+.manutencao strong {
+  color: #6C5C3D;
+}
+
+.alerta-report {
+  background-color: #CDC7F6; 
+  color: #4F6474;
+}
+
+.alerta-report h2 {
+  color: #4F6474;
+}
+
+.alerta-report strong {
+  color: #4F6474;
+}
+
+.defeituoso {
+  background-color: #FEBDBE;
+  color: #A26774;
+}
+
+.defeituoso h2 {
+  color: #A26774;
+}
+
+.defeituoso strong {
+  color: #A26774;
+}

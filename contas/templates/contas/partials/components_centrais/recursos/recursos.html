@@ -1,0 +1,76 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'contas\css\partials\components_centrais\recursos\recursos.css' %}">
+
+<div class="container">
+
+    <div class="card">
+        <img src="{% static 'locais/img/image 4.png' %}" alt="Sala" class="card-img">
+        <div class="card-content">
+            <h2>Sala 
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="#50826c" d="M3 5v14h2v-2h14v2h2V5zm2 10V7h14v8z"/>
+                </svg>
+            </h2>
+            <p>Cadastre uma nova sala e associe-a a um setor e prédio da instituição. Monitore equipamentos, estado e histórico de manutenção de cada ambiente.</p>
+        </div>
+        <div class="line"></div>
+    </div>
+
+    <div class="card">
+        <img src="{% static 'contas/css/img/image 4 predio.png' %}" alt="Prédio" class="card-img">
+        <div class="card-content">
+            <h2>Prédio 
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="#50826c" d="M3 21V3h18v18zm2-2h14V5H5zm2-2h2v-2H7zm0-4h2v-2H7zm0-4h2V7H7zm4 8h2v-2h-2zm0-4h2v-2h-2zm0-4h2V7h-2zm4 8h2v-2h-2zm0-4h2v-2h-2zm0-4h2V7h-2z"/>
+                </svg>
+            </h2>
+            <p>Registre um novo prédio e organize os setores e salas que pertencem a ele. Facilite o controle estrutural e o monitoramento de ambientes físicos.</p>
+        </div>
+        <div class="line"></div>
+    </div>
+
+    <div class="card">
+        <img src="{% static 'contas/css/img/image 4 equipamento.png' %}" alt="Equipamento" class="card-img">
+        <div class="card-content">
+            <h2>Equipamento 
+                <svg class="icon-computer" viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="#50826c" d="M4 4h16a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v11h16V6H4zm5 13h6v2H9v-2z"/>
+                </svg>
+            </h2>
+            <p>Cadastre equipamentos e associe-os às salas correspondentes. Acompanhe o estado, posição e histórico de manutenções de cada item.</p>
+        </div>
+        <div class="line"></div>
+    </div>
+
+    <div class="card">
+        <img src="{% static 'contas/css/img/image 4 setor.png' %}" alt="Setor" class="card-img">
+        <div class="card-content">
+            <h2>Setor 
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="#50826c" d="M3 13h2v-2H3zm4 0h14v-2H7z"/>
+                </svg>
+            </h2>
+            <p>Crie um novo setor e vincule-o a um prédio. Use setores para agrupar salas, prédios e gerenciar ambientes com finalidades semelhantes.</p>
+        </div>
+        <div class="line"></div>
+    </div>
+
+    <div class="card">
+        <img src="{% static 'contas/css/img/image 4 usuario.png' %}" alt="Usuário" class="card-img">
+        <div class="card-content">
+            <h2>Usuário 
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="#50826c" d="M12 12a5 5 0 1 0-5-5a5 5 0 0 0 5 5zm0 2c-4 0-8 2-8 5v2h16v-2c0-3-4-5-8-5z"/>
+                </svg>
+            </h2>
+            <p>Crie novos usuários e defina seus tipos de acesso (técnico, professor, aluno, administrador…).</p>
+        </div>
+        <div class="line"></div>
+    </div>
+</div>
+
+{% endblock %}
