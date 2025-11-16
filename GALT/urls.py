@@ -26,4 +26,5 @@ urlpatterns = [
     path('contas/', include('contas.urls')),
     path('locais/', include('locais.urls')),
     path('suporte/', include('suporte.urls')),
+    path('core/', include('core.urls')),
 ]

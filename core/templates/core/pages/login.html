@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Galt</title>
+    <link rel="stylesheet" href="{% static 'core/css/login.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-left">
+            <div class="login-left-container">
+                <h1>Descomplique o seu gerenciamento com a <span class="brand">Galt</span></h1>
+
+                <form method="post" class="login-form">
+                    {% csrf_token %}
+                    <input type="email" name="email" placeholder="Email" required>
+                    <div class="enter-password">
+                        <input type="password" name="senha" placeholder="Senha" required>
+                        <button type=" submit" class="btn-login">Entrar</button>
+                    </div>
+                </form>
+
+                <p class="terms">
+                    Ao fazer login, você aceita os <a href="#">Termos de uso</a> e a <a href="#">Política de
+                        Privacidade</a>.
+                </p>
+
+            </div>
+        </div>
+
+        <div class="login-right">
+            <img src="{% static 'core/imagens/imagem-de-login.jpg' %}" alt="imagem de login">
+        </div>
+    </div>
+
+</body>
+
+</html>

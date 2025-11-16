@@ -1,0 +1,71 @@
+{% extends 'core/pages/base/modal/modal_base.html' %}
+
+{% load static %}
+{% block modal_content %}
+<div class="modal-header">
+    <div class="header-left">
+        <img src="{% static 'core/icons/header_icon.png' %}" alt="header icon">
+        <div>
+            <h2>Adicionar equipamento</h2>
+            <p>Monitore equipamentos, estado e histórico de manutenções de cada ambiente.</p>
+        </div>
+    </div>
+    <button class="close-btn" onclick="closeModal()">×</button>
+</div>
+
+<hr>
+
+<form class="modal-form">
+
+    <div class="form-row">
+        <label>Tipo do equipamento </label>
+        <input type="text" placeholder="Projetor">
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Modelo </label>
+        <input type="text" placeholder="Thunder V3">
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Estado atual </label>
+        <select>
+            <div>
+                <option>🟢 FUNCIONANDO</option>
+                <option>🟠 MANUTENÇÃO</option>
+                <option>🔴 DEFEITUOSO</option>
+
+        </select>
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Posição </label>
+        <input type="text" placeholder="B45">
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Sala </label>
+        <select>
+            {% for sala in salas %}
+            <option>{{ sala }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <hr>
+
+    <div class="modal-actions">
+        <button type="button" class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        <button type="submit" class="btn-create">Criar</button>
+    </div>
+
+</form>
+{% endblock %}
