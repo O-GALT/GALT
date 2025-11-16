@@ -6,35 +6,35 @@
     text-decoration: none;
 }
 
-html {
-    font-size: 62.5%;
+header .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* esquerda maior que direita */
+    grid-template-rows: auto auto; /* linhas automáticas conforme o conteúdo */
+    gap: 2rem 5rem; /* espaçamento entre colunas e linhas */
 }
 
-.container {
-    display: grid;
-    grid-template-columns: 2fr 1fr; /* esquerda maior que direita */
-    grid-template-rows: auto auto; /* linhas automáticas conforme o conteúdo */
-    gap: 2rem; /* espaçamento entre colunas e linhas */
+header {
+    width: 100%;
 }
+
 
 .conteudo-esquerda {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    padding-left: 2rem;
 }
 
 .conteudo-direita {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    gap: 2rem;
+    align-items: end;
+    gap: 3rem;
 }
 
 .conteudo-direita .quantidade-objeto {
     display: flex;
-    justify-content: center;
+    justify-content: end;
     width: 100%;
     gap: 3rem;
 }

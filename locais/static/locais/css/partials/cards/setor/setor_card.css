@@ -1,41 +1,9 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: system-ui, 'Open Sans', sans-serif;
-  background-color: #f9fbfb;
-  color: #50826C;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 50px auto;
-  padding: 0 30px;
-}
-
-h1 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #50826C;
-  margin-bottom: 25px;
-}
-
-.grid-setores {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: flex-start;
-}
-
-.card {
+.setor-card {
   background-color: #C6E8E1; 
   border-radius: 12px;
-  width: 329px;
+  width: 100%;
   height: 115px;
-  padding: 25px 25px;
+  padding: 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -43,7 +11,7 @@ h1 {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card:hover {
+.setor-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 3px 8px rgba(0,0,0,0.1);
 }
@@ -52,7 +20,7 @@ h1 {
   font-size: 0.95rem;
   font-weight: 600;
   color: #50826C;
-  margin-bottom: 5px;
+  margin-bottom: 0.23rem
 }
 
 .info p {
@@ -62,7 +30,7 @@ h1 {
 }
 
 .salas {
-  text-align: right;
+  text-align: center;
 }
 
 .salas span {
@@ -76,10 +44,4 @@ h1 {
   font-size: 0.85rem;
   font-weight: 700;
   color: #86868E;
-}
-
-@media (max-width: 950px) {
-  .card {
-    width: 100%;
-  }
 }

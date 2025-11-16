@@ -1,20 +1,15 @@
-body {
-  font-family: system-ui, 'Open Sans', sans-serif;
-  background-color: #f9f9f9;
-  color: #50826C;
-  margin: 60px;
-}
-
-.container-equipamentos {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 25px;
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .equipamento-card {
   border-radius: 16px;
   padding: 20px 22px;
-  width: 200px;
+  width: 100%;
+  height: 11rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease-in-out;
   font-size: 15px;
@@ -24,6 +19,7 @@ body {
 
 .equipamento-card:hover {
   transform: translateY(-5px);
+  cursor: pointer;
 }
 
 .equipamento-card h2 {
@@ -67,7 +63,7 @@ body {
 }
 
 .manutencao {
-  background-color: #F3E9AB; 
+  background-color: #F3E9AB;
   color: #6C5C3D;
 }
 
@@ -80,7 +76,7 @@ body {
 }
 
 .alerta-report {
-  background-color: #CDC7F6; 
+  background-color: #CDC7F6;
   color: #4F6474;
 }
 
