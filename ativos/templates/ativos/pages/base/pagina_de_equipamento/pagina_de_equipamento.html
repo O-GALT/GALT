@@ -51,8 +51,23 @@
             </div>
         </div>
 
-        <div>
-            {# Componente de telemetria do equipamento #}
+        {# Insights do equipamento #}
+        <div class="insights">
+            {% for insight in insights %}
+                <div class="insight-card
+                    {% if insight.status == "preocupante" %}
+                        preocupante
+                    {% elif insight.status == "ruim" %}
+                        ruim
+                    {% else %}
+                        bom
+                    {% endif %}
+                ">
+                    <p class="insight-card-titulo">{{ insight.titulo }}</p>
+                    <p class="insight-card-valor">{{ insight.valor }}</p>
+                </div>
+            {% endfor %}
+
         </div>
     </div>
 
@@ -64,18 +79,18 @@
             <table class="tabela-manutencao">
                 <thead>
                 <tr>
-                    <th>Manutencao</th>
+                    <th class="coluna-manutencao">Manutencao</th>
                     <th>Title</th>
-                    <th>Status</th>
+                    <th class="coluna-responsavel">Responsável</th>
                     <th>Data</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for item in historico_manutencoes %}
                     <tr>
-                        <td>{{ item.manutencao_id }}</td>
+                        <td class="coluna-manutencao-id">{{ item.manutencao_id }}</td>
                         <td>{{ item.titulo }}</td>
-                        <td><span class="status em-progresso">{{ item.status }}</span></td>
+                        <td class="coluna-responsavel">{{ item.responsavel }}</td>
                         <td>{{ item.data }}</td>
                     </tr>
                 {% empty %}

@@ -1,6 +1,6 @@
 .informacoes-equipamento {
     display: flex;
-    margin: 30px 0;
+    margin: 50px 0 30px 0;
     justify-content: space-between;
 }
 
@@ -37,6 +37,81 @@
     color: #64748B;
 }
 
+@media screen and (max-width: 1208px) {
+    .informacoes-equipamento {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .ficha-tecnica {
+        max-width: none;
+    }
+}
+
+
+/* estilos para os insights cards do equipamento */
+
+.insights {
+    display: grid;
+    width: 100%;
+    padding: 0 10px;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.insight-card {
+    height: 138px;
+    width: 100%;
+    max-width: 400px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 10px;
+    align-items: center;
+    padding: 20px;
+    border-radius: 16px;
+}
+
+.insight-card-titulo, .insight-card-valor {
+    font-weight: 600;
+    font-size: 1.3rem;
+    line-height: 140%;
+    text-align: center;
+}
+
+.insight-card.bom {
+    background-color: #C7F6EC;
+    color: #50826C;
+}
+
+.insight-card.preocupante {
+    background-color: #f3e79f;
+    color: #804111;
+}
+
+.insight-card.ruim {
+    background-color: #FFA7A8;
+    color: #961818;
+}
+
+@media screen and (min-width: 369px) and (max-width: 500px) {
+    .insights {
+        justify-items: center;
+    }
+}
+
+@media screen and (min-width: 1650px) {
+    .insights {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .insight-card{
+        max-width: 300px;
+    }
+}
+
 
 /*  estilos da tabela de manutenções  */
 
@@ -53,8 +128,7 @@
 }
 
 
-
-.historico-manutencoes div{
+.historico-manutencoes div {
     border-radius: 8px;
     border: 2px solid #dcdada;
 }
@@ -86,21 +160,14 @@
     background-color: #f5f5f5;
 }
 
-.status {
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+@media screen and (max-width: 700px) {
+    .coluna-manutencao-id, .coluna-manutencao {
+        display: none;
+    }
 }
 
-.status.em-progresso {
-    color: #D7E352;
-}
-
-.status.concluida {
-    color: #57D55B;
-}
-
-.status.cancelada {
-    color: #F46F51;
+@media screen and (max-width: 450px) {
+    .coluna-responsavel {
+        display: none;
+    }
 }
