@@ -12,6 +12,7 @@ def criar_equipamento_modal(request):
 def criar_sala_modal(request):
     context = {
         'setores': ['Setor A', 'Setor B', 'Setor C'],
+        'predios' : ['Prédio 1', 'Prédio 2', 'Prédio 3'],
     }
     return render(request, 'core/pages/modais/modal-criar-sala.html', context)
 

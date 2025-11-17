@@ -44,24 +44,15 @@
     <hr>
 
     <div class="form-row">
-        <label>Setor </label>
+        <label>Prédio/Setor </label>
         <select>
+            {% for predio in predios %}
             {% for setor in setores %}
-            <option>{{ setor }}</option>
+            <option>{{ predio }} / {{ setor }}</option>
+            {% endfor %}
             {% endfor %}
         </select>
     </div>
-
-    <hr>
-
-    <div class="form-row">
-        <label>Prédio </label>
-        <select>
-            <option>🏢 Prédio principal</option>
-            <option>🏬 Prédio secundário</option>
-        </select>
-    </div>
-
 
     <hr>
 
