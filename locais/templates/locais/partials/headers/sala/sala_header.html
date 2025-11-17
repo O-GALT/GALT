@@ -1,4 +1,4 @@
-{% extends 'core/pages/base/headers/header_content_base.html' %}
+{% extends 'core/paginas/base/headers/header_content_base.html' %}
 {% load static %}
 
 {% block extra_css %}
@@ -30,5 +30,5 @@
 
 {% block responsavel %}
     {% static 'locais/imagens/Avatar.png' as avatar_url %}
-    {% include 'locais/partials/headers/partials_do_header/responsavel/responsavel.html' with foto=avatar_url nome='juliano' email_escolar='juliano@escolar.edu.br.com'%}
+    {% include 'locais/partials/headers/partials_do_header/responsavel/responsavel.html' with foto=avatar_url nome='juliano' info_extra='juliano@escolar.edu.br.com'%}
 {% endblock %}

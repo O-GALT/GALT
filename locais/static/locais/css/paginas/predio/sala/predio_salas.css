@@ -1,0 +1,12 @@
+body {
+  font-family: system-ui, 'Open Sans', sans-serif;
+  background-color: #f9f9f9;
+  color: #50826C;
+  margin: 60px;
+}
+
+.container-salas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}

@@ -1,0 +1,24 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'locais/css/paginas/predio/setor/predio_setores.css' %}">
+    <link rel="stylesheet" href="{% static 'locais/css/partials/cards/setor/setor_card.css' %}">
+    <title>O-GALT</title>
+</head>
+<body>
+    {% include 'locais/partials/headers/predio/predio_header.html' %}
+
+    <main>
+        <div class="container-setores">
+            {% for se in setores %}
+                {% include 'locais/partials/predio/setores/setor_card.html' with setor=se.setor predio=se.predio localizacao=se.localizacao quantidade_salas=se.quantidade_salas %}
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

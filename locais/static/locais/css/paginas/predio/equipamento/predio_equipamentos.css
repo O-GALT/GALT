@@ -1,0 +1,16 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+  margin: 4rem;
+}
+
+.container-equipamentos {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+    gap: 2rem;
+}
