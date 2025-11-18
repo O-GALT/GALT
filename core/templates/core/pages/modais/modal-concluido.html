@@ -1,0 +1,36 @@
+{% extends 'core/pages/base/modal/modal_base.html' %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/base/modal/modal_concluido.css' %}">
+{% endblock %}
+
+{% block modal_content %}
+
+<div class="modal-header">
+    <div class="header-left">
+        <div class="card-concluido-container">
+
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <img src="{% static 'core/icons/verificado.png' %}" alt="Ícone de sucesso">
+            </div>
+
+            <div style="text-align: center;">
+                <h2>Criado com sucesso!</h2>
+                <p>O novo item foi adicionado ao sistema e já está disponível para consulta e associações
+                    relacionadas.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <button class="close-btn">&times;</button>
+</div>
+
+<div style="padding: 0 20px 20px;">
+    <button class="btn-create" style="width:100%;">Continuar</button>
+</div>
+
+{% endblock %}

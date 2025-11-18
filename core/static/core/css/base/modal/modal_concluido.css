@@ -1,0 +1,15 @@
+.card-concluido-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 15px;
+}
+
+.card-concluido-container h2 {
+    font-size: x-large;
+}
+
+.card-concluido-container p {
+    font-size: medium;
+}

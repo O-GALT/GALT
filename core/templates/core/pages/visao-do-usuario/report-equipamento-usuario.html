@@ -1,0 +1,61 @@
+{% extends 'core/pages/base/visao-usuario/visao-usuario-base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/extra-css/visao-usuario/report-visao-usuario.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<body>
+    <form class="equip-page" method="POST">
+        {% csrf_token %}
+
+        <div class="equip-icon-box">
+            <img src="{% static 'core/icons/equipamento_icone.png'%}" alt="Icone do equipamento">
+        </div>
+
+        <h1 class="equip-title">Report do equipamento</h1>
+
+        <p class="equip-description">
+            descreva de forma simples e direto o que você observou. Isso ajuda nossos técnicos a entender melhor a
+            staticão e agilizar a manutenção.
+        </p>
+
+        <div class="equip-section">
+            <h3>Título</h3>
+            <input name="title" type="text" placeholder="O que você deseja reportar">
+
+        </div>
+
+        <div class="equip-section">
+            <h3>Descrição do problema encontrado</h3>
+
+            <textarea name="problem-description" rows="7" cols="50" placeholder="Qual problema encontrado?"></textarea>
+
+        </div>
+
+        <div class="example-box">
+            Exemplo: O projetor não liga mesmo com o cabo conectado" ou "O computador está travando e não inicia o
+            sistema".
+        </div>
+
+        <div class="checkbox-row">
+            <input name="agree-check" type="checkbox">
+            <p>Garanto que esse report foi feito com fins de ajudar a melhorar a qualidade dos equipamentos da
+                instituição e não é falso.</p>
+        </div>
+
+        <div class="checkbox-row">
+            <input name="acknowledge-check" type="checkbox">
+            <p>Confirmo estar ciente que ao fazer reportes falsos ou de má fé irei ser responsabilizado.</p>
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn-cancel">Cancelar</button>
+            <button class="btn-create" type="submit">Confirmar</button>
+        </div>
+
+    </form>
+
+    {% endblock %}

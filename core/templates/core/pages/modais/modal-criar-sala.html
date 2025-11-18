@@ -1,0 +1,65 @@
+{% extends "core/pages/base/modal/modal_base.html" %}
+
+{% load static %}
+
+{% block modal_content %}
+<div class="modal-header">
+    <div class="header-left">
+        <img src="{% static './core/icons/header_icon.png' %}" alt="header icon">
+        <div>
+            <h2>Adicionar sala</h2>
+            <p>Acompanhe o estado, posição e histórico de manutenções de cada item.</p>
+        </div>
+    </div>
+    <button class="close-btn" onclick="closeModal()">×</button>
+</div>
+
+<hr>
+
+<form class="modal-form">
+
+    <div class="form-row">
+        <label>Número da sala </label>
+        <input type="text" placeholder="0053">
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Estado atual </label>
+        <select>
+            <option>🟢 LIBERADA</option>
+            <option>🟠 MANUTENÇÃO</option>
+            <option>🔴 FECHADA</option>
+        </select>
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Localização </label>
+        <input type="text" placeholder="A17">
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Prédio/Setor </label>
+        <select>
+            {% for predio in predios %}
+            {% for setor in setores %}
+            <option>{{ predio }} / {{ setor }}</option>
+            {% endfor %}
+            {% endfor %}
+        </select>
+    </div>
+
+    <hr>
+
+    <div class="modal-actions">
+        <button type="button" class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        <button type="submit" class="btn-create">Criar</button>
+    </div>
+
+</form>
+{% endblock %}

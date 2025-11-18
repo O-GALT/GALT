@@ -1,0 +1,70 @@
+{% extends 'core/pages/base/modal/modal_base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/extra-css/modais/modal-criar-predio.css' %}">
+{% endblock %}
+
+{% block modal_content %}
+<div class="modal-header">
+    <div class="header-left">
+        <img src="{% static 'core/icons/header_icon.png' %}" alt="header icon">
+        <div>
+            <h2>Adicionar usuário</h2>
+            <p>Define seus tipos de acesso (técnico, professor, aluno, etc)</p>
+        </div>
+    </div>
+    <button class="close-btn" onclick="closeModal()">×</button>
+</div>
+
+<hr>
+
+<form class="modal-form">
+
+    <div class="form-row">
+        <label>Email pessoal </label>
+        <input type="text" placeholder="usuário@gmail.com">
+    </div>
+
+    <div class="form-row">
+        <label>Email escolar </label>
+        <input type="text" placeholder="usuário@escolar.dominio.educ.com">
+    </div>
+
+    <div class="form-row">
+        <label>Senha</label>
+        <input type="text" placeholder="senha">
+    </div>
+
+    <div class="dropdown form-row" id="dropdown">
+        <div class="dropdown-header">
+
+            <label for="setores">Tipo de usuário</label>
+
+            <div class="dropdown-wrapper">
+                <div class="dropdown-btn" onclick="toggleDropdown()">Selecione os níveis de acesso</div>
+
+                <div class="dropdown-content">
+                    {% for usuario in usuarios%}
+                    <label><input type="checkbox" value="{{ usuario }}"> {{ usuario }}</label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <div class="modal-actions">
+        <button type="button" class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        <button type="submit" class="btn-create">Criar</button>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            document.getElementById('dropdown').classList.toggle('open');
+        }
+    </script>
+</form>
+{% endblock %}
