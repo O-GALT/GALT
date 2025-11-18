@@ -1,18 +1,20 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from ativos.models import Equipamento
-
 
 # Create your views here.
 def index(request):
-    return HttpResponse('funcionando')
+    return HttpResponse(
+        render(request, 'locais/partials/headers/sala/sala_header.html'))
+
 
 def salas(request):
     return HttpResponse("Página de salas funcionando!")
 
+
 def setores(request):
     return HttpResponse("Página de setores funcionando!")
+
 
 def predios(request):
     return HttpResponse("Página de prédios funcionando!")
@@ -85,7 +87,7 @@ def predios_salas(request):
 
 # def index(request):
 #     return HttpResponse(render(request,
-#                                'core/pages/../core/templates/core/partials/partials_do_headers/filtro/filtro.html'))
+#                                'core/paginas/../core/templates/core/partials/partials_do_headers/filtro/filtro.html'))
 #
 # def salas(request):
 #     return HttpResponse(render(request, 'locais/partials/headers/sala/sala_header.html'))
