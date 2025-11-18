@@ -87,7 +87,7 @@ def predios_salas(request):
 
 # def index(request):
 #     return HttpResponse(render(request,
-#                                'core/pages/../core/templates/core/partials/partials_do_headers/filtro/filtro.html'))
+#                                'core/paginas/../core/templates/core/partials/partials_do_headers/filtro/filtro.html'))
 #
 # def salas(request):
 #     return HttpResponse(render(request, 'locais/partials/headers/sala/sala_header.html'))

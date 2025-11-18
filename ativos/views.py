@@ -97,4 +97,4 @@ def equipamento(request):
         ]
     }
 
-    return render(request, 'ativos/pages/base/pagina_de_equipamento/pagina_de_equipamento.html', dados_do_equipamento)
+    return render(request, 'ativos/paginas/base/pagina_de_equipamento/pagina_de_equipamento.html', dados_do_equipamento)
