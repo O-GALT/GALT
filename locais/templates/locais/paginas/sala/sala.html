@@ -1,0 +1,54 @@
+{% extends 'core/paginas/base/estrutura_base/estrutura_base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'locais/css/paginas/sala/sala.css' %}">
+    <link rel="stylesheet" href="{% static 'locais/css/partials/cards/equipamento/equipamento_card.css' %}">
+{% endblock %}
+
+{% block header %}
+    {% include 'locais/partials/headers/sala/sala_header.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="equipamentos-wrapper">
+
+        <div class="colunas-grid">
+
+            <div>
+                <h2 class="grid-title">Fileira de computadores a esquerda</h2>
+                <div class="grid-coluna">
+                    {% for eq in equipamentos_esquerda %}
+                        <a href="{% url 'equipamento' %}">
+                            {% include 'locais/partials/predio/equipamentos/equipamento_card.html' with classe_estado=eq.classe_estado nome_equipamento=eq.nome_equipamento estado=eq.estado sala=eq.sala posicao=eq.posicao tipo_equipamento=eq.tipo_equipamento %}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div>
+                <h2 class="grid-title">Fileira de computadores a direita</h2>
+                <div class="grid-coluna">
+                    {% for eq in equipamentos_direita %}
+                        <a href="{% url 'equipamento' %}">
+                            {% include 'locais/partials/predio/equipamentos/equipamento_card.html' with classe_estado=eq.classe_estado nome_equipamento=eq.nome_equipamento estado=eq.estado sala=eq.sala posicao=eq.posicao tipo_equipamento=eq.tipo_equipamento %}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+        <div>
+            <h2 class="grid-title">Demais equipamentos cadastrados na sala</h2>
+            <div class="grid-auxiliares">
+                {% for eq in equipamentos_auxiliares %}
+                    <a href="{% url 'equipamento' %}">
+                        {% include 'locais/partials/predio/equipamentos/equipamento_card.html' with classe_estado=eq.classe_estado nome_equipamento=eq.nome_equipamento estado=eq.estado sala=eq.sala posicao=eq.posicao tipo_equipamento=eq.tipo_equipamento %}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

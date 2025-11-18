@@ -1,8 +1,7 @@
 .descricao p {
     color: rgba(102, 102, 102, 0.8);
-    font-weight: bold;
+    font-weight: 500;
     width: 45vw;
-    font-size: 1.2rem;
     font-size: 0.9rem;
 
     @media screen and (max-width: 1024px) {
