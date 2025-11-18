@@ -1,7 +1,8 @@
-{% extends 'core/pages/base/headers/header_content_base.html' %}
+{% extends 'core/paginas/base/headers/header_content_base.html' %}
 {% load static %}
 
 {% block extra_css %}
+    {{ block.super }}
     <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/nome_objeto/nome_objeto_header.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/descricao/descricao_header.css' %}">
 {% endblock %}
