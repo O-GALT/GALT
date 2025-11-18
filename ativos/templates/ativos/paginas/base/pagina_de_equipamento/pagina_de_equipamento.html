@@ -1,0 +1,105 @@
+{% extends 'core/paginas/base/estrutura_base/estrutura_base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'ativos/css/pages/base/pagina_de_equipamento/pagina_de_equipamento.css' %}">
+{% endblock %}
+
+{% block header %}
+    {% include 'ativos/partials/headers/equipamento_header.html' %}
+{% endblock %}
+
+{% block content %}
+    {#  Informacoes do equipamento  #}
+    <div class="informacoes-equipamento">
+        <div class="ficha-tecnica">
+            <p class="ficha-tecnica-titulo">Ficha tecnica do equipamento</p>
+
+            <div>
+                <p class="ficha-tecnica-item">
+                    <b>Modelo: </b>
+                    {{ modelo }}
+                </p>
+                <p class="ficha-tecnica-item">
+                    <b>Tipo: </b>
+                    {{ tipo }}
+                </p>
+                <p class="ficha-tecnica-item">
+                    <b>Numero de serie:</b>
+                    {{ serial }}
+                </p>
+                <p class="ficha-tecnica-item">
+                    <b>Patrimonio: </b>
+                    {{ patrimonio }}
+                </p>
+                <p class="ficha-tecnica-item">
+                    <b>Fabricante:</b>
+                    {{ fabricante }}
+                </p>
+                <p class="ficha-tecnica-item">
+                    <b>Data de aquisicao: </b>
+                    {{ data_aquisicao }}
+                </p>
+                <p class="ficha-tecnica-item">
+                    <b>Garantia ate: </b>
+                    {{ data_garantia }}
+                </p>
+                <p class="ficha-tecnica-item">
+                    <b>Ultima manutencao: </b>
+                    {{ data_ultima_manutencao }}
+                </p>
+            </div>
+        </div>
+
+        {# Insights do equipamento #}
+        <div class="insights">
+            {% for insight in insights %}
+                <div class="insight-card
+                    {% if insight.status == "preocupante" %}
+                        preocupante
+                    {% elif insight.status == "ruim" %}
+                        ruim
+                    {% else %}
+                        bom
+                    {% endif %}
+                ">
+                    <p class="insight-card-titulo">{{ insight.titulo }}</p>
+                    <p class="insight-card-valor">{{ insight.valor }}</p>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+    {#  Historico de manutencoes  #}
+    <div class="historico-manutencoes">
+        <p class="historico-manutencoes-titulo">Historico de manutencoes do equipamento</p>
+
+        <div>
+            <table class="tabela-manutencao">
+                <thead>
+                <tr>
+                    <th class="coluna-manutencao">Manutencao</th>
+                    <th>Title</th>
+                    <th class="coluna-responsavel">Responsável</th>
+                    <th>Data</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in historico_manutencoes %}
+                    <tr>
+                        <td class="coluna-manutencao-id">{{ item.manutencao_id }}</td>
+                        <td>{{ item.titulo }}</td>
+                        <td class="coluna-responsavel">{{ item.responsavel }}</td>
+                        <td>{{ item.data }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">Nenhuma manutencao registrada.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

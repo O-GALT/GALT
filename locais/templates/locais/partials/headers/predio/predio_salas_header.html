@@ -1,4 +1,4 @@
-{% extends 'core/pages/base/headers/header_content_base.html' %}
+{% extends 'core/paginas/base/headers/header_content_base.html' %}
 {% load static %}
 
 {% block extra_css %}
@@ -26,7 +26,7 @@
 {% endblock %}
 
 {% block filtro %}
-    <div class="filtro_container">
+    <div class="filtro-container">
         {% include 'core/partials/partials_do_headers/filtro/filtro.html' with titulo='Setor' escolhas=setor %}
         {% include 'core/partials/partials_do_headers/filtro/filtro.html' with titulo='Estado' escolhas=estado %}
     </div>

@@ -2,10 +2,12 @@
     display: flex;
     justify-content: center;
     align-content: center;
-    width: 7vw;
+    width: fit-content;
     font-size: 1rem;
-    border-radius: 5px;
+    padding: 8px 18px;
+    border-radius: 6px;
 }
+
 .MANUTENCAO {
     color: rgba(220, 166, 59, 1);
     border: 2px solid rgba(254, 234, 113, 1);

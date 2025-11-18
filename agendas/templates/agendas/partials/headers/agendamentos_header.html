@@ -1,0 +1,16 @@
+{% extends 'core/paginas/base/headers/header_content_base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/nome_objeto/nome_objeto_header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/descricao/descricao_header.css' %}">
+{% endblock %}
+
+{% block nome_objeto %}
+    {% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome='Situação dos agendamentos' %}
+{% endblock %}
+
+{% block descricao %}
+    {% include 'core/partials/partials_do_headers/descricao/descricao_header.html' with descricao='Visualize o progresso dos agendamentos registrados. Este painel exibe o estado atual de cada atividade técnica, possibilitando um acompanhamento rápido e transparente das etapas de execução.' %}
+{% endblock %}
