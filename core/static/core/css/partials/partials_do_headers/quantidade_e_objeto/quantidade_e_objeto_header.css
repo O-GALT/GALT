@@ -2,17 +2,16 @@
     font-size: 1.8rem;
     padding-right: 0.5vw;
     font-weight: bold;
-}
-
-.estilo-actions-locais-ativos {
     color: rgba(80, 130, 108, 1);
 }
 
-a {
+.sub-title {
     font-weight: bold;
     font-size: 1rem;
     color: rgba(138, 138, 170, 1);
+}
 
+.status-da-pagina {
     @media screen and (max-width: 2000px) {
         display: flex;
         flex-direction: column;
