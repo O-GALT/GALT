@@ -1,6 +1,6 @@
 .informacoes-equipamento {
     display: flex;
-    margin: 50px 0 30px 0;
+    margin: 40px 0;
     justify-content: space-between;
 }
 
@@ -13,6 +13,10 @@
     border: 2px solid #dcdada;
     border-radius: 16px;
     flex-direction: column;
+
+    @media screen and  (min-width: 2000px) {
+        max-width: 500px;
+    }
 }
 
 .ficha-tecnica .ficha-tecnica-titulo {
