@@ -6,17 +6,24 @@
     text-decoration: none;
 }
 
-header .container {
+header .conteudo {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* esquerda maior que direita */
-    grid-template-rows: auto auto; /* linhas automáticas conforme o conteúdo */
-    gap: 2rem 5rem; /* espaçamento entre colunas e linhas */
+    grid-template-columns: 1fr 1fr;
+    /* esquerda maior que direita */
+    grid-template-rows: auto auto;
+    /* linhas automáticas conforme o conteúdo */
+    gap: 2rem 5rem;
+    /* espaçamento entre colunas e linhas */
 }
 
 header {
     width: 100%;
 }
 
+.main {
+    display: flex;
+    flex-direction: column;
+}
 
 .conteudo-esquerda {
     display: flex;

@@ -2,11 +2,11 @@
 {% load static %}
 
 {% block extra_css %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/nome_objeto/nome_objeto_header.css' %}">
-    <link rel="stylesheet" href="{% static 'contas/css/partials/headers/criacao_recursos_header.css' %}">
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/nome_objeto/nome_objeto_header.css' %}">
+<link rel="stylesheet" href="{% static 'contas/css/partials/headers/criacao_recursos_header.css' %}">
 {% endblock %}
 
 {% block nome_objeto %}
-    {% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome='Criar novos recursos' %}
+{% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome='Criar novos recursos' %}
 {% endblock %}
