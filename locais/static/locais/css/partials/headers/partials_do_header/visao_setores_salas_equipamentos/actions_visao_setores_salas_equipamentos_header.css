@@ -12,3 +12,31 @@
  .actions a:hover{
     color: rgba(10, 83, 36, 1);
 }
+
+ .visao-geral-container, .setores-container, .salas-laboratorios-container, .equipamento-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+ }
+
+
+.selecionado {
+  width: 2.5rem;
+  height: 0.3rem;
+  border-radius: 1.5rem;
+  background-color: rgba(10,83,36,1);
+  transform-origin: center center;
+  transform: scaleX(0);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: crescer 320ms cubic-bezier(.2,.9,.2,1) 120ms forwards;
+  display: none;
+}
+
+@keyframes crescer {
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}

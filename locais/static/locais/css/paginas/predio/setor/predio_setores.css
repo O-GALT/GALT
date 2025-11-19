@@ -9,6 +9,10 @@
     color: rgba(10, 83, 36, 1);
 }
 
+.actions .setores-container .setores-selecionado {
+    display: block;
+}
+
 @media (max-width: 1328px)  {
     .container-setores {
         grid-template-columns: repeat(3, 1fr);

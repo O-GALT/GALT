@@ -60,6 +60,7 @@
     font-size: 0.85rem;
     font-weight: bold;
 }
+
 .container-info-tecnico .info-extra p {
     font-size: 0.8rem;
 }
@@ -71,6 +72,10 @@ hr {
 
 .container .conteudo-esquerda .actions .visao-geral {
     color: rgba(10, 83, 36, 1);
+}
+
+.actions .visao-geral-container .visao-geral-selecionado {
+    display: block;
 }
 
 @media(max-width: 1059px) {

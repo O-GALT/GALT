@@ -8,6 +8,9 @@
     color: rgba(10, 83, 36, 1);
 }
 
+.actions .equipamento-container .equipamento-selecionado {
+    display: block;
+}
 
 @media (max-width: 1469px) {
     .container-equipamentos {
