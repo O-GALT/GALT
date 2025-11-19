@@ -1,0 +1,71 @@
+{% load static %}
+
+<div id="{{ modal_id }}" class="modal-overlay none">
+    <div class="manutencao-modal-box">
+
+        <button class="modal-close"  {% if onclick %} onclick="{{ onclick }}" {% endif %}>
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <h2 class="manutencao-title">Agendar manutenção</h2>
+
+        <p class="manutencao-subtitle">
+            Para agendar a manutenção em uma sala é preciso preencher o formulário abaixo :
+        </p>
+
+        <form class="manutencao-form">
+
+            <div class="form-group">
+                <label>Sala que passará por manutenções <span>*</span></label>
+                <div class="select-box">
+                    <select>
+                        <option>Sala A17</option>
+                        <option>Sala B02</option>
+                        <option>Sala C15</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Técnico responsável <span>*</span></label>
+                <div class="select-box">
+                    <select>
+                        <option>@Eu</option>
+                        <option>@Maria</option>
+                        <option>@Carlos</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Data de início da manutenção <span>*</span></label>
+                <div class="input-icon">
+                    <input type="date"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Data de término da manutenção <span>*</span></label>
+                <div class="input-icon">
+                    <input type="date"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Descrição <span>*</span></label>
+                <textarea
+                        placeholder="Descreva um breve motivo pelo qual você estará realizando essa manutenção."></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="cancel-btn"  {% if onclick %} onclick="{{ onclick }}" {% endif %}>
+                    Cancelar
+                </button>
+                <button type="submit" class="confirm-btn"  {% if onclick %} onclick="{{ onclick }}" {% endif %}>
+                    Confirmar
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>

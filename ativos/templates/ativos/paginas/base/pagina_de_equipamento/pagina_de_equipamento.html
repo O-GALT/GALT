@@ -5,7 +5,8 @@
     <link rel="stylesheet" href="{% static 'ativos/css/pages/base/pagina_de_equipamento/pagina_de_equipamento.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/partials/botao/botao_modal.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/partials/qr_modal/qr_modal.css' %}">
-    <link rel="stylesheet" href="{% static 'core/css/partials/visualizar_reportes_modal/visualizar_reportes_modal.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'core/css/partials/visualizar_reportes_modal/visualizar_reportes_modal.css' %}">
     <link rel="stylesheet"
           href="{% static 'core/css/partials/alterar_localizacao_do_equipamento_modal/alterar_localizacao_do_equipamento_modal.css' %}">
 {% endblock %}
@@ -132,7 +133,7 @@
 
 {% block modais %}
     {% include 'core/partials/qr_modal/qr_modal.html' with modal_id='qr_modal' title='Thunder v12'  descricao='Escaneie o Qrcode para ter acesso as informações do equipamentos Thunder v12' button_text='Link para download' onclick="closeModal('qr_modal')" %}
-    {% include 'core/partials/alterar_localizacao_do_equipamento_modal/alterar_localizacao_do_equipamento_modal.html' with modal_id='modalFormulario' onclick="closeModal('modalFormulario')" %}
+    {% include 'core/partials/alterar_localizacao_do_equipamento_modal/alterar_localizacao_do_equipamento_modal.html' with modal_id='modalFormulario' equipment_name='Thunder V12' onclick="closeModal('modalFormulario')" %}
     {% include 'core/partials/visualizar_reportes_modal/visualizar_reportes_modal.html' with modal_id='modal-reports' onclick="closeModal('modal-reports')" %}
 {% endblock %}
 

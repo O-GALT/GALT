@@ -17,8 +17,21 @@
 
         <div class="form-modal-body">
 
-            <label class="form-modal-label">Equipamento*</label>
-            <input type="text" class="form-modal-input" value="Thunder V12" readonly>
+            {% if equipment_name %}
+                <input
+                        type="text"
+                        class="form-modal-input"
+                        value="{{ equipment_name }}"
+                        readonly
+                >
+            {% else %}
+                <select class="form-modal-input">
+                    <option selected disabled>Selecione o equipamento</option>
+                    <option>Thunder V12</option>
+                    <option>Thunder V14</option>
+                    <option>Thunder V17</option>
+                </select>
+            {% endif %}
 
             <label class="form-modal-label">Sala de destino*</label>
             <select class="form-modal-input">

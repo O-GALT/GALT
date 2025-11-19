@@ -5,6 +5,12 @@
     <link rel="stylesheet" href="{% static 'locais/css/paginas/sala/sala.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/partials/botao/botao_modal.css' %}">
     <link rel="stylesheet" href="{% static 'locais/css/partials/cards/equipamento/equipamento_card.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/qr_modal/qr_modal.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'locais/css/partials/agendar_manutencao_modal/agendar_manutencao_modal.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'core/css/partials/alterar_localizacao_do_equipamento_modal/alterar_localizacao_do_equipamento_modal.css' %}">
+
 {% endblock %}
 
 {% block header %}
@@ -23,9 +29,9 @@
             {% static 'core/imagens/trocar_equipamento.svg' as troca_equipamento %}
 
             <div>
-                {% include 'core/partials/botao/botao_modal.html' with caminho_imagem=qr_code largura='20px' altura='20px' texto='Qr code' cor='verde' %}
-                {% include 'core/partials/botao/botao_modal.html' with caminho_imagem=troca_equipamento largura='20px' altura='20px' texto='Mudar sala de um equipamento' cor='verde' %}
-                {% include 'core/partials/botao/botao_modal.html' with caminho_imagem=agenda largura='20px' altura='20px' texto='Agendar manutenção' cor='verde' %}
+                {% include 'core/partials/botao/botao_modal.html' with caminho_imagem=qr_code largura='20px' altura='20px' texto='Qr code' cor='verde' onclick="openModal('qr_modal')" %}
+                {% include 'core/partials/botao/botao_modal.html' with caminho_imagem=troca_equipamento largura='20px' altura='20px' texto='Mudar sala de um equipamento' cor='verde' onclick="openModal('modalFormulario')" %}
+                {% include 'core/partials/botao/botao_modal.html' with caminho_imagem=agenda largura='20px' altura='20px' texto='Agendar manutenção' cor='verde'  onclick="openModal('modal-manutencao')" %}
             </div>
 
             <div>
@@ -72,4 +78,32 @@
         </div>
 
     </div>
+{% endblock %}
+
+
+{% block modais %}
+    {% include 'core/partials/qr_modal/qr_modal.html' with modal_id='qr_modal' title='Thunder v12'  descricao='Escaneie o Qrcode para ter acesso as informações do equipamentos Thunder v12' button_text='Link para download' onclick="closeModal('qr_modal')" %}
+    {% include 'core/partials/alterar_localizacao_do_equipamento_modal/alterar_localizacao_do_equipamento_modal.html' with modal_id='modalFormulario' onclick="closeModal('modalFormulario')" %}
+    {% include 'locais/partials/agendar_manutencao_modal/agendar_manutencao_modal.html' with modal_id='modal-manutencao' onclick="closeModal('modal-manutencao')" %}
+{% endblock %}
+
+{% block script %}
+    // script do qr_modal
+    document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("qr-modal-overlay")) {
+    e.target.classList.add("none");
+    }
+    });
+
+
+    function openModal(id) {
+    const modal = document.getElementById(id)
+    if (modal) modal.classList.remove("none")
+    }
+
+    function closeModal(id) {
+    const modal = document.getElementById(id)
+    if (modal) modal.classList.add("none")
+    }
+
 {% endblock %}
