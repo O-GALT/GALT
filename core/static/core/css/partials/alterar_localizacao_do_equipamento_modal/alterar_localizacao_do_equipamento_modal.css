@@ -73,8 +73,7 @@
     color: #333;
 }
 
-.form-modal-input,
-.form-modal-textarea {
+.form-modal-input {
     width: 100%;
     padding: 12px 14px;
     border: 1px solid #d5d5d5;
@@ -82,17 +81,10 @@
     font-size: 0.94rem;
 }
 
-.form-modal-input:focus,
-.form-modal-textarea:focus {
+.form-modal-input:focus {
     outline: none;
     border-color: #3e7bfa;
 }
-
-.form-modal-textarea {
-    min-height: 100px;
-    resize: vertical;
-}
-
 
 .form-modal-footer {
     margin-top: 28px;
