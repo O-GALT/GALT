@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criação de Equipamento</title>
+    <title>Criação de Setor</title>
     <link rel="stylesheet" href="{% static 'core/css/modal-criar-equipamento.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
@@ -21,7 +21,7 @@
                 <div class="header-left">
                     <img src="{% static 'core/icons/header_icon.png' %}" alt="Estado Liberada">
                     <div>
-                        <h2>Adicionar equipamento</h2>
+                        <h2>Adicionar setor</h2>
                         <p>Monitore equipamentos, estado e histórico de manutenções de cada ambiente.</p>
                     </div>
                 </div>
@@ -33,53 +33,15 @@
             <form class="modal-form">
 
                 <div class="form-row">
-                    <label>Tipo do equipamento </label>
-                    <input type="text" placeholder="Projetor">
-                </div>
-
-                <hr>
-
-                <div class="form-row">
-                    <label>Modelo </label>
-                    <input type="text" placeholder="Thunder V3">
-                </div>
-
-                <hr>
-
-                <div class="form-row">
-                    <label>Estado atual </label>
-                    <select>
-                        <div>
-                            <option>🟢 LIBERADA</option>
-                            <img src="../../../static/core/icons/liberada.png" alt="">
-                        </div>
-                        <option>🟠 MANUTENÇÃO</option>
-                        <option>🔴 FECHADA</option>
-                    </select>
-                </div>
-
-                <hr>
-
-                <div class="form-row">
-                    <label>Posição </label>
-                    <input type="text" placeholder="B45">
-                </div>
-
-                <hr>
-
-                <div class="form-row">
-                    <label>Sala </label>
-                    <select>
-                        {% for sala in salas %}
-                        <option>{{ sala }}</option>
-                        {% endfor %}
-                    </select>
+                    <label>Setor </label>
+                    <input type="text" placeholder="Setor Administrativo">
                 </div>
 
                 <hr>
 
                 <div class="modal-actions">
-                    <button type="button" class="btn-cancel" onclick="closeModal()">Cancelar</button>
+
+                    <a href="{% url 'criar_recursos' %}"><button type="button" class="btn-cancel">Cancelar</button></a>
                     <button type="submit" class="btn-create">Criar</button>
                 </div>
 
