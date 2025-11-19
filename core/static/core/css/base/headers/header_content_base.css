@@ -12,8 +12,9 @@
     grid-template-rows: auto auto; /* linhas automáticas conforme o conteúdo */
     gap: 2rem; /* espaçamento entre colunas e linhas */
 
-    @media (max-width: 759px) {
+    @media (max-width: 955px) {
         grid-template-columns: 1fr;
+        margin-bottom: 20px;
     }
 }
 
@@ -39,9 +40,8 @@ header {
     align-items: end;
     gap: 3rem;
     
-    @media screen and (max-width: 760px) {
+    @media screen and (max-width: 955px) {
         align-items: flex-start;
-
         .container-reponsavel{
             margin-bottom: 30px;
         }

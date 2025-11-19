@@ -1,12 +1,18 @@
-body {
-  font-family: system-ui, 'Open Sans', sans-serif;
-  background-color: #f9f9f9;
-  color: #50826C;
-  margin: 60px;
-}
-
 .container-salas {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
+  cursor: pointer;
+}
+
+@media (max-width: 690px) {
+    .container-salas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 454px) {
+    .container-salas {
+        grid-template-columns: 1fr;
+    }
 }

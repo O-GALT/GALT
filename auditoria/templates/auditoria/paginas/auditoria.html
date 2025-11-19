@@ -1,0 +1,76 @@
+{% extends 'core/paginas/base/estrutura_base/estrutura_base.html' %}
+{% load static %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/filtro/filtro.css' %}">
+    <link rel="stylesheet" href="{% static 'auditoria/css/paginas/auditoria.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/tabela_informacoes/tabela_informacoes.css' %}">
+{% endblock %}
+
+{% block header %}
+    {% include 'auditoria/partials/headers/auditoria_header.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="container-conteudo-auditoria">
+                <div class="filtros">
+                    {% include 'core/partials/partials_do_headers/filtro/filtro.html' with titulo='Tipo do autor' escolhas=tipo_autores %}
+                    {% include 'core/partials/partials_do_headers/filtro/filtro.html' with titulo='Autor' escolhas=autores %}
+                    {% include 'core/partials/partials_do_headers/filtro/filtro.html' with titulo='Ação' escolhas=acoes %}
+                    {% include 'core/partials/partials_do_headers/filtro/filtro.html' with titulo='Alvo da ação' escolhas=alvo_acao %}
+                </div>
+
+    {% include 'core/partials/tabela_infomacoes/tabela_informacoes.html' with objetos=objetos tipo_objeto='auditoria' %}
+
+                <div class="recursos-paginacao">
+                    <div class="quantidade-elementos">
+                        <p>70 itens selecionados</p>
+                    </div>
+
+                    <div class="paginacao">
+                        <div class="pagina">
+                            <p>1 de 10 paginas</p>
+                        </div>
+
+                        <div class="botoes-paginacao">
+                            <button class="botao-inicio">
+                                <svg viewBox="0 0 24 24" width="22" height="22">
+                                    <path d="M17 6 l-6 6 6 6" stroke="black"
+                                          stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    </path>
+
+                                    <path d="M11 6 l-6 6 6 6" stroke="black"
+                                          stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    </path>
+                                </svg>
+                            </button>
+
+                            <button class="botao-voltar">
+                                <svg viewBox="0 0 24 24" width="20" height="20">
+                                    <path d="M15 6 l-6 6 6 6" stroke="black" stroke-width="2" fill="none"
+                                          stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </button>
+
+                            <button class="botao-avancar">
+                                <svg viewBox="0 0 24 24" width="20" height="20">
+                                        <path d="M9 6l6 6-6 6" stroke="black" stroke-width="2" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </button>
+                            <button class="botao-final">
+                                <svg viewBox="0 0 24 24" width="22" height="22">
+                                    <path d="M7 6 l6 6 -6 6" stroke="black"
+                                          stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    </path>
+
+                                    <path d="M13 6 l6 6 -6 6" stroke="black"
+                                          stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+
+                            </button>
+                        </div>
+                    </div>
+                </div>
+{% endblock %}

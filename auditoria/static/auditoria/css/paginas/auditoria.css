@@ -1,0 +1,84 @@
+.container-conteudo-auditoria {
+    display: grid;
+    grid-template-areas:
+            'filtros'
+            'cabecalho-e-registros'
+            'recursos-paginacao';
+    gap: 1rem;
+}
+
+.filtros {
+    grid-area: filtros;
+    display: flex;
+    gap: 2rem;
+}
+
+.filtro-select {
+    height: 1.9rem;
+}
+
+.recursos-paginacao {
+    grid-area: recursos-paginacao;
+    display: grid;
+    grid-template-areas:
+            'quantidade-elementos paginacao';
+    margin-bottom: 2rem;
+
+}
+
+.quantidade-elementos {
+    grid-area: quantidade-elementos;
+}
+
+.quantidade-elementos p {
+    color: rgb(94, 94, 94);
+}
+
+.paginacao {
+    grid-area: paginacao;
+    display: grid;
+    grid-template-areas:
+            'pagina pagina pagina pagina pagina pagina botoes-paginacao';
+}
+
+.pagina {
+    grid-area: pagina;
+    display: flex;
+    justify-content: end;
+}
+
+.pagina p, .quantidade-elementos p {
+    font-size: 0.9rem;
+}
+
+.botoes-paginacao {
+    grid-area: botoes-paginacao;
+    display: grid;
+    grid-template-areas:
+            'botao-inicio botao-voltar botao-avancar botao-final';
+    justify-content: end;
+    gap: 1rem;
+}
+
+.botao-inicio {
+    grid-area: botao-inicio;
+}
+
+.botao-voltar {
+    grid-area: botao-voltar;
+}
+
+.botao-avancar {
+    grid-area: botao-avancar;
+}
+
+.botao-final {
+    grid-area: botao-final;
+}
+
+.botao-inicio, .botao-voltar, .botao-avancar, .botao-final {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+

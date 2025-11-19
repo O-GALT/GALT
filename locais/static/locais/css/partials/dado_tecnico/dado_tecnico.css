@@ -1,0 +1,16 @@
+.container-info-tecnico {
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+}
+
+.info-tecnico p {
+    color: rgba(102, 102, 102, 0.8);
+    font-size: 1rem;
+}
+
+.info-tecnico .nome p {
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: 100;
+    font-size: 1rem;
+}
