@@ -94,6 +94,16 @@
 
 }
 
+@media (max-width: 1104px) {
+    .cabecalho-registros .cabecalho-4, .registros .registros-4 {
+        display: none;
+    }
+
+    .registros, .cabecalho-registros {
+        grid-template-columns: 6% 18% 18% 10% 9%;
+    }
+}
+
 
 @media (max-width: 850px) {
     .saude-produtividade-setor {
@@ -106,6 +116,25 @@
     }
 }
 
+@media (max-width: 819px) {
+    .cabecalho-registros .cabecalho-2, .registros .registros-2 {
+        display: none;
+    }
+
+    .registros, .cabecalho-registros {
+        grid-template-columns: 10% 22% 18% 14%;
+    }
+}
+
+@media (max-width: 609px) {
+     .cabecalho-registros .cabecalho-6, .registros .registros-6 {
+        display: none;
+    }
+
+    .registros, .cabecalho-registros {
+        grid-template-columns: 10% 30% 18%;
+    }
+}
 
 @media (max-width: 565px) {
     .info-cards {
