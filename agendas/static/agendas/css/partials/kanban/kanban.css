@@ -7,7 +7,6 @@
 
 body {
   background: #f7f8f5;
-  padding: 30px;
 }
 
 header h1 {
@@ -58,11 +57,30 @@ header p {
   color: white;
 }
 
-.count.yellow { background: #fff0cc; color: #c58c11; }
-.count.pink   { background: #f7c6ec; color: #c0109a; }
-.count.purple { background: #e6d8fc; color: #925fe4; }
-.count.green  { background: #a7dcff; color: #184a6c; }
-.count.blue   { background: #9fe3c0; color: #2b5b47; }
+.count.yellow {
+  background: #fff0cc;
+  color: #c58c11;
+}
+
+.count.pink {
+  background: #f7c6ec;
+  color: #c0109a;
+}
+
+.count.purple {
+  background: #e6d8fc;
+  color: #925fe4;
+}
+
+.count.green {
+  background: #a7dcff;
+  color: #184a6c;
+}
+
+.count.blue {
+  background: #9fe3c0;
+  color: #2b5b47;
+}
 
 .card {
   background: #fff;
@@ -70,7 +88,7 @@ header p {
   height: 130px;
   border-radius: 14px;
   padding: 18px 20px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   border: 1px solid #eceee9;
   margin-bottom: 18px;
 }
@@ -108,12 +126,23 @@ header p {
   font-size: 11px;
   font-weight: 600;
   white-space: nowrap;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
-.tag.green  { background: #d8efea; color: #0dcd53; }
-.tag.blue   { background: #e0f1ff; color: #0d4cdf; }
-.tag.yellow { background: #fff0cc; color: #c58c11; }
+.tag.green {
+  background: #d8efea;
+  color: #0dcd53;
+}
+
+.tag.blue {
+  background: #e0f1ff;
+  color: #0d4cdf;
+}
+
+.tag.yellow {
+  background: #fff0cc;
+  color: #c58c11;
+}
 
 .card-bottom {
   display: flex;
@@ -148,4 +177,15 @@ header p {
   gap: 12px;
   font-size: 13px;
   font-weight: 650;
+}
+
+@media (max-width: 768px) {
+  .board {
+    overflow-x: auto;
+  }
+
+  .layout {
+    display: inline;
+  }
+
 }
