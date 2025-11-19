@@ -4,6 +4,14 @@
     justify-content: space-between;
 }
 
+.botoes{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+/* Estilos para a seção de ficha tecnica do equipamento  */
+
 .ficha-tecnica {
     display: flex;
     max-width: 400px;
@@ -97,11 +105,6 @@
 .insight-card.ruim {
     background-color: #FFA7A8;
     color: #961818;
-}
-
-.botoes {
-    display: flex;
-    justify-content: flex-end;
 }
 
 @media screen and (min-width: 369px) and (max-width: 500px) {

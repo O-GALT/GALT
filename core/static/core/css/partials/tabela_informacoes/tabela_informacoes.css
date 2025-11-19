@@ -10,6 +10,8 @@
     /*height: 30rem;*/
 }
 
+
+
 .registros, .cabecalho-registros{
     display: grid;
     grid-template-columns: 10% 14% 18% 10% 10% 9%;
@@ -36,6 +38,12 @@
     border-top:  rgb(166, 166, 166) 0.1rem solid;
 }
 
+.cabecalho-registros-container h2{
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #50826C;
+    margin-bottom: 1rem;
+}
 
 @media (max-width: 1104px) {
     .cabecalho-registros .cabecalho-4, .registros .registros-4 {

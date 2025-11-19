@@ -1,0 +1,21 @@
+{% load static %}
+
+
+<div id="{{ modal_id }}" class="qr-modal-overlay none">
+    <div class="qr-modal">
+
+        <div class="qr-modal-header">
+            <img src="{% static 'assets/images/image-qr-code.png' %}" alt="qr code" class="qr-image"/>
+        </div>
+
+        <div class="qr-modal-body">
+            <h2 class="qr-title">{{ title }}</h2>
+            <p class="qr-description">{{ descricao }}</p>
+
+            <button class="qr-button"  {% if onclick %} onclick="{{ onclick }}" {% endif %}>
+                {{ button_text }}
+            </button>
+        </div>
+
+    </div>
+</div>

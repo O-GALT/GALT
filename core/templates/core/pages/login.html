@@ -11,32 +11,37 @@
 </head>
 
 <body>
-    <div class="login-container">
-        <div class="login-left">
-            <div class="login-left-container">
-                <h1>Descomplique o seu gerenciamento com a <span class="brand">Galt</span></h1>
+<div class="login-container">
+    <div class="login-left">
+        <div class="login-left-container">
+            <h1>Descomplique o seu gerenciamento com a <span class="brand">Galt</span></h1>
+            <p class="subtitle">Gerencie equipamentos, setores e manutenções de forma simples, organizada e inteligente.
+                O GALT centraliza informações essenciais do seu ambiente, facilita o acompanhamento das operações e
+                melhora a eficiência da sua equipe. Entre para começar a controlar tudo em um só lugar.</p>
 
-                <form method="post" class="login-form">
-                    {% csrf_token %}
-                    <input type="email" name="email" placeholder="Email" required>
-                    <div class="enter-password">
-                        <input type="password" name="senha" placeholder="Senha" required>
-                        <button type=" submit" class="btn-login">Entrar</button>
-                    </div>
-                </form>
+            <form method="post" class="login-form">
+                {% csrf_token %}
+                <input type="email" name="email" placeholder="Email" required>
+                <div class="enter-password">
+                    <input type="password" name="senha" placeholder="Senha" required>
+                    <button type="button" class="btn-login" onclick="window.location.href='{% url 'predios' %}'">
+                        Entrar
+                    </button>
+                </div>
+            </form>
 
-                <p class="terms">
-                    Ao fazer login, você aceita os <a href="#">Termos de uso</a> e a <a href="#">Política de
-                        Privacidade</a>.
-                </p>
+            <p class="terms">
+                Ao fazer login, você aceita os <a href="#">Termos de uso</a> e a <a href="#">Política de
+                Privacidade</a>.
+            </p>
 
-            </div>
-        </div>
-
-        <div class="login-right">
-            <img src="{% static 'core/imagens/imagem-de-login.png' %}" alt="imagem de login">
         </div>
     </div>
+
+    <div class="login-right">
+        <img src="{% static 'core/imagens/login-image.png' %}" alt="imagem de login">
+    </div>
+</div>
 
 </body>
 

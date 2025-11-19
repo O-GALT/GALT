@@ -90,9 +90,9 @@ def equipamento(request):
                 "valor": "1h10",
             },
             {
-                "titulo": "Confiabilidade",
-                "status": "ruim",
-                "valor": "10%",
+                "titulo": "Recomendação de subistituição",
+                "status": "preocupante",
+                "valor": "50%",
             }
         ]
     }

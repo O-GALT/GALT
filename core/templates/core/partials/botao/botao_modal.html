@@ -1,4 +1,5 @@
-<div class="botao botao-{{ cor }}">
+<button class="botao botao-{{ cor }}" {% if onclick %} onclick="{{ onclick }}" {% endif %}>
+
     <div class="botao-imagem">
         <img src="{{ caminho_imagem }}" width="{{ largura }}" height="{{ altura }}">
     </div>
@@ -6,4 +7,4 @@
     <div class="botao-texto texto-{{ cor }}">
         <p>{{ texto }}</p>
     </div>
-</div>
+</button>

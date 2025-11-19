@@ -1,71 +1,71 @@
 {% extends 'core/paginas/base/estrutura_base/estrutura_base.html' %}
 
 {% block header %}
-{% include 'contas/partials/headers/informacoes_pessoais_header.html' %}
+    {% include 'contas/partials/headers/informacoes_pessoais_header.html' %}
 {% endblock %}
 
 {% load static %}
 
 {% block content %}
 
-<link rel="stylesheet"
-  href="{% static 'contas/css/partials/components_centrais/informacoes_pessoais/informacoes_pessoais.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'contas/css/partials/components_centrais/informacoes_pessoais/informacoes_pessoais.css' %}">
 
-<main class="container">
+    <main class="container">
 
-  <section class="profile-card">
-    <div class="profile-header">
-      <div class="profile-info">
+        <section class="profile-card">
+            <div class="profile-header">
+                <div class="profile-info">
 
-        <img src="https://i.imgur.com/CzXTtJV.png" alt="Foto de perfil" class="profile-img" />
+                    <img src="https://i.imgur.com/CzXTtJV.png" alt="Foto de perfil" class="profile-img"/>
 
-        <div class="profile-name">
-          <h2>Alexa Rawles</h2>
-          <span>alexarawles@gmail.com</span>
-        </div>
-      </div>
+                    <div class="profile-name">
+                        <h2>Alexa Rawles</h2>
+                        <span>alexarawles@gmail.com</span>
+                    </div>
+                </div>
 
-      <button class="edit-btn">Edit</button>
-    </div>
+                <button class="edit-btn">Edit</button>
+            </div>
 
-    <form class="info-form">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="nome">Nome</label>
-          <input type="text" id="nome" value="Alexa Rawles" readonly />
-        </div>
+            <form class="info-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nome">Nome</label>
+                        <input type="text" id="nome" value="Alexa Rawles" readonly/>
+                    </div>
 
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" value="alexarawles@gmail.com" readonly />
-        </div>
-      </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" value="alexarawles@gmail.com" readonly/>
+                    </div>
+                </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label for="telefone">Número de contato</label>
-          <input type="text" id="telefone" value="+55 84 98608 - 4193" readonly />
-        </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="telefone">Número de contato</label>
+                        <input type="text" id="telefone" value="+55 84 98608 - 4193" readonly/>
+                    </div>
 
-        <div class="form-group">
-          <label for="email-escolar">Email escolar</label>
-          <input type="email" id="email-escolar" value="alexarawles@dominio.educ.com" readonly />
-        </div>
-      </div>
+                    <div class="form-group">
+                        <label for="email-escolar">Email escolar</label>
+                        <input type="email" id="email-escolar" value="alexarawles@dominio.educ.com" readonly/>
+                    </div>
+                </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label for="cargo">Cargo/Função</label>
-          <input type="text" id="cargo" value="Assistente de Manutenção" readonly />
-        </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cargo">Cargo/Função</label>
+                        <input type="text" id="cargo" value="Assistente de Manutenção" readonly/>
+                    </div>
 
-        <div class="form-group">
-          <label for="cpf">CPF</label>
-          <input type="text" id="cpf" value="000.000.000-00" readonly />
-        </div>
-      </div>
-    </form>
-  </section>
+                    <div class="form-group">
+                        <label for="cpf">CPF</label>
+                        <input type="text" id="cpf" value="000.000.000-00" readonly/>
+                    </div>
+                </div>
+            </form>
+        </section>
 
-</main>
+    </main>
 {% endblock %}

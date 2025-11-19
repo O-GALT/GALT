@@ -1,7 +1,5 @@
 {% load static %}
 
-
-
 <header class="mobile-header">
     <div class="mobile-header-top">
         <div class="header-brand">
@@ -17,35 +15,22 @@
     <nav id="mobile-menu" class="mobile-menu">
         <ul>
             <li title="Dashboard dos equipamentos do prédio">
-                <a href="{% url 'locais_index' %}" class="">
-                    Dashboard dos equipamentos do prédio
-                </a>
+                <a href="{% url 'locais_index' %}">Dashboard dos equipamentos do prédio</a>
             </li>
 
             <li title="Criar salas e setores">
-
-                <a href="{% url 'suporte_index' %}" class="">
-                    Criar salas e setores
-                </a>
+                <a href="{% url 'suporte_index' %}">Criar salas e setores</a>
             </li>
 
             <li title="Auditoria de registros">
-
-                <a href="{% url 'auditoria_index' %}" class="">
-                    Auditoria de registros
-                </a>
+                <a href="{% url 'auditoria_index' %}">Auditoria de registros</a>
             </li>
 
             <li title="Kanban de manutenções agendadas">
-
-                <a href="{% url 'ativos_index' %}" class="">
-
-                    kanban de manutenções agendadas
-                </a>
+                <a href="{% url 'ativos_index' %}">Kanban de manutenções agendadas</a>
             </li>
         </ul>
     </nav>
-
 </header>
 
 <script>
