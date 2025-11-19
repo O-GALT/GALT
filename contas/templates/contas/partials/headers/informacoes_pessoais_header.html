@@ -2,11 +2,17 @@
 {% load static %}
 
 {% block extra_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/nome_objeto/nome_objeto_header.css' %}">
-<link rel="stylesheet" href="{% static 'contas/css/partials/headers/informacoes_pessoais_header.css' %}">
+    {{ block.super }}
+    <link rel="stylesheet"
+          href="{% static 'core/css/partials/partials_do_headers/nome_objeto/nome_objeto_header.css' %}">
+    <link rel="stylesheet" href="{% static 'contas/css/partials/headers/informacoes_pessoais_header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/descricao/descricao_header.css' %}">
 {% endblock %}
 
 {% block nome_objeto %}
-{% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome='Informações Pessoais' %}
+    {% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome='Informações Pessoais' %}
+{% endblock %}
+
+{% block descricao %}
+    {% include 'core/partials/partials_do_headers/descricao/descricao_header.html' with descricao='Esta página exibe as informações do perfil do técnico, incluindo dados de identificação, setor de atuação e desempenho nas atividades.' %}
 {% endblock %}

@@ -1,6 +1,6 @@
 body {
     font-family: "Poppins", sans-serif;
-    background-color: #fff;
+    background-color: #F5F5F5;
     margin: 0;
     padding: 0;
 }
@@ -47,6 +47,12 @@ h1 {
     line-height: 1.4;
 }
 
+.subtitle{
+    color: rgba(102, 102, 102, 0.8);
+    font-weight: 500;
+    font-size: 1rem;
+}
+
 .brand {
     color: #2a7a5b;
 }
@@ -59,14 +65,16 @@ h1 {
 }
 
 .login-form input {
+    background-color: transparent;
     flex: 1;
     padding: 12px 16px;
     border-radius: 8px;
-    border: 1px solid #ccc;
+    border: 1px solid #bcb9b9;
     font-size: 14px;
 }
 
 .btn-login {
+    width: 150px;
     background-color: #2a7a5b;
     color: white;
     border: none;
