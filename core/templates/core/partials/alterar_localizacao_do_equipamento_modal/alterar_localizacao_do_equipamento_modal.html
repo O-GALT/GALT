@@ -1,0 +1,52 @@
+{% load static %}
+
+<div id="{{ modal_id }}" class="form-modal-overlay none">
+    <div class="form-modal">
+
+        <div class="form-modal-header">
+            <h2>Alterar a localização de um equipamento</h2>
+
+            <button class="form-modal-close" {% if onclick %} onclick="{{ onclick }}" {% endif %}>
+                &times;
+            </button>
+        </div>
+
+        <p class="form-modal-description">
+            Para poder trocar a localização de um equipamento é preciso preencher o formulário abaixo:
+        </p>
+
+        <div class="form-modal-body">
+
+            <label class="form-modal-label">Equipamento*</label>
+            <input type="text" class="form-modal-input" value="Thunder V12" readonly>
+
+            <label class="form-modal-label">Sala de destino*</label>
+            <select class="form-modal-input">
+                <option selected>Selecione a sala de destino desse equipamento</option>
+                <option>Sala A17 — Prédio principal</option>
+                <option>Sala A34 — Prédio secundário</option>
+                <option>Sala B27 — Anexo</option>
+            </select>
+
+            <label class="form-modal-label">Posição referência*</label>
+            <select class="form-modal-input">
+                <option selected>Selecione a posição referência do equipamento na sala de aula</option>
+                <option>Frente esquerda</option>
+                <option>Frente direita</option>
+                <option>Centro</option>
+                <option>Fundo</option>
+            </select>
+
+            <label class="form-modal-label">Descrição*</label>
+            <textarea class="form-modal-textarea"
+                      placeholder="Descreva brevemente o motivo da realocação desse equipamento"></textarea>
+
+        </div>
+
+        <div class="form-modal-footer">
+            <button class="form-btn-cancel" {% if onclick %} onclick="{{ onclick }}" {% endif %}>Cancelar</button>
+            <button class="form-btn-confirm" {% if onclick %} onclick="{{ onclick }}" {% endif %}>Confirmar</button>
+        </div>
+
+    </div>
+</div>

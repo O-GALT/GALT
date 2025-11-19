@@ -107,6 +107,9 @@
 
             {% block content %}
             {% endblock %}
+
+            {% block modais %}
+            {% endblock %}
         </div>
 
 
@@ -120,6 +123,9 @@
     showSideBar.addEventListener("click", () => {
         sideBar.classList.toggle("none")
     })
+
+    {% block script %}
+    {% endblock %}
 </script>
 
 </body>
