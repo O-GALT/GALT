@@ -34,6 +34,9 @@ def criar_usuario_modal(request):
 def concluido_modal(request):
     return render(request, 'core/pages/modais/modal-concluido.html')
 
+def exclusao_modal(request):
+    return render(request, 'core/pages/modais/modal-exclusao.html')
+
 
 def equipamento_visao_usuario(request): 
     return render(request, 'core/pages/visao-do-usuario/equipamento-visao-usuario.html')
