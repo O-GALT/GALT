@@ -1,0 +1,26 @@
+<div class="card-container" id="{{ tipo_card }}">
+    <div class="card-titulo">
+        <h2>{{ titulo }}</h2>
+    </div>
+
+    <div class="quantidade-porcentagem">
+        <div class="quantidade">
+            <p>{{ quantidade }}</p>
+        </div>
+
+        <div class="porcentagem">
+            <div class="porcentagem-numero">
+                <p>{{ porcentagem }}</p>
+            </div>
+
+            <div class="porcentagem-icone">
+                {% if "-" in porcentagem %}
+                    <img src="../../../../static/locais/imagens/porcentagem-negativa-icone.png" width="10px" height="6px">
+                {% else %}
+                    <img src="../../../../static/locais/imagens/porcentagem-positiva-icone.png" width="10px" height="6px">
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -99,6 +99,11 @@
     color: #961818;
 }
 
+.botoes {
+    display: flex;
+    justify-content: flex-end;
+}
+
 @media screen and (min-width: 369px) and (max-width: 500px) {
     .insights {
         justify-items: center;
