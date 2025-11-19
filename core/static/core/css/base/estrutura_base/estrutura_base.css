@@ -31,7 +31,7 @@ body {
     padding: 10px 16px 20px 16px;
     gap: 20px;
 
-    @media (max-width : 1023px) {
+    @media (max-width: 1023px) {
         display: none;
     }
 }
@@ -73,8 +73,8 @@ body {
     color: #50826C;
 }
 
-.sidebar-menu i.active {
-    color: #1C1C1C;
+.sidebar-menu i.active, .sidebar-menu-config i.active {
+    color: #68bf79;
 }
 
 
@@ -87,7 +87,7 @@ body {
 .sidebar-menu-config i {
     font-size: 20px;
     font-weight: 800;
-    color: rgba(28, 28, 28, 1);
+    color: rgba(28, 28, 28, 0.25);
 }
 
 
@@ -112,7 +112,7 @@ main {
     align-items: center;
     padding: 0 20px;
 
-    @media (max-width : 1023px) {
+    @media (max-width: 1023px) {
         display: none;
     }
 }
@@ -162,7 +162,7 @@ main {
     overflow-y: auto;
     flex: 1;
 
-    @media (max-width : 749px) {
+    @media (max-width: 749px) {
         padding: 16px;
     }
 }
