@@ -1,79 +1,79 @@
 <div class="cabecalho-registros-container">
-                <div class="cabecalho-e-registros">
-                    <div class="cabecalho-registros">
-                        {% if tipo_objeto == 'equipamento' %}
-                            <div class="cabecalho-1"><h3>Identificador</h3></div>
-                            <div class="cabecalho-2"><h3>Equipamento</h3></div>
-                            <div class="cabecalho-3"><h3>Tipo</h3></div>
-                            <div class="cabecalho-4"><h3>Serial</h3></div>
-                            <div class="cabecalho-5"><h3>Manutenções</h3></div>
-                            <div class="cabecalho-6"><h3>Sala</h3></div>
-                        {% elif tipo_objeto == 'auditoria' %}
-                            <div class="cabecalho-1"><h3>Registro</h3></div>
-                            <div class="cabecalho-2"><h3>Tipo do autor</h3></div>
-                            <div class="cabecalho-3"><h3>Autor</h3></div>
-                            <div class="cabecalho-4"><h3>Ação</h3></div>
-                            <div class="cabecalho-5"><h3>Alvo da ação</h3></div>
-                            <div class="cabecalho-6"><h3>Data</h3></div>
-                        {% endif %}
+    <h2>Equipamentos com reincidência de falha</h2>
+    <div class="cabecalho-e-registros">
+        <div class="cabecalho-registros">
+            {% if tipo_objeto == 'equipamento' %}
+                <div class="cabecalho-1"><h3>Identificador</h3></div>
+                <div class="cabecalho-2"><h3>Equipamento</h3></div>
+                <div class="cabecalho-3"><h3>Tipo</h3></div>
+                <div class="cabecalho-4"><h3>Serial</h3></div>
+                <div class="cabecalho-5"><h3>Manutenções</h3></div>
+                <div class="cabecalho-6"><h3>Sala</h3></div>
+            {% elif tipo_objeto == 'auditoria' %}
+                <div class="cabecalho-1"><h3>Registro</h3></div>
+                <div class="cabecalho-2"><h3>Tipo do autor</h3></div>
+                <div class="cabecalho-3"><h3>Autor</h3></div>
+                <div class="cabecalho-4"><h3>Ação</h3></div>
+                <div class="cabecalho-5"><h3>Alvo da ação</h3></div>
+                <div class="cabecalho-6"><h3>Data</h3></div>
+            {% endif %}
 
+        </div>
+
+
+        {% for ob in objetos %}
+            <div class="registros">
+                {% if tipo_objeto == 'equipamento' %}
+                    <div class="registros-1">
+                        <p>{{ ob.equipamento_id }}</p>
                     </div>
 
+                    <div class="registros-2">
+                        <p>{{ ob.nome }}</p>
+                    </div>
 
-                    {% for ob in objetos %}
-                        <div class="registros">
-                            {% if tipo_objeto == 'equipamento' %}
-                                <div class="registros-1">
-                                <p>{{ ob.equipamento_id }}</p>
-                                </div>
+                    <div class="registros-3">
+                        <p>{{ ob.tipo }}</p>
+                    </div>
 
-                                <div class="registros-2">
-                                    <p>{{ ob.nome }}</p>
-                                </div>
+                    <div class="registros-4">
+                        <p>{{ ob.serial }}</p>
+                    </div>
 
-                                <div class="registros-3">
-                                    <p>{{ ob.tipo }}</p>
-                                </div>
+                    <div class="registros-5">
+                        <p>{{ ob.quantidade_manutencoes }}</p>
+                    </div>
 
-                                <div class="registros-4">
-                                    <p>{{ ob.serial }}</p>
-                                </div>
+                    <div class="registros-6">
+                        <p>Sala {{ ob.sala }}</p>
+                    </div>
 
-                                <div class="registros-5">
-                                    <p>{{ ob.quantidade_manutencoes }}</p>
-                                </div>
+                {% elif tipo_objeto == 'auditoria' %}
+                    <div class="registros-1">
+                        <p>{{ ob.auditoria_id }}</p>
+                    </div>
 
-                                <div class="registros-6">
-                                    <p>Sala {{ ob.sala }}</p>
-                                </div>
+                    <div class="registros-2">
+                        <p>{{ ob.tipo_autor }}</p>
+                    </div>
 
-                            {% elif tipo_objeto == 'auditoria' %}
-                                <div class="registros-1">
-                                    <p>{{ ob.auditoria_id }}</p>
-                                </div>
+                    <div class="registros-3">
+                        <p>{{ ob.autor }}</p>
+                    </div>
 
-                                <div class="registros-2">
-                                    <p>{{ ob.tipo_autor }}</p>
-                                </div>
+                    <div class="registros-4">
+                        <p>{{ ob.acao }}</p>
+                    </div>
 
-                                <div class="registros-3">
-                                    <p>{{ ob.autor }}</p>
-                                </div>
+                    <div class="registros-5">
+                        <p>{{ ob.alvo_acao }}</p>
+                    </div>
 
-                                <div class="registros-4">
-                                    <p>{{ ob.acao }}</p>
-                                </div>
-
-                                <div class="registros-5">
-                                    <p>{{ ob.alvo_acao }}</p>
-                                </div>
-
-                                <div class="registros-6">
-                                    <p>{{ ob.data|date:'d/m/Y' }}</p>
-                                </div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
-
+                    <div class="registros-6">
+                        <p>{{ ob.data|date:'d/m/Y' }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
 </div>

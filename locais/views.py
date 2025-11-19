@@ -81,7 +81,8 @@ def setores(request):
     context['grafico_estado_salas'] = GeradorGraficos.gerar_grafico_estado_salas(200, 160, 30)
     context['grafico_reporte_tipo_equipamento'] = GeradorGraficos.gerar_grafico_reports_por_tipo()
     context['objetos'] = [
-        {'equipamento_id': '1', 'nome': 'Thunder V12', 'tipo': 'Projetor', 'serial': '19238419213', 'quantidade_manutencoes': '150', 'sala': 'A34'},
+        {'equipamento_id': '1', 'nome': 'Thunder V12', 'tipo': 'Projetor', 'serial': '19238419213',
+         'quantidade_manutencoes': '150', 'sala': 'A34'},
         {'equipamento_id': '2', 'nome': 'Philips A12', 'tipo': 'Projetor', 'serial': '12301126732',
          'quantidade_manutencoes': '100', 'sala': 'B1'},
         {'equipamento_id': '3', 'nome': 'Joon FK1', 'tipo': 'Computador', 'serial': '744723419211',
@@ -108,36 +109,44 @@ def predios(request):
     context['grafico_reporte_tipo_equipamento'] = GeradorGraficos.gerar_grafico_reports_por_tipo()
     context['grafico_indice_manutencoes'] = GeradorGraficos.gerar_grafico_indice_manutencoes()
     context['quantidade_tecnicos'] = range(7)
-    context['equipamentos'] = [Equipamento(equipamento_id=1, serial=1002, manutencoes=7), Equipamento(equipamento_id=2, serial=1003, manutencoes=10), Equipamento(equipamento_id=3, serial=1004, manutencoes=123), Equipamento(equipamento_id=4, serial=1005, manutencoes=2)]
-    context['salas'] = [Sala(sala_id=1, localizacao='A13'), Sala(sala_id=2, localizacao='M92'), Sala(sala_id=3, localizacao='A02'), Sala(sala_id=4, localizacao='Z45'), Sala(sala_id=5, localizacao='M92'), Sala(sala_id=6, localizacao='M92'), Sala(sala_id=7, localizacao='M92'), Sala(sala_id=8, localizacao='M92')]
+    context['equipamentos'] = [Equipamento(equipamento_id=1, serial=1002, manutencoes=7),
+                               Equipamento(equipamento_id=2, serial=1003, manutencoes=10),
+                               Equipamento(equipamento_id=3, serial=1004, manutencoes=123),
+                               Equipamento(equipamento_id=4, serial=1005, manutencoes=2)]
+    context['salas'] = [Sala(sala_id=1, localizacao='A13'), Sala(sala_id=2, localizacao='M92'),
+                        Sala(sala_id=3, localizacao='A02'), Sala(sala_id=4, localizacao='Z45'),
+                        Sala(sala_id=5, localizacao='M92'), Sala(sala_id=6, localizacao='M92'),
+                        Sala(sala_id=7, localizacao='M92'), Sala(sala_id=8, localizacao='M92')]
     return HttpResponse(render(request, 'locais/paginas/predio/predio.html', context))
 
 
 def predios_equipamentos(request):
     context = {}
     context['equipamentos'] = [
-            {'classe_estado': 'manutencao', 'nome_equipamento': 'Maximus V12', 'estado': 'Manutenção', 'sala': 'A17',
-             'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-            {'classe_estado': 'defeituoso', 'nome_equipamento': 'Maximus V12', 'estado': 'Defeituoso', 'sala': 'A17',
-             'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-            {'classe_estado': 'manutencao', 'nome_equipamento': 'Maximus V12', 'estado': 'Manutenção', 'sala': 'A17',
-             'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-            {'classe_estado': 'manutencao', 'nome_equipamento': 'Maximus V12', 'estado': 'Manutenção', 'sala': 'A17',
-             'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-            {'classe_estado': 'funcionando', 'nome_equipamento': 'Maximus V12', 'estado': 'Funcionando', 'sala': 'A17',
-             'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-            {'classe_estado': 'manutencao', 'nome_equipamento': 'Thunder V12', 'estado': 'Manutenção', 'sala': 'A17',
-             'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-            {'classe_estado': 'alerta-report', 'nome_equipamento': 'Thunder V12', 'estado': 'Alerta', 'sala': 'A17',
-             'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-            {'classe_estado': 'manutencao', 'nome_equipamento': 'Brigs V79', 'estado': 'Manutenção', 'sala': 'A17',
-             'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-            {'classe_estado': 'manutencao', 'nome_equipamento': 'Brigs V79', 'estado': 'Manutenção', 'sala': 'A17',
-             'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-            {'classe_estado': 'manutencao', 'nome_equipamento': 'Brigs V79', 'estado': 'Manutenção', 'sala': 'A17',
-             'posicao': 'A1', 'tipo_equipamento': 'projetor'},
+        {'classe_estado': 'defeituoso', 'nome_equipamento': 'Thunder V12', 'estado': 'Defeituoso', 'sala': 'A17',
+         'posicao': 'A12', 'tipo_equipamento': 'computador'},
+        {'classe_estado': 'manutencao', 'nome_equipamento': 'Maximus V12', 'estado': 'Manutenção', 'sala': 'A17',
+         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
+        {'classe_estado': 'defeituoso', 'nome_equipamento': 'Maximus V12', 'estado': 'Defeituoso', 'sala': 'A17',
+         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
+        {'classe_estado': 'manutencao', 'nome_equipamento': 'Maximus V12', 'estado': 'Manutenção', 'sala': 'A17',
+         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
+        {'classe_estado': 'manutencao', 'nome_equipamento': 'Maximus V12', 'estado': 'Manutenção', 'sala': 'A17',
+         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
+        {'classe_estado': 'funcionando', 'nome_equipamento': 'Maximus V12', 'estado': 'Funcionando', 'sala': 'A17',
+         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
+        {'classe_estado': 'manutencao', 'nome_equipamento': 'Thunder V12', 'estado': 'Manutenção', 'sala': 'A17',
+         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
+        {'classe_estado': 'alerta-report', 'nome_equipamento': 'Thunder V12', 'estado': 'Alerta', 'sala': 'A17',
+         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
+        {'classe_estado': 'manutencao', 'nome_equipamento': 'Brigs V79', 'estado': 'Manutenção', 'sala': 'A17',
+         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
+        {'classe_estado': 'manutencao', 'nome_equipamento': 'Brigs V79', 'estado': 'Manutenção', 'sala': 'A17',
+         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
+        {'classe_estado': 'manutencao', 'nome_equipamento': 'Brigs V79', 'estado': 'Manutenção', 'sala': 'A17',
+         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
 
-        ]
+    ]
     return HttpResponse(render(request, 'locais/paginas/predio/equipamento/predio_equipamentos.html', context))
 
 
