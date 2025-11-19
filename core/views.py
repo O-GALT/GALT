@@ -22,6 +22,9 @@ def criar_predio_modal(request):
     }
     return render(request, 'core/pages/modais/modal-criar-predio.html', context)
 
+def criar_setor_modal(request):
+    return render(request, 'core/pages/modais/modal-criar-setor.html')
+
 def criar_usuario_modal(request):
     context = {
         'usuarios': ['Administrador', 'Aluno', 'Professor', 'Técnico de TI', 'Root']

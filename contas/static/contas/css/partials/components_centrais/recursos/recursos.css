@@ -9,13 +9,11 @@ body {
   background-color: #f9faf7;
   display: flex;
   justify-content: center;
-  padding: 75px 0;
 }
 
 .container {
   width: 90%;
   max-width: 1200px;
-  height: 600px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 35px;
@@ -29,15 +27,16 @@ body {
   align-items: flex-start;
   gap: 22px;
   position: relative;
-  box-shadow: 0px 2px 6px rgba(0,0,0,0.06);
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.06);
   border: 1px solid #e3e8e3;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
+  min-height: 240px;
 }
 
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0px 3px 10px rgba(0,0,0,0.10);
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.10);
 }
 
 .card-img {
@@ -50,7 +49,7 @@ body {
 .card-content h2 {
   font-size: 21px;
   font-weight: 600;
-  color: #50826c; 
+  color: #50826c;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -85,6 +84,7 @@ body {
   .card {
     padding: 20px;
   }
+
   .card-img {
     width: 160px;
     height: 105px;

@@ -1,0 +1,129 @@
+/* ====== RESET ====== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #F4F6F8;
+}
+
+/* ====== MAIN CONTAINER ====== */
+.container {
+    max-width: 1300px;
+    padding: 20px;
+}
+
+/* ====== PROFILE CARD ====== */
+.profile-card {
+    background: #fff;
+    padding: 35px 40px;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    background-color: #F1F2ED;
+}
+
+/* ====== HEADER (FOTO + NOME + BOTÃO) ====== */
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-name h2 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.profile-name span {
+    font-size: 14px;
+    color: #888;
+}
+
+/* ====== EDIT BUTTON ====== */
+.edit-btn {
+    background-color: #2E7D6B;
+    border: none;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.edit-btn:hover {
+    background-color: #256B59;
+}
+
+/* ====== FORM ====== */
+.info-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* FILEIRAS DO FORM */
+.form-row {
+    display: flex;
+    gap: 40px;
+}
+
+/* GRUPOS */
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 13px;
+    color: #6e6e6e;
+    font-weight: 500;
+}
+
+/* CAMPOS DE INPUT */
+input {
+    padding: 12px 14px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #FAFAFA;
+    color: #555;
+}
+
+input[readonly] {
+    background-color: #F9FAFB;
+    color: #777;
+    cursor: default;
+}
+
+/* ====== RESPONSIVIDADE ====== */
+@media (max-width: 900px) {
+    .form-row {
+        flex-direction: column;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+}
