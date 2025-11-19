@@ -41,7 +41,7 @@ class GeradorGraficos:
         fig.update_layout(
             title=dict(
                 text="Estado dos Equipamentos",
-                x=0.06,
+                x=0.03,
                 y=0.92,
                 xanchor="left",
                 font=dict(size=15, family="Open Sans", color="#365C3B", weight='bold'),

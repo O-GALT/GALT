@@ -71,3 +71,15 @@
             </section>
         </div>
 {% endblock %}
+
+{% block script %}
+    {{ block.super }}
+    document.addEventListener('DOMContentLoaded', () => {
+    // espera o Plotly criar os divs; 50ms costuma bastar, mas você pode usar a alternativa do MutationObserver abaixo
+    setTimeout(() => {
+        document.querySelectorAll('.plotly-graph-div').forEach(gd => {
+          try { Plotly.Plots.resize(gd); } catch(e) { /* fallback */ }
+        });
+        }, 10);
+    });
+{% endblock %}

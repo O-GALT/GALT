@@ -77,118 +77,14 @@
         </div>
 {% endblock %}
 
-
-
-
-
-{#<!doctype html>#}
-{#<html lang="pt-br">#}
-{#<head>#}
-{#    <meta charset="UTF-8">#}
-{#    <meta name="viewport"#}
-{#          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">#}
-{#    <meta http-equiv="X-UA-Compatible" content="ie=edge">#}
-{#    #}
-{#    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">#}
-{#    <title>O-GALT</title>#}
-{#</head>#}
-{#<body>#}
-{#    {% include 'locais/partials/headers/setor/setor_header.html' %}#}
-{#    <main>#}
-{#        <div class="container-setor">#}
-{#            <div class="info-cards">#}
-{#                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='vermelho' titulo_card='Reporte abertos' quantidade_card='20' %}#}
-{#                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='amarelo' titulo_card='Manutenções agendadas para hoje' quantidade_card='4' %}#}
-{#                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='vermelho' titulo_card='Manutenções agendadas' quantidade_card='20' %}#}
-{#                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='amarelo' titulo_card='Predios associados' quantidade_card='3' %}#}
-{#                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='amarelo' titulo_card='Total de equipamentos' quantidade_card='600' %}#}
-{#                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='ciano' titulo_card='Total de salas' quantidade_card='300' %}#}
-{#            </div>#}
-{##}
-{##}
-{#            <div class="saude-produtividade-setor">#}
-{#                {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_saude_predio/grafico_saude_predio.html' with grafico_saude_predio=grafico_saude_predio %}#}
-{##}
-{#                <div class="produtividade">#}
-{#                    <div class="produtividade-titulo">#}
-{#                        <p>Nível de produtividade do setor</p>#}
-{#                    </div>#}
-{##}
-{#                    <div class="produtividade-porcentagem-icone">#}
-{#                        <div class="produtividade-porcentagem">#}
-{#                            <p>15%</p>#}
-{#                        </div>#}
-{##}
-{#                        <div class="produtividade-icone">#}
-{#                            {% static 'locais/imagens/setinha pra cima.png' as setinha_pra_cima %}#}
-{#                            <img src="{{ setinha_pra_cima }}" width="20px" height="20px">#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{##}
-{##}
-{#            <div class="salas-indice-equipamentos-defeituosos">#}
-{#                {% include 'locais/partials/tabela_metricas/tabela_metricas.html' with titulo_metrica='Salas com mais equipamentos defeituosos do prédio'   cabecalho_objeto='Sala' cabecalho_necessidade='Necessidade de interditação' cabecalho_quantidade='Equipamentos' objetos=salas tipo_metrica='sala'%}#}
-{#            </div>#}
-{##}
-{#            <div class="estado-salas-equipamentos">#}
-{#                <div class="estado-salas">#}
-{#                    {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_estado_salas/grafico_estado_salas.html' with grafico_estado_salas=grafico_estado_salas %}#}
-{#                </div>#}
-{##}
-{#                <div class="estado-equipamentos">#}
-{#                    {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_estado_equipamentos/grafico_estado_equipamentos.html' with grafico_estado_equipamentos=grafico_estado_equipamentos%}#}
-{#                </div>#}
-{#            </div>#}
-{##}
-{##}
-{#            <div class="reportes-tipo-equipamento">#}
-{#                {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_reporte_tipo_equipamento/grafico_reporte_tipo_equipamento.html' with grafico_reporte_tipo_equipamento=grafico_reporte_tipo_equipamento %}#}
-{#            </div>#}
-{##}
-{#            <div class="equipamentos-mais-defeituosos-setor">#}
-{#                <div class="cabecalho-e-registros">#}
-{#                    <div class="cabecalho-auditoria">#}
-{#                        <div class="cabecalho-registro"><h3>Identificador</h3></div>#}
-{#                        <div class="cabecalho-tipo-autor"><h3>Equipamento</h3></div>#}
-{#                        <div class="cabecalho-autor"><h3>Tipo</h3></div>#}
-{#                        <div class="cabecalho-acao"><h3>Serial</h3></div>#}
-{#                        <div class="cabecalho-alvo_acao"><h3>Manutenções</h3></div>#}
-{#                        <div class="cabecalho-data"><h3>Sala</h3></div>#}
-{#                    </div>#}
-{##}
-{##}
-{#                    {% for eq in equipamentos %}#}
-{#                        <div class="registros">#}
-{#                            <div class="registros-registro">#}
-{#                                <p>{{ eq.equipamento_id }}</p>#}
-{#                            </div>#}
-{##}
-{#                            <div class="registros-tipo-autor">#}
-{#                                <p>{{ eq.nome }}</p>#}
-{#                            </div>#}
-{##}
-{#                            <div class="registros-autor">#}
-{#                                <p>{{ eq.tipo }}</p>#}
-{#                            </div>#}
-{##}
-{#                            <div class="registros-acao">#}
-{#                                <p>{{ eq.serial }}</p>#}
-{#                            </div>#}
-{##}
-{#                            <div class="registros-alvo-acao">#}
-{#                                <p>{{ eq.quantidade_manutencoes }}</p>#}
-{#                            </div>#}
-{##}
-{#                            <div class="registros-data">#}
-{#                                <p>Sala {{ eq.sala }}</p>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    {% endfor %}#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </main>#}
-{#</body>#}
-{#</html>#}
+{% block script %}
+    {{ block.super }}
+    document.addEventListener('DOMContentLoaded', () => {
+    // espera o Plotly criar os divs; 50ms costuma bastar, mas você pode usar a alternativa do MutationObserver abaixo
+    setTimeout(() => {
+        document.querySelectorAll('.plotly-graph-div').forEach(gd => {
+          try { Plotly.Plots.resize(gd); } catch(e) { /* fallback */ }
+        });
+        }, 60);
+    });
+{% endblock %}

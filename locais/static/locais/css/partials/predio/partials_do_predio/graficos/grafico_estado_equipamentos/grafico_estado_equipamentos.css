@@ -1,8 +1,5 @@
 .grafico-estado-equipamentos {
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 13rem;
     background-color: rgba(248, 249, 250, 1);
     border-radius: 1.5rem;
