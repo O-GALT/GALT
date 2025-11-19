@@ -3,3 +3,7 @@
     display: flex;
     justify-content: end;
 }
+
+.container .conteudo-esquerda .actions .salas-laboratorios {
+    color: rgba(10, 83, 36, 1);
+}

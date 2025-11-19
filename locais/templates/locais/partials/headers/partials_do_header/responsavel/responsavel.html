@@ -3,19 +3,21 @@
         <h2>Responsável pela manutenção</h2>
     </div>
 
-    <div class="container-info-responsavel">
-        <div>
-            <img src="{{ foto }}" width="30" height="28">
-        </div>
+{#    <div class="container-info-responsavel">#}
+{#        <div>#}
+{#            <img src="{{ foto }}" width="30" height="28">#}
+{#        </div>#}
+{##}
+{#        <div class="info-responsavel">#}
+{#            <div>#}
+{#                <p>{{ nome }}</p>#}
+{#            </div>#}
+{##}
+{#            <div>#}
+{#                <p>{{ email_escolar }}</p>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 
-        <div class="info-responsavel">
-            <div>
-                <p>{{ nome }}</p>
-            </div>
-
-            <div>
-                <p>{{ email_escolar }}</p>
-            </div>
-        </div>
-    </div>
+    {% include 'locais/partials/dado_tecnico/dado_tecnico.html' with foto=foto nome=nome info_extra=info_extra%}
 </div>
