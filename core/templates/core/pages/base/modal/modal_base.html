@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <div class="modal-overlay" id="modal">
+    <div class="modal-overlay" id="modal" style="display: none;">
         <div class="modal-content">
             {% block modal_content %}
 
@@ -25,7 +25,8 @@
 
     <script>
         function closeModal() {
-            document.getElementById("modal").style.display = "none";
+            const modal = modalContainer.querySelector('.modal-overlay');
+            modal.style.display = 'none';
         }
     </script>
 
