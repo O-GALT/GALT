@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.botao {
+  display: inline-grid;
+    grid-auto-flow: column;
+    grid-auto-columns: auto;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.7rem;
+    border: 2px solid;
+    border-radius: 0.5rem;
+    height: 2.3rem;
+    cursor: pointer;
+
+}
+
+.botao-texto {
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.botao-vermelho{
+    border-color: rgba(244, 111, 81, 1);
+}
+.texto-vermelho{
+    color: rgba(244, 111, 81, 1);
+}
+
+.botao-verde {
+    border-color: rgba(80, 130, 108, 1);
+}
+.texto-verde {
+    color: rgba(80, 130, 108, 1);
+}
