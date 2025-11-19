@@ -13,7 +13,7 @@ def equipamento(request):
         "modelo": "Dell Optiplex 7090",
         "tipo": "Desktop Corporativo",
         "serial": "SNX-8745-DF92",
-        "patrimonio": "PAT-00456",
+        "sala": "Sala A17",
         "fabricante": "Dell Technologies",
         "data_aquisicao": "15/07/2022",
         "data_garantia": "15/07/2025",
