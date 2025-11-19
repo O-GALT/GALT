@@ -1,0 +1,86 @@
+/* Overlay — fundo escurecido */
+.qr-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+
+
+    @media screen and (max-width: 500px) {
+        padding: 10px;
+    }
+}
+
+
+.qr-modal {
+    background: #ffffff;
+    max-width: 440px;
+    padding: 15px;
+    border-radius: 22px;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+}
+
+.qr-modal-header{
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+
+.qr-image {
+    border-radius: 16px;
+}
+
+.qr-modal-body {
+    padding: 25px;
+}
+
+
+.qr-title {
+    font-weight: bold;
+    font-size: 2rem;
+    color: #50826C;
+    margin-bottom: 1rem;
+}
+
+
+.qr-description {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #555;
+    text-align: center;
+    max-width: 80%;
+    margin-bottom: 28px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.qr-button {
+    background: #fff;
+    color: #3E7BFA;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.qr-button:hover {
+    font-weight: bolder;
+}
+
+
+.none {
+    display: none;
+}

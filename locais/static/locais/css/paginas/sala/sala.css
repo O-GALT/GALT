@@ -46,3 +46,12 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+/* estilos dos botões de ações do equipamento */
+
+.botoes{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
