@@ -1,5 +1,12 @@
 {% load static %}
 
+{% url 'predios' as url_predios %}
+{% url 'criar_recursos' as url_criar_recursos %}
+{% url 'auditoria_index' as url_auditoria_index %}
+{% url 'agendas_index' as url_agendas_index %}
+{% url 'contas_eu' as url_contas_eu %}
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -33,42 +40,42 @@
                 <img src="{% static 'assets/icons/arrow-left.svg' %}" alt="voltar para página anterior" width="20px">
             </a>
         </div>
-
         <nav class="sidebar-menu">
             <ul>
                 <li title="Dashboard dos equipamentos do prédio">
-                    <a href="{% url 'predios' %}" class="">
-                        <i class="fa-solid fa-chart-simple active"></i>
+                    <a href="{{ url_predios }}">
+                        <i class="fa-solid fa-chart-simple {% if request.path == url_predios %}active{% endif %}"></i>
                     </a>
                 </li>
+
                 <li title="Criar salas e setores">
-
-                    <a href="{% url 'suporte_index' %}" class="">
-                        <i class="fa-solid fa-folder-plus"></i>
+                    <a href="{{ url_criar_recursos }}">
+                        <i class="fa-solid fa-folder-plus {% if request.path == url_criar_recursos %}active{% endif %}"></i>
                     </a>
                 </li>
+
                 <li title="Auditoria de registros">
-
-                    <a href="{% url 'auditoria_index' %}" class="">
-                        <i class="fa-solid fa-boxes-packing"></i>
+                    <a href="{{ url_auditoria_index }}"
+                       class="">
+                        <i class="fa-solid fa-boxes-packing {% if request.path == url_auditoria_index %}active{% endif %}"></i>
                     </a>
                 </li>
+
                 <li title="Kanban de manutenções agendadas">
-
-                    <a href="{% url 'ativos_index' %}" class="">
-
-                        <i class="fa-solid fa-rectangle-list"></i>
+                    <a href="{{ url_agendas_index }}"
+                    >
+                        <i class="fa-solid fa-rectangle-list {% if request.path == url_agendas_index %}active{% endif %}"></i>
                     </a>
                 </li>
-
             </ul>
         </nav>
 
         <div class="sidebar-menu-config">
-            <a href="{% url 'contas_index' %}">
-                <i class="fa-solid fa-gear"></i>
+            <a href="{{ url_contas_eu }}">
+                <i class="fa-solid fa-gear {% if request.path == url_contas_eu %}active{% endif %}"></i>
             </a>
         </div>
+
     </aside>
 
     <!-- Main content -->
