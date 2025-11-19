@@ -1,0 +1,74 @@
+{% load static %}
+
+<div id="{{ modal_id }}" class="modal-overlay none">
+    <div class="modal-reports-box">
+
+        <button class="modal-close" {% if onclick %} onclick="{{ onclick }}" {% endif %}>✕</button>
+
+        <h2 class="modal-title">Lista de reportes</h2>
+
+        <p class="modal-subtitle">
+            Abaixo está presente a lista de reports feitos até o momento sobre o atual estado
+            do equipamento Thunder v12
+        </p>
+
+        <p class="modal-count">Número de reports (10)</p>
+
+        <div class="modal-list">
+            <div class="modal-item">
+                <div class="modal-user-report">
+                    <img src="{% static 'assets/images/person.png' %}" class="modal-avatar" alt="avatar"/>
+                    <p class="modal-user">Natali Craig</p>
+                </div>
+                <div class="modal-texts">
+                    <p class="modal-item-title">Ruído excessivo durante o uso</p>
+                    <p class="modal-item-description">
+                        O equipamento emite um barulho alto do ventilador, especialmente após 10 minutos
+                        de uso contínuo. Pode indicar poeira interna ou rolamento desgastado.
+                    </p>
+                </div>
+            </div>
+
+            <div class="modal-item">
+                <div class="modal-user-report">
+                    <img src="{% static 'assets/images/person.png' %}" class="modal-avatar" alt="avatar"/>
+                    <p class="modal-user">Natali Craig</p>
+                </div>
+                <div class="modal-texts">
+                    <p class="modal-item-title">Superaquecimento constante</p>
+                    <p class="modal-item-description">
+                        O projetor desliga sozinho após cerca de 15 minutos ligado. A carcaça fica muito quente.
+                    </p>
+                </div>
+            </div>
+
+            <div class="modal-item">
+                <div class="modal-user-report">
+                    <img src="{% static 'assets/images/person.png' %}" class="modal-avatar" alt="avatar"/>
+                    <p class="modal-user">Natali Craig</p>
+                </div>
+                <div class="modal-texts">
+                    <p class="modal-item-title">Imagem desfocada e tremida</p>
+                    <p class="modal-item-description">
+                        A lente parece desalinhada. A nitidez não melhora mesmo após ajuste manual do foco.
+                    </p>
+                </div>
+            </div>
+
+            <div class="modal-item">
+                <div class="modal-user-report">
+                    <img src="{% static 'assets/images/person.png' %}" class="modal-avatar" alt="avatar"/>
+                    <p class="modal-user">Natali Craig</p>
+                </div>
+                <div class="modal-texts">
+                    <p class="modal-item-title">Tela azul com ruído na imagem</p>
+                    <p class="modal-item-description">
+                        Tela azul intermitente com ruído digital, possivelmente falha na placa de vídeo.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
