@@ -1,0 +1,34 @@
+<div class="tabela-metrica-container">
+    <div class="titulo-metrica">
+        <h3>{{ titulo_metrica }}</h3>
+    </div>
+
+    <div class="cabecalho-metricas">
+        <div class="cabecalho">
+            <div class="cabecalho-numero">
+                <p>Nº</p>
+            </div>
+
+            <div class="cabecalho-objeto">
+                <p>{{ cabecalho_objeto }}</p>
+            </div>
+
+            <div class="cabecalho-necessidade">
+                <p>{{ cabecalho_necessidade }}</p>
+            </div>
+
+            <div class="cabecalho-quantidade">
+                <p>{{ cabecalho_quantidade }}</p>
+            </div>
+        </div>
+
+        {% for objeto in objetos %}
+            {% if tipo_metrica == 'equipamento' %}
+                {% include 'locais/partials/tabela_metricas/partials_tabela_metricas/metrica_detalhada/metrica_detalhada.html' with numero=objeto.equipamento_id objeto_metrica=objeto.serial porcentagem=55 quantidade_metrica=objeto.manutencoes %}
+
+            {% elif tipo_metrica == 'sala' %}
+                {% include 'locais/partials/tabela_metricas/partials_tabela_metricas/metrica_detalhada/metrica_detalhada.html' with numero=objeto.sala_id objeto_metrica='Sala '|add:objeto.localizacao porcentagem=55 quantidade_metrica='19' %}
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

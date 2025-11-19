@@ -3,6 +3,7 @@
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'ativos/css/pages/base/pagina_de_equipamento/pagina_de_equipamento.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/botao/botao_modal.css' %}">
 {% endblock %}
 
 {% block header %}
@@ -10,6 +11,24 @@
 {% endblock %}
 
 {% block content %}
+    <div class="botoes">
+        {% static 'core/imagens/lixeira.svg' as lixeira %}
+        {% static 'core/imagens/editar.svg' as editar %}
+
+        {% static 'core/imagens/agenda.svg' as agenda %}
+        {% static 'core/imagens/binoculos.svg' as binoculos %}
+        {% static 'core/imagens/computador.svg' as computador %}
+        {% static 'core/imagens/qrCode.svg' as qr_code %}
+        {% static 'core/imagens/trocar_equipamento.svg' as troca_equipamento %}
+
+        {% include 'core/partials/botao/botao_modal.html' with caminho_imagem=lixeira largura='20px' altura='20px' texto='Excluir equipamento' cor='vermelho' %}
+        {% include 'core/partials/botao/botao_modal.html' with caminho_imagem=editar largura='20px' altura='20px' texto='Editar Equipamento' cor='verde' %}
+        {% include 'core/partials/botao/botao_modal.html' with caminho_imagem=agenda largura='20px' altura='20px' texto='Agendar manutenção' cor='verde' %}
+        {% include 'core/partials/botao/botao_modal.html' with caminho_imagem=troca_equipamento largura='20px' altura='20px' texto='Mudar sala de um equipamento' cor='verde' %}
+        {% include 'core/partials/botao/botao_modal.html' with caminho_imagem=binoculos largura='20px' altura='20px' texto='visualizar salas do setor' cor='verde' %}
+        {% include 'core/partials/botao/botao_modal.html' with caminho_imagem=computador largura='20px' altura='20px' texto='Visualizar equipamentos do setor' cor='verde' %}
+        {% include 'core/partials/botao/botao_modal.html' with caminho_imagem=qr_code largura='20px' altura='20px' texto='Qr code' cor='verde' %}
+    </div>
     {#  Informacoes do equipamento  #}
     <div class="informacoes-equipamento">
         <div class="ficha-tecnica">

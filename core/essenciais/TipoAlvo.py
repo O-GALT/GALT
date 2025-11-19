@@ -1,15 +1,16 @@
 from django.db import models
 
 class TipoAlvo(models.TextChoices):
-    PROJETOR = 'PROJETOR', 'projetor'
-    COMPUTADOR = 'COMPUTADOR', 'computador'
-    AR_CONDICIONADO = 'AR CONDICIONADO', 'ar condicionado'
-    SALA = 'SALA', 'sala'
-    PREDIO ='PREDIO', 'predio'
-    SETOR = 'SETOR', 'setor'
-    AGENDAMENTO = 'AGENDAMENTO', 'agendamento'
-    ADMINISTRADOR = 'ADMINISTRADOR', 'administrador'
-    TECNICO_TI = 'TECNICO_TI', 'tecnico de ti'
-    ALUNO = 'ALUNO', 'aluno'
-    PROFESSOR = 'PROFESSOR', 'professor'
-    ROOT = 'ROOT', 'root'
+    PROJETOR = 'PROJETOR', 'Projetor'
+    COMPUTADOR = 'COMPUTADOR', 'Computador'
+    AR_CONDICIONADO = 'AR CONDICIONADO', 'Ar condicionado'
+    SALA = 'SALA', 'Sala'
+    PREDIO ='PREDIO', 'Predio'
+    SETOR = 'SETOR', 'Setor'
+    AGENDAMENTO = 'AGENDAMENTO', 'Agendamento'
+    ADMINISTRADOR = 'ADMINISTRADOR', 'Administrador'
+    TECNICO_TI = 'TECNICO_TI', 'Tecnico de ti'
+    ALUNO = 'ALUNO', 'Aluno'
+    PROFESSOR = 'PROFESSOR', 'Professor'
+    ROOT = 'ROOT', 'Root',
+    REPORTE = 'REPORTE', 'Reporte'

@@ -1,8 +1,12 @@
 .actions {
     display: flex;
-    gap: 1vw;
-    color: rgba(138, 138, 170, 1);
-    font-size: 1.2rem;
+    gap: 3%;
+    font-size: 1rem;
+}
+
+.actions a {
+    color: rgb(103, 103, 103);
+    font-weight: bold;
 }
 
  .actions a:hover{
