@@ -1,12 +1,12 @@
 from django import forms
 from core.essenciais import TipoUsuario
-from locais.models import Predio, Setor, PredioSetor, Sala
-from contas.models import Usuario
-from ativos.models import Equipamento
+from locais.models import Predios, Setores, Salas
+from contas.models import Usuarios
+from ativos.models import Equipamentos
 
 class PredioForm(forms.ModelForm):
     class Meta:
-        model = Predio
+        model = Predios
         fields = ['predio']
         labels = {
             'predio': 'Nome do Prédio',
@@ -17,7 +17,7 @@ class PredioForm(forms.ModelForm):
 
 class SetorForm(forms.ModelForm):
     class Meta:
-        model = Setor
+        model = Setores
         fields = ['setor']
         labels = {
             'setor': 'Nome do Setor',
@@ -26,40 +26,29 @@ class SetorForm(forms.ModelForm):
             'setor': forms.TextInput(attrs={'class': '', 'placeholder': 'Setor A'}),
         }
 
-#nao deveria existir esse form porque 'PredioSetor' é um campo do formulario de sala
-class PredioSetorForm(forms.ModelForm):
-    class Meta:
-        model = PredioSetor
-        fields = ['predio', 'setor']
-        widgets = {
-            'predio': forms.Select(attrs={'class': ''}),
-            'setor': forms.Select(attrs={'class': ''}),
-        }
-
 class SalaForm(forms.ModelForm):
     class Meta:
-        model = Sala
-        fields = ['numero', 'estado_sala', 'localizacao', 'predio_setor']
+        model = Salas
+        fields = ['estado_atual', 'localizacao', 'setor']
         widgets = {
-            'numero': forms.NumberInput(attrs={'class': '', 'placeholder': '101'}),
-            'estado_sala': forms.Select(attrs={'class': ''}),
+            'estado_atual': forms.Select(attrs={'class': ''}),
             'localizacao': forms.TextInput(attrs={'class': '', 'placeholder': 'Primeiro andar'}),
-            'predio_setor': forms.Select(attrs={'class': '', 'placeholder': 'Selecione o prédio e setor'}),
+            'setor': forms.Select(attrs={'class': ''})
         }
 
 class EquipamentoForm(forms.ModelForm):
     class Meta:
-        model = Equipamento
-        fields = ['tipo', 'modelo', 'serial', 'posicao', 'estado_equipamento', 'sala']
+        model = Equipamentos
+        fields = ['tipo', 'serial', 'posicao', 'estado_equipamento', 'sala']
         widgets = {
             'tipo': forms.Select(attrs={'class': ''}),
-            'modelo': forms.TextInput(attrs={'class': '', 'placeholder': 'Modelo'}),
             'serial': forms.NumberInput(attrs={'class': '', 'placeholder': '123456'}),
             'posicao': forms.TextInput(attrs={'class': '', 'placeholder': 'Posição'}),
             'estado_equipamento': forms.Select(attrs={'class': ''}),
             'sala': forms.Select(attrs={'class': ''}),
+            'fabricante': forms.TextInput(attrs={'class': '', 'placeholder': 'Fabricante'}),
+            'data_aquisicao': forms.DateInput(attrs={'class': '', 'placeholder': 'Data de Aquisição'})
         }
-    
 
 class UsuarioForm(forms.ModelForm):
     password = forms.CharField(
@@ -73,15 +62,14 @@ class UsuarioForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Usuario
-        fields = ['username', 'email_pessoal', 'email_escolar', 'cpf', 'telefone', 'tipo_usuario', 'password']
+        model = Usuarios
+        fields = ['username', 'email', 'email_escolar', 'cpf', 'tipo_usuario', 'password']
         
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'username'}),
-            'email_pessoal': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'email@pessoal.com'}),
+            'nome': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'username'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder':'exemplo@gmail.com'}),
             'email_escolar': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'email@escolar.com'}),
             'cpf': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '000.000.000-00'}),
-            'telefone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '(99) 12345-6789'}),
             'tipo_usuario': forms.Select(attrs={'class': 'form-select'}),
         }
 

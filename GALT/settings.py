@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'auditoria',
     'contas',
     'core',
-    'locais.apps.LocaisConfig',
+    'locais',
     'suporte',
 ]
 
