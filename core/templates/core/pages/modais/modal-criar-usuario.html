@@ -14,28 +14,34 @@
             <p>Define seus tipos de acesso (técnico, professor, aluno, etc)</p>
         </div>
     </div>
-    <button class="close-btn" onclick="closeModal()">×</button>
 </div>
 
 <hr>
 
-<form class="modal-form">
+<form class="modal-form" action="{% url 'criar_usuario_modal' %}" method="post">
+    {% csrf_token %}
 
     <div class="form-row">
         <label>Email pessoal </label>
-        <input type="text" placeholder="usuário@gmail.com">
+        {{ form.email_pessoal }}
     </div>
 
     <div class="form-row">
         <label>Email escolar </label>
-        <input type="text" placeholder="usuário@escolar.dominio.educ.com">
+        {{ form.email_escolar }}
     </div>
 
     <div class="form-row">
         <label>Senha</label>
-        <input type="text" placeholder="senha">
+        {{ form.senha }}
     </div>
 
+    <div class="form-row">
+        <label>Tipo de usuário</label>
+        {{ form.tipo_usuario }}
+
+    </div>
+    <!--
     <div class="dropdown form-row" id="dropdown">
         <div class="dropdown-header">
 
@@ -51,8 +57,8 @@
                 </div>
             </div>
         </div>
-
     </div>
+    -->
 
     <hr>
 

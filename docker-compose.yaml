@@ -17,8 +17,15 @@ services:
   galt-service:
       build: .
       container_name: "galt-service"
+      volumes:
+        - ./:/app
+      environment:
+        - DATABASE_HOST=galt-database
+        - DATABASE_NAME=galt_db
+        - DATABASE_USER=galt
+        - DATABASE_PASSWORD=segredo
       env_file:
-        ./env/galtService.env
+        - ./env/galtService.env
       depends_on:
         galt-database:
           condition: service_healthy

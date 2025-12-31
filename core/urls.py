@@ -6,6 +6,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('login', views.login, name='login'),
+
     path('criar-equipamento-modal', views.criar_equipamento_modal, name='criar_equipamento_modal'),
     path('criar-sala-modal', views.criar_sala_modal, name='criar_sala_modal'),
     path('concluido-modal', views.concluido_modal, name='concluido_modal'),

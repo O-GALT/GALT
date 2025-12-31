@@ -2,7 +2,6 @@ from django.contrib import admin
 
 from locais.models import Predio, Setor, PredioSetor, Sala
 
-
 # Register your models here.
 @admin.register(Predio)
 class PredioAdmin(admin.ModelAdmin):

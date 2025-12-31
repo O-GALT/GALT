@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'auditoria',
     'contas',
     'core',
-    'locais',
+    'locais.apps.LocaisConfig',
     'suporte',
 ]
 
@@ -76,17 +76,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'GALT.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': 'galt_db',
+#        'USER': 'galt',
+#        'PASSWORD': 'segredo',
+#        'HOST': 'galt-database',
+#        'PORT': '5432',
+#    }
+#}
+
+import os
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'galt_db',
-        'USER': 'galt',
-        'PASSWORD': 'segredo',
-        'HOST': 'localhost',
+        'NAME': os.getenv('DATABASE_NAME', 'galt_db'),
+        'USER': os.getenv('DATABASE_USER', 'galt'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'segredo'),
+        'HOST': os.getenv('DATABASE_HOST', 'galt-database'),
         'PORT': '5432',
     }
 }

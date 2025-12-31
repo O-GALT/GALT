@@ -8,6 +8,7 @@ class Usuario(AbstractUser):
     nome = models.CharField(null=False, blank=False, max_length=100)
     email_pessoal = models.CharField(null=False, blank=False, max_length=100)
     email_escolar = models.CharField(null=False, blank=False, max_length=100)
+    senha = models.CharField(null=False, blank=False, max_length=20)
     cpf = models.CharField(null=False, blank=False, max_length=13)
     telefone = models.CharField(null=False, blank=False, max_length=13)
     tipo_usuario = models.CharField(null=False, blank=False, max_length=100, choices=TipoUsuario.choices)

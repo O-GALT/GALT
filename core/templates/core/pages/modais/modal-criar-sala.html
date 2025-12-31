@@ -11,40 +11,51 @@
             <p>Acompanhe o estado, posição e histórico de manutenções de cada item.</p>
         </div>
     </div>
-    <button class="close-btn" onclick="closeModal()">×</button>
 </div>
 
 <hr>
 
-<form class="modal-form">
+<form class="modal-form" action="{% url 'criar_sala_modal' %}" method="post">
+    {% csrf_token %}
 
     <div class="form-row">
         <label>Número da sala </label>
-        <input type="text" placeholder="0053">
+        {{ form.numero }}
     </div>
 
     <hr>
 
     <div class="form-row">
         <label>Estado atual </label>
+
+        {{ form.estado_sala }}
+
+
+        <!-- 
         <select>
             <option>🟢 LIBERADA</option>
             <option>🟠 MANUTENÇÃO</option>
             <option>🔴 FECHADA</option>
         </select>
+        
+        -->
     </div>
 
     <hr>
 
     <div class="form-row">
         <label>Localização </label>
-        <input type="text" placeholder="A17">
+        {{ form.localizacao }}
     </div>
 
     <hr>
 
     <div class="form-row">
         <label>Prédio/Setor </label>
+        {{ form.predio_setor }}
+
+
+        <!-- 
         <select>
             {% for predio in predios %}
             {% for setor in setores %}
@@ -52,6 +63,8 @@
             {% endfor %}
             {% endfor %}
         </select>
+        
+        -->
     </div>
 
     <hr>
