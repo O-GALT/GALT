@@ -1,6 +1,7 @@
 from django import forms
 from core.essenciais import TipoUsuario
 from locais.models import Predio, Setor, PredioSetor, Sala
+from contas.models import Usuario
 from ativos.models import Equipamento
 
 class PredioForm(forms.ModelForm):
@@ -59,11 +60,43 @@ class EquipamentoForm(forms.ModelForm):
             'sala': forms.Select(attrs={'class': ''}),
         }
     
-class UsuarioForm(forms.Form):
-    username = forms.CharField(label='Nome de usuário', max_length=150, widget=forms.TextInput(attrs={'class': '', 'placeholder': 'username'}))
-    email_pessoal = forms.EmailField(label='Email pessoal', widget=forms.EmailInput(attrs={'class': '', 'placeholder': 'email@dominio.com'}))
-    email_escolar = forms.EmailField(label='Email escolar', widget=forms.EmailInput(attrs={'class': '', 'placeholder': 'email@dominio.com'}))
-    senha = forms.CharField(label='Senha', max_length=20, widget=forms.PasswordInput(attrs={'class': '', 'placeholder': 'Senha'}))
-    cpf = forms.CharField(label='CPF', max_length=13, widget=forms.TextInput(attrs={'class': '', 'placeholder': '000.000.000-00'}))
-    telefone = forms.CharField(label='Telefone', max_length=13, widget=forms.TextInput(attrs={'class': '', 'placeholder': '(99) 12345-6789'}))
-    tipo_usuario = forms.ChoiceField(label='Tipo de usuário', choices=TipoUsuario.choices, widget=forms.Select(attrs={'class': ''}))
+
+class UsuarioForm(forms.ModelForm):
+    password = forms.CharField(
+        label='Senha', 
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Digite a senha'})
+    )
+    
+    confirm_password = forms.CharField(
+        label='Confirme a Senha',
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Repita a senha'})
+    )
+
+    class Meta:
+        model = Usuario
+        fields = ['username', 'email_pessoal', 'email_escolar', 'cpf', 'telefone', 'tipo_usuario', 'password']
+        
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'username'}),
+            'email_pessoal': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'email@pessoal.com'}),
+            'email_escolar': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'email@escolar.com'}),
+            'cpf': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '000.000.000-00'}),
+            'telefone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '(99) 12345-6789'}),
+            'tipo_usuario': forms.Select(attrs={'class': 'form-select'}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        senha = cleaned_data.get("password")
+        confirmacao = cleaned_data.get("confirm_password")
+
+        if senha and confirmacao and senha != confirmacao:
+            raise forms.ValidationError("As senhas não conferem!")
+        return cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password"])
+        if commit:
+            user.save()
+        return user

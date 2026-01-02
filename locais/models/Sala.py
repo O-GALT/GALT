@@ -6,8 +6,8 @@ from . import PredioSetor
 class Sala(models.Model):
     sala_id = models.AutoField(primary_key=True) 
     numero = models.IntegerField(null=False, blank=False, max_length=10)
-    estado_sala = models.CharField(null=False, blank=False, choices=EstadoSala.choices, default=EstadoSala.LIBERADA, max_length=40)
-    localizacao = models.CharField(null=False, blank=False, max_length=20)
+    estado_sala = models.CharField(null=False, blank=False, choices=EstadoSala.choices, default=EstadoSala.LIBERADA)
+    localizacao = models.CharField(null=False, blank=False, max_length=30)
     predio_setor = models.ForeignKey(PredioSetor, on_delete=models.CASCADE, null=False, related_name='salas')
 
     class Meta:

@@ -10,6 +10,7 @@ class PredioSetor(models.Model):
     setor = models.ForeignKey(Setor, on_delete=models.CASCADE, null=False, related_name='predios_setores')
 
     class Meta:
+        ordering = ['predio__predio', 'setor__setor']
         constraints = [
             models.UniqueConstraint(fields=['predio', 'setor'], name='u_predio_setor')
         ]
