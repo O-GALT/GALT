@@ -155,3 +155,27 @@ textarea {
 .confirm-btn:hover {
     background: #446f50;
 }
+
+.technicians-list {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.technician-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #a7ffb6;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.technician-item button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #555;
+}
