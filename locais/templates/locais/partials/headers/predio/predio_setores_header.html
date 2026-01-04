@@ -1,0 +1,25 @@
+{% extends 'core/paginas/base/headers/header_content_base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/nome_objeto/nome_objeto_header.css' %}">
+    <link rel="stylesheet" href="{% static 'locais/css/partials/headers/partials_do_header/visao_setores_salas_equipamentos/actions_visao_setores_salas_equipamentos_header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.css' %}">
+    <link rel="stylesheet" href="{% static 'locais/css/partials/headers/predio/predio_header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/filtro/filtro.css' %}">
+{% endblock %}
+
+{% block nome_objeto %}
+    {% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome='Prédio principal' %}
+{% endblock %}
+
+{% block actions_visao_setores_salas_equipamentos %}
+    {% include 'locais/partials/headers/partials_do_header/visao_setores_salas_equipamentos/actions_visao_setores_salas_equipamentos_header.html' %}
+{% endblock %}
+
+{% block quantidade_objeto %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='10' objeto='Setores' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='53' objeto='Salas' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='500' objeto='Equipamentos' %}
+{% endblock %}
