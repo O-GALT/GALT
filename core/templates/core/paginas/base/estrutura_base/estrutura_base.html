@@ -21,6 +21,7 @@
     />
     <link rel="stylesheet" href="{% static 'core/css/base/estrutura_base/estrutura_base.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/partials/partials_mobile_header/mobile_header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/arvore_de_rotas/arvore_de_rotas.css' %}">
 
     {% block css %}{% endblock %}
 </head>
@@ -91,9 +92,7 @@
                     <img src="{% static 'assets/icons/Star.svg' %}" alt="Favoritar a página" height="24"/>
                 </div>
 
-                <span>Dashboards</span>
-                <span> / </span>
-                <span class="breadcrumb-textFocus">Prédio Principal</span>
+                {% include 'core/partials/arvore_de_rotas/arvore_deRotas.html' %}
             </div>
 
             <div class="header-actions">
