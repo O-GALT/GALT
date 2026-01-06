@@ -5,20 +5,20 @@ def login(request):
 
 def criar_equipamento_modal(request):
     context = {
-        'salas': ['Sala 101', 'Sala 102', 'Sala 103'],
+        'salas': ['Salas 101', 'Salas 102', 'Salas 103'],
     }
     return render(request, 'core/pages/modais/modal-criar-equipamento.html', context)
 
 def criar_sala_modal(request):
     context = {
-        'setores': ['Setor A', 'Setor B', 'Setor C'],
+        'setores': ['Setores A', 'Setores B', 'Setores C'],
         'predios' : ['Prédio 1', 'Prédio 2', 'Prédio 3'],
     }
     return render(request, 'core/pages/modais/modal-criar-sala.html', context)
 
 def criar_predio_modal(request):
     context = {
-        'setores': ['Setor Administrativo', 'Setor Técnico', 'Setor Acadêmico'],
+        'setores': ['Setores Administrativo', 'Setores Técnico', 'Setores Acadêmico'],
     }
     return render(request, 'core/pages/modais/modal-criar-predio.html', context)
 
