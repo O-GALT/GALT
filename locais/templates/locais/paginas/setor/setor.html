@@ -23,7 +23,7 @@
 {% block content %}
     <div class="container-setor">
             <div class="info-cards">
-{#                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='vermelho' titulo_card='Reporte abertos' quantidade_card='20' %}#}
+{#                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='vermelho' titulo_card='Reportes abertos' quantidade_card='20' %}#}
                 {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='amarelo' titulo_card='Manutenções agendadas para hoje' quantidade_card='4' %}
                 {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='vermelho' titulo_card='Manutenções agendadas' quantidade_card='20' %}
 {#                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='amarelo' titulo_card='Predios associados' quantidade_card='3' %}#}
@@ -55,7 +55,7 @@
 
 
             <div class="salas-indice-equipamentos-defeituosos">
-                {% include 'locais/partials/tabela_metricas/tabela_metricas.html' with titulo_metrica='Salas com mais equipamentos defeituosos do prédio'   cabecalho_objeto='Sala' cabecalho_necessidade='Necessidade de interditação' cabecalho_quantidade='Equipamentos' objetos=salas tipo_metrica='sala'%}
+                {% include 'locais/partials/tabela_metricas/tabela_metricas.html' with titulo_metrica='Salas com mais equipamentos defeituosos do prédio'   cabecalho_objeto='Salas' cabecalho_necessidade='Necessidade de interditação' cabecalho_quantidade='Equipamentos' objetos=salas tipo_metrica='sala'%}
             </div>
 
             <div class="estado-salas-equipamentos">

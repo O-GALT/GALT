@@ -1,2 +1,2 @@
-from . Equipamento import Equipamento
+from . Equipamentos import Equipamentos
 from . HistoricoManutencoes import HistoricoManutencoes

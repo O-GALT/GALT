@@ -1,2 +1,2 @@
-from . TecnicoTI import TecnicoTI
-from . Usuario import Usuario
+from . TecnicosTI import TecnicosTI
+from . Usuarios import Usuarios
