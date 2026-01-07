@@ -109,14 +109,19 @@ def predios(request):
     context['grafico_reporte_tipo_equipamento'] = GeradorGraficos.gerar_grafico_reports_por_tipo()
     context['grafico_indice_manutencoes'] = GeradorGraficos.gerar_grafico_indice_manutencoes()
     context['quantidade_tecnicos'] = range(7)
-    context['equipamentos'] = [Equipamentos(equipamento_id=1, serial=1002, manutencoes=7),
-                               Equipamentos(equipamento_id=2, serial=1003, manutencoes=10),
-                               Equipamentos(equipamento_id=3, serial=1004, manutencoes=123),
-                               Equipamentos(equipamento_id=4, serial=1005, manutencoes=2)]
-    context['salas'] = [Salas(sala_id=1, localizacao='A13'), Salas(sala_id=2, localizacao='M92'),
-                        Salas(sala_id=3, localizacao='A02'), Salas(sala_id=4, localizacao='Z45'),
-                        Salas(sala_id=5, localizacao='M92'), Salas(sala_id=6, localizacao='M92'),
-                        Salas(sala_id=7, localizacao='M92'), Salas(sala_id=8, localizacao='M92')]
+    context['equipamentos'] = [{'equipamento_id':1, 'serial':  '1002', 'manutencoes': 7},
+                               {'equipamento_id': 1, 'serial': '1002', 'manutencoes': 7},
+                               {'equipamento_id': 1, 'serial': '1002', 'manutencoes': 7},
+                               {'equipamento_id': 1, 'serial': '1002', 'manutencoes': 7}
+                               ]
+    context['salas'] = [{'sala_id':1, 'localizacao':'A13'},
+                        {'sala_id': 1, 'localizacao': 'A13'},
+                        {'sala_id': 1, 'localizacao': 'A13'},
+                        {'sala_id': 1, 'localizacao': 'A13'},
+                        {'sala_id': 1, 'localizacao': 'A13'},
+                        {'sala_id': 1, 'localizacao': 'A13'},
+                        {'sala_id': 1, 'localizacao': 'A13'}
+                        ]
     return HttpResponse(render(request, 'locais/paginas/predio/predio.html', context))
 
 
