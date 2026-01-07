@@ -10,7 +10,7 @@ class Equipamentos(models.Model):
     posicao = models.IntegerField(null=False, blank=False)
     tipo = models.TextField(null=False, blank=False, choices=TipoEquipamento.choices)
     serial = models.IntegerField(null=False, unique=True)
-    estado_atual = models.CharField(null=False, blank=False, choices=EstadoEquipamento.choices, default=EstadoEquipamento.FUNCIONANDO, max_length=50)
+    estado_equipamento = models.CharField(null=False, blank=False, choices=EstadoEquipamento.choices, default=EstadoEquipamento.FUNCIONANDO, max_length=50)
     fabricante = models.CharField(null=False, blank=False, max_length=100)
     data_aquisicao = models.DateField(null=False, blank=False, auto_now_add=True)
 

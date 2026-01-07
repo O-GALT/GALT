@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from contas.forms import PredioForm, SetorForm, PredioSetorForm, SalaForm, EquipamentoForm, UsuarioForm
+from contas.forms import PredioForm, SetorForm, SalaForm, EquipamentoForm, UsuarioForm
 
 def login(request):
     return render(request, 'core/pages/login.html')

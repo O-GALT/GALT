@@ -98,7 +98,7 @@ DATABASES = {
         'NAME': 'galt_db',
         'USER': 'galt',
         'PASSWORD': 'segredo',
-        'HOST': 'galt-database',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
