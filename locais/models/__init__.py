@@ -1,5 +1,3 @@
-print("Importando locais.models")
-from . Predio import Predio
-from . PredioSetor import PredioSetor
-from . Sala import Sala
-from . Setor import Setor
+from . Predios import Predios
+from . Salas import Salas
+from . Setores import Setores

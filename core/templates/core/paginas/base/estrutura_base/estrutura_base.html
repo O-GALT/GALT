@@ -9,134 +9,134 @@
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="{% static 'core/css/base/estrutura_base/estrutura_base.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/partials/partials_mobile_header/mobile_header.css' %}">
 
     {% block css %}{% endblock %}
 </head>
+
 <body>
-<div class="layout">
+    <div class="layout">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="sidebar-top">
-            <a href="{% url 'contas_index' %}">
-                <img src="{% static 'assets/images/person.png' %}" alt="Imagem pessoal">
-            </a>
-        </div>
-
-        <div class="sidebar-navigateActions">
-            <a href="javascript:history.back()">
-                <img src="{% static 'assets/icons/arrow-left.svg' %}" alt="voltar para página anterior" width="20px">
-            </a>
-        </div>
-        <nav class="sidebar-menu">
-            <ul>
-                <li title="Dashboard dos equipamentos do prédio">
-                    <a href="{{ url_predios }}">
-                        <i class="fa-solid fa-chart-simple {% if request.path == url_predios %}active{% endif %}"></i>
-                    </a>
-                </li>
-
-                <li title="Criar salas e setores">
-                    <a href="{{ url_criar_recursos }}">
-                        <i class="fa-solid fa-folder-plus {% if request.path == url_criar_recursos %}active{% endif %}"></i>
-                    </a>
-                </li>
-
-                <li title="Auditoria de registros">
-                    <a href="{{ url_auditoria_index }}"
-                       class="">
-                        <i class="fa-solid fa-boxes-packing {% if request.path == url_auditoria_index %}active{% endif %}"></i>
-                    </a>
-                </li>
-
-                <li title="Kanban de manutenções agendadas">
-                    <a href="{{ url_agendas_index }}"
-                    >
-                        <i class="fa-solid fa-rectangle-list {% if request.path == url_agendas_index %}active{% endif %}"></i>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-        <div class="sidebar-menu-config">
-            <a href="{{ url_contas_eu }}">
-                <i class="fa-solid fa-gear {% if request.path == url_contas_eu %}active{% endif %}"></i>
-            </a>
-        </div>
-
-    </aside>
-
-    <!-- Main content -->
-    <main>
-
-        <header class="header">
-            <div class="breadcrumb">
-                <div class="show-left-bar">
-                    <img src="{% static 'assets/icons/Sidebar.svg' %}" alt="Mostar a barra lateral" height="28"/>
-                </div>
-
-                <div>
-                    <img src="{% static 'assets/icons/Star.svg' %}" alt="Favoritar a página" height="24"/>
-                </div>
-
-                <span>Dashboards</span>
-                <span> / </span>
-                <span class="breadcrumb-textFocus">Prédio Principal</span>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-top">
+                <a href="{% url 'contas_index' %}">
+                    <img src="{% static 'assets/images/person.png' %}" alt="Imagem pessoal">
+                </a>
             </div>
 
-            <div class="header-actions">
-                <div class="notifications">
-                    <i class="fa-regular fa-bell"></i>
-                </div>
+            <div class="sidebar-navigateActions">
+                <a href="javascript:history.back()">
+                    <img src="{% static 'assets/icons/arrow-left.svg' %}" alt="voltar para página anterior"
+                        width="20px">
+                </a>
             </div>
-        </header>
+            <nav class="sidebar-menu">
+                <ul>
+                    <li title="Dashboard dos equipamentos do prédio">
+                        <a href="{{ url_predios }}">
+                            <i
+                                class="fa-solid fa-chart-simple {% if request.path == url_predios %}active{% endif %}"></i>
+                        </a>
+                    </li>
 
-        <!-- header mobile  -->
-        {% include 'core/partials/partials_estrutura_base/mobile_header/mobile_header.html' %}
+                    <li title="Criar salas e setores">
+                        <a href="{{ url_criar_recursos }}">
+                            <i
+                                class="fa-solid fa-folder-plus {% if request.path == url_criar_recursos %}active{% endif %}"></i>
+                        </a>
+                    </li>
+
+                    <li title="Auditoria de registros">
+                        <a href="{{ url_auditoria_index }}" class="">
+                            <i
+                                class="fa-solid fa-boxes-packing {% if request.path == url_auditoria_index %}active{% endif %}"></i>
+                        </a>
+                    </li>
+
+                    <li title="Kanban de manutenções agendadas">
+                        <a href="{{ url_agendas_index }}">
+                            <i
+                                class="fa-solid fa-rectangle-list {% if request.path == url_agendas_index %}active{% endif %}"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-menu-config">
+                <a href="{{ url_contas_eu }}">
+                    <i class="fa-solid fa-gear {% if request.path == url_contas_eu %}active{% endif %}"></i>
+                </a>
+            </div>
+
+        </aside>
+
+        <!-- Main content -->
+        <main>
+
+            <header class="header">
+                <div class="breadcrumb">
+                    <div class="show-left-bar">
+                        <img src="{% static 'assets/icons/Sidebar.svg' %}" alt="Mostar a barra lateral" height="28" />
+                    </div>
+
+                    <div>
+                        <img src="{% static 'assets/icons/Star.svg' %}" alt="Favoritar a página" height="24" />
+                    </div>
+
+                    <span>Dashboards</span>
+                    <span> / </span>
+                    <span class="breadcrumb-textFocus">Prédio Principal</span>
+                </div>
+
+                <div class="header-actions">
+                    <div class="notifications">
+                        <i class="fa-regular fa-bell"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- header mobile  -->
+            {% include 'core/partials/partials_estrutura_base/mobile_header/mobile_header.html' %}
 
 
-        <!-- Content block -->
-        <div class="content">
-            {% block header %}
-            {% endblock %}
+            <!-- Content block -->
+            <div class="content">
+                {% block header %}
+                {% endblock %}
 
-            {% block content %}
-            {% endblock %}
+                {% block content %}
+                {% endblock %}
 
-            {% block modais %}
-            {% endblock %}
-        </div>
+                {% block modais %}
+                {% endblock %}
+            </div>
 
 
-    </main>
-</div>
+        </main>
+    </div>
 
-<script>
-    const sideBar = document.querySelector(".sidebar")
-    const showSideBar = document.querySelector(".show-left-bar")
+    <script>
+        const sideBar = document.querySelector(".sidebar")
+        const showSideBar = document.querySelector(".show-left-bar")
 
-    showSideBar.addEventListener("click", () => {
-        sideBar.classList.toggle("none")
-    })
+        showSideBar.addEventListener("click", () => {
+            sideBar.classList.toggle("none")
+        })
 
-    {% block script %}
-    {% endblock %}
-</script>
+        {% block script %}
+        {% endblock %}
+    </script>
 
 </body>
+
 </html>
-
-
-

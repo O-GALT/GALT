@@ -1,6 +1,6 @@
 from django.db import models
 
-class Predio(models.Model):
+class Predios(models.Model):
     predio_id = models.AutoField(primary_key=True)
     predio = models.CharField(null=False, blank=False, unique=True, max_length=30)
 

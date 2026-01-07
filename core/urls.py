@@ -3,8 +3,6 @@ from django.contrib import admin
 from core import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-
     path('login', views.login, name='login'),
 
     path('criar-equipamento-modal', views.criar_equipamento_modal, name='criar_equipamento_modal'),

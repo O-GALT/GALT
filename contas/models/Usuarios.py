@@ -8,7 +8,7 @@ class Usuario(AbstractUser):
     email_escolar = models.CharField(null=False, blank=False, max_length=100)
     cpf = models.CharField(null=False, blank=False, max_length=13)
     telefone = models.CharField(null=False, blank=False, max_length=13)
-    tipo_usuario = models.CharField(null=False, blank=False, max_length=100, choices=TipoUsuario.choices)
+    tipo_usuari = models.CharField(null=False, blank=False, max_length=100, choices=TipoUsuario.choices)
 
 class Meta:
 

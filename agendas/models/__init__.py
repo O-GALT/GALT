@@ -1,2 +1,2 @@
-from . Agendamento import Agendamento
-from . TecnicoTIAgendamento import TecnicoTIAgendamento
+from . Agendamentos import Agendamentos
+from . TecnicosTIAgendamentos import TecnicosTIAgendamentos

@@ -27,7 +27,7 @@
                 {% include 'locais/partials/tabela_metricas/partials_tabela_metricas/metrica_detalhada/metrica_detalhada.html' with numero=objeto.equipamento_id objeto_metrica=objeto.serial porcentagem=55 quantidade_metrica=objeto.manutencoes %}
 
             {% elif tipo_metrica == 'sala' %}
-                {% include 'locais/partials/tabela_metricas/partials_tabela_metricas/metrica_detalhada/metrica_detalhada.html' with numero=objeto.sala_id objeto_metrica='Sala '|add:objeto.localizacao porcentagem=55 quantidade_metrica='19' %}
+                {% include 'locais/partials/tabela_metricas/partials_tabela_metricas/metrica_detalhada/metrica_detalhada.html' with numero=objeto.sala_id objeto_metrica='Salas '|add:objeto.localizacao porcentagem=55 quantidade_metrica='19' %}
             {% endif %}
         {% endfor %}
     </div>

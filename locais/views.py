@@ -1,9 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from ativos.models import Equipamento
+from ativos.models import Equipamentos
 from core.graficos.GeradorGraficos import GeradorGraficos
-from locais.models import Sala
+from locais.models import Salas
 
 
 # Create your views here.
@@ -73,10 +73,10 @@ def salas(request):
 def setores(request):
     context = {}
     context['grafico_saude_predio'] = GeradorGraficos.gerar_grafico_saude_local('setor')
-    context['salas'] = [Sala(sala_id=1, localizacao='A13'), Sala(sala_id=2, localizacao='M92'),
-                        Sala(sala_id=3, localizacao='A02'), Sala(sala_id=4, localizacao='Z45'),
-                        Sala(sala_id=5, localizacao='M92'), Sala(sala_id=6, localizacao='M92'),
-                        Sala(sala_id=7, localizacao='M92'), Sala(sala_id=8, localizacao='M92')]
+    context['salas'] = [Salas(sala_id=1, localizacao='A13'), Salas(sala_id=2, localizacao='M92'),
+                        Salas(sala_id=3, localizacao='A02'), Salas(sala_id=4, localizacao='Z45'),
+                        Salas(sala_id=5, localizacao='M92'), Salas(sala_id=6, localizacao='M92'),
+                        Salas(sala_id=7, localizacao='M92'), Salas(sala_id=8, localizacao='M92')]
     context['grafico_estado_equipamentos'] = GeradorGraficos.gerar_grafico_estado_equipamentos(261, 170, 69)
     context['grafico_estado_salas'] = GeradorGraficos.gerar_grafico_estado_salas(200, 160, 30)
     context['grafico_reporte_tipo_equipamento'] = GeradorGraficos.gerar_grafico_reports_por_tipo()
@@ -109,14 +109,14 @@ def predios(request):
     context['grafico_reporte_tipo_equipamento'] = GeradorGraficos.gerar_grafico_reports_por_tipo()
     context['grafico_indice_manutencoes'] = GeradorGraficos.gerar_grafico_indice_manutencoes()
     context['quantidade_tecnicos'] = range(7)
-    context['equipamentos'] = [Equipamento(equipamento_id=1, serial=1002, manutencoes=7),
-                               Equipamento(equipamento_id=2, serial=1003, manutencoes=10),
-                               Equipamento(equipamento_id=3, serial=1004, manutencoes=123),
-                               Equipamento(equipamento_id=4, serial=1005, manutencoes=2)]
-    context['salas'] = [Sala(sala_id=1, localizacao='A13'), Sala(sala_id=2, localizacao='M92'),
-                        Sala(sala_id=3, localizacao='A02'), Sala(sala_id=4, localizacao='Z45'),
-                        Sala(sala_id=5, localizacao='M92'), Sala(sala_id=6, localizacao='M92'),
-                        Sala(sala_id=7, localizacao='M92'), Sala(sala_id=8, localizacao='M92')]
+    context['equipamentos'] = [Equipamentos(equipamento_id=1, serial=1002, manutencoes=7),
+                               Equipamentos(equipamento_id=2, serial=1003, manutencoes=10),
+                               Equipamentos(equipamento_id=3, serial=1004, manutencoes=123),
+                               Equipamentos(equipamento_id=4, serial=1005, manutencoes=2)]
+    context['salas'] = [Salas(sala_id=1, localizacao='A13'), Salas(sala_id=2, localizacao='M92'),
+                        Salas(sala_id=3, localizacao='A02'), Salas(sala_id=4, localizacao='Z45'),
+                        Salas(sala_id=5, localizacao='M92'), Salas(sala_id=6, localizacao='M92'),
+                        Salas(sala_id=7, localizacao='M92'), Salas(sala_id=8, localizacao='M92')]
     return HttpResponse(render(request, 'locais/paginas/predio/predio.html', context))
 
 
@@ -153,19 +153,19 @@ def predios_equipamentos(request):
 def predios_setores(request):
     context = {
         'setores': [
-            {'setor': 'Setor administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
+            {'setor': 'Setores administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
              'quantidade_salas': '12'},
-            {'setor': 'Setor administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
+            {'setor': 'Setores administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
              'quantidade_salas': '12'},
-            {'setor': 'Setor administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
+            {'setor': 'Setores administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
              'quantidade_salas': '12'},
-            {'setor': 'Setor administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
+            {'setor': 'Setores administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
              'quantidade_salas': '12'},
-            {'setor': 'Setor administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
+            {'setor': 'Setores administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
              'quantidade_salas': '12'},
-            {'setor': 'Setor administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
+            {'setor': 'Setores administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
              'quantidade_salas': '12'},
-            {'setor': 'Setor administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
+            {'setor': 'Setores administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
              'quantidade_salas': '12'},
         ]
     }
