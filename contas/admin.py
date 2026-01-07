@@ -10,4 +10,4 @@ class TecnicoTIAdmin(admin.ModelAdmin):
 
 @admin.register(Usuarios)
 class UsuarioAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nome', 'email_pessoal', 'email_escolar', 'cpf', 'numero')
+    list_display = ('id', 'nome', 'email', 'email_escolar', 'cpf', 'numero', 'password')
