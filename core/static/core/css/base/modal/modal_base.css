@@ -20,6 +20,11 @@ body {
     max-width: 600px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     animation: fadeIn 0.2s ease-in-out;
+
+    display: flex;
+    max-height: 90vh;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .modal-content hr {
@@ -38,6 +43,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    overflow-y: auto;
     margin: 20px;
 }
 

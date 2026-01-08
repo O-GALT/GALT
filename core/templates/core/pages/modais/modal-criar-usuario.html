@@ -3,6 +3,38 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'core/css/extra-css/modais/modal-criar-predio.css' %}">
+
+<style>
+    .modal-overlay {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 20px !important;
+    }
+
+    .modal-content {
+        display: flex !important;
+        flex-direction: column !important;
+        max-height: 90vh !important;
+        width: 100% !important;
+        max-width: 500px !important;
+        background: white !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+    }
+
+    .modal-form {
+        flex: 1 !important;
+        overflow-y: auto !important;
+        padding: 20px !important;
+        display: block !important;
+    }
+
+    .modal-actions {
+        padding-top: 20px !important;
+        margin-top: 10px !important;
+    }
+</style>
 {% endblock %}
 
 {% block modal_content %}
@@ -27,26 +59,35 @@
         {{ form.email }}
     </div>
 
+    <hr>
+
     <div class="form-row">
         <label>Email escolar </label>
         {{ form.email_escolar }}
     </div>
 
+    <hr>
 
     <div class="form-row">
         <label>CPF</label>
         {{ form.cpf }}
     </div>
 
+    <hr>
+
     <div class="form-row">
         <label>Telefone</label>
         {{ form.numero }}
     </div>
 
+    <hr>
+
     <div class="form-row">
         <label>Senha</label>
         {{ form.password }}
     </div>
+
+    <hr>
 
     <div class="form-row">
         <label>Nível de acesso</label>

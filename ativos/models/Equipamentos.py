@@ -5,7 +5,7 @@ from locais.models.Salas import Salas
 
 class Equipamentos(models.Model):
     equipamento_id = models.AutoField(primary_key=True)
-    sala = models.ForeignKey(Salas, on_delete=models.CASCADE, null=False, related_name='equipamentos')
+    sala = models.ForeignKey(Salas, on_delete=models.CASCADE, null=False, blank=False, related_name='equipamentos')
     posicao = models.IntegerField(null=False, blank=False)
     tipo = models.TextField(null=False, blank=False, choices=TipoEquipamento.choices)
     serial = models.CharField(null=False, unique=True, max_length=13)
