@@ -68,5 +68,5 @@ class UsuarioForm(forms.ModelForm):
             'numero': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '(00) 00000-0000'}),
             'cpf': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '000.000.000-00'}),
             'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Digite a senha'}),
-            'groups': forms.SelectMultiple(attrs={'class': ''}),
+            'groups': forms.CheckboxSelectMultiple(attrs={'class': ''}),
         }

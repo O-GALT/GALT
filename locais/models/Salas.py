@@ -15,4 +15,4 @@ class Salas(models.Model):
         verbose_name_plural = 'Salas'
 
     def __str__(self):
-        return f"Sala {self.localizacao} - {self.setor_id}"
+        return f"Sala {self.localizacao} - {self.setor.setor} - {self.setor.predio.predio}"

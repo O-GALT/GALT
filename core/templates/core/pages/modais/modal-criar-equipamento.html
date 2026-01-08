@@ -49,7 +49,7 @@
 
 <hr>
 
-<form class="modal-form" action="equipamento_create_view" method="post">
+<form class="modal-form" action="{% url 'criar_equipamento_modal' %}" method="post">
     {% csrf_token %}
 
     <div class="form-row">

@@ -3,6 +3,8 @@ from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from locais.forms import UsuarioForm, PredioForm, SetorForm, SalaForm, EquipamentoForm
+from core.emails.GerenciadorEmails import GerenciadorEmails
+gerenciadoremails = GerenciadorEmails()
 
 def login(request):
     return render(request, 'core/pages/login.html')
@@ -28,9 +30,11 @@ def criar_usuario_modal(request):
             user = form.save(commit=False)
             user.username = user.email
             user.nome = user.email
+            password = user.password
             user.set_password(form.cleaned_data['password'])
             user.save()
             form.save_m2m()
+            gerenciadoremails.enviar_email(user.email, user.email_escolar, password, user.groups.first().name)   
             return HttpResponseRedirect(reverse('criar_recursos'))
         else:
             print(form.errors)
