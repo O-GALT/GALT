@@ -1,38 +1,11 @@
 from django.http import HttpResponseRedirect
+from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from locais.forms import UsuarioForm, PredioForm, SetorForm, SalaForm, EquipamentoForm
 
 def login(request):
     return render(request, 'core/pages/login.html')
-
-def criar_equipamento_modal(request):
-    context = {
-        'salas': ['Salas 101', 'Salas 102', 'Salas 103'],
-    }
-    return render(request, 'core/pages/modais/modal-criar-equipamento.html', context)
-
-def criar_sala_modal(request):
-    context = {
-        'setores': ['Setores A', 'Setores B', 'Setores C'],
-        'predios' : ['Prédio 1', 'Prédio 2', 'Prédio 3'],
-    }
-    return render(request, 'core/pages/modais/modal-criar-sala.html', context)
-
-def criar_predio_modal(request):
-    context = {
-        'setores': ['Setores Administrativo', 'Setores Técnico', 'Setores Acadêmico'],
-    }
-    return render(request, 'core/pages/modais/modal-criar-predio.html', context)
-
-def criar_setor_modal(request):
-    return render(request, 'core/pages/modais/modal-criar-setor.html')
-
-def criar_usuario_modal(request):
-    context = {
-        'usuarios': ['Administrador', 'Aluno', 'Professor', 'Técnico de TI', 'Root']
-    }
-    return render(request, 'core/pages/modais/modal-criar-usuario.html', context)
 
 def concluido_modal(request):
     return render(request, 'core/pages/modais/modal-concluido.html')
@@ -52,8 +25,16 @@ def criar_usuario_modal(request):
     if request.method == 'POST':
         form = UsuarioForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save(commit=False)
+            user.username = user.email
+            user.nome = user.email
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            form.save_m2m()
             return HttpResponseRedirect(reverse('criar_recursos'))
+        else:
+            print(form.errors)
+            return HttpResponse('error')
     else:
         form = UsuarioForm()
     return render(request, 'core/pages/modais/modal-criar-usuario.html', {'form': form})

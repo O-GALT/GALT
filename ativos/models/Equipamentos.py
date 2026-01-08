@@ -8,7 +8,7 @@ class Equipamentos(models.Model):
     sala = models.ForeignKey(Salas, on_delete=models.CASCADE, null=False, related_name='equipamentos')
     posicao = models.IntegerField(null=False, blank=False)
     tipo = models.TextField(null=False, blank=False, choices=TipoEquipamento.choices)
-    serial = models.IntegerField(null=False, unique=True)
+    serial = models.CharField(null=False, unique=True, max_length=13)
     estado_atual = models.CharField(null=False, blank=False, choices=EstadoEquipamento.choices, default=EstadoEquipamento.FUNCIONANDO, max_length=50)
     fabricante = models.CharField(null=False, blank=False, max_length=100)
     data_aquisicao = models.DateField(null=False, blank=False)
