@@ -7,6 +7,7 @@ from core.essenciais import TipoUsuario
 EMAIL = os.getenv('EMAIL')
 SENHA = os.getenv('SENHA')
 
+
 class GerenciadorEmails:
     def __init__(self):
         self.mensagem = EmailMessage()
