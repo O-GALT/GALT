@@ -19,39 +19,32 @@
 
 <hr>
 
-<form class="modal-form">
+<form class="modal-form" action="{% url 'criar_usuario_modal' %}" method="post">
+    {% csrf_token %}
 
     <div class="form-row">
         <label>Email pessoal </label>
-        <input type="text" placeholder="usuário@gmail.com">
+        {{ form.email }}
     </div>
 
     <div class="form-row">
         <label>Email escolar </label>
-        <input type="text" placeholder="usuário@escolar.dominio.educ.com">
+        {{ form.email_escolar }}
     </div>
 
     <div class="form-row">
         <label>Senha</label>
-        <input type="text" placeholder="senha">
+        {{ form.password }}
     </div>
 
-    <div class="dropdown form-row" id="dropdown">
-        <div class="dropdown-header">
+    <div class="form-row">
+        <label>CPF</label>
+        {{ form.cpf }}
+    </div>
 
-            <label for="setores">Tipo de usuário</label>
-
-            <div class="dropdown-wrapper">
-                <div class="dropdown-btn" onclick="toggleDropdown()">Selecione os níveis de acesso</div>
-
-                <div class="dropdown-content">
-                    {% for usuario in usuarios%}
-                    <label><input type="checkbox" value="{{ usuario }}"> {{ usuario }}</label>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-
+    <div class="form-row">
+        <label>Telefone</label>
+        {{ form.numero }}
     </div>
 
     <hr>

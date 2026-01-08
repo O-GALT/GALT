@@ -30,11 +30,12 @@
 
             <hr>
 
-            <form class="modal-form">
+            <form class="modal-form" action="{% url 'criar_setor_modal' %}" method="post">
+                {% csrf_token %}
 
                 <div class="form-row">
                     <label>Setor </label>
-                    <input type="text" placeholder="Setor Administrativo">
+                    {{ form.setor }}
                 </div>
 
                 <hr>

@@ -15,57 +15,55 @@
 
 <hr>
 
-<form class="modal-form">
+<form class="modal-form" action="{% url 'criar_equipamento_modal' %}" method="post">
+    {% csrf_token %}
 
     <div class="form-row">
         <label>Tipo do equipamento </label>
-        <input type="text" placeholder="Projetor">
-    </div>
-
-    <hr>
-
-    <div class="form-row">
-        <label>Modelo </label>
-        <input type="text" placeholder="Thunder V3">
+        {{ form.tipo }}
     </div>
 
     <hr>
 
     <div class="form-row">
         <label>Serial </label>
-        <input type="text" placeholder="123456789" maxlength="8">
+        {{ form.serial }}
     </div>
 
     <hr>
 
     <div class="form-row">
         <label>Estado atual </label>
-        <select>
-            <option>🟢 FUNCIONANDO</option>
-            <option>🟠 MANUTENÇÃO</option>
-            <option>🔴 DEFEITUOSO</option>
-
-        </select>
+        {{ form.estado_atual }}
     </div>
 
     <hr>
 
     <div class="form-row">
         <label>Posição </label>
-        <input type="text" placeholder="B45">
+        {{ form.posicao }}
     </div>
 
     <hr>
 
     <div class="form-row">
         <label>Sala </label>
-        <select>
-            {% for sala in salas %}
-            <option>{{ sala }}</option>
-            {% endfor %}
-        </select>
+        {{ form.sala }}
     </div>
 
+    <hr>
+
+    <div class="form-row">
+        <label>Fabricante </label>
+        {{ form.fabricante }}
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Data de aquisição </label>
+        {{ form.data_aquisicao }}
+    </div>
     <hr>
 
     <div class="modal-actions">

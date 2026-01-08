@@ -16,42 +16,28 @@
 
 <hr>
 
-<form class="modal-form">
-
-    <div class="form-row">
-        <label>Número da sala </label>
-        <input type="text" placeholder="0053">
-    </div>
+<form class="modal-form" action="{% url 'criar_sala_modal' %}" method="post">
+    {% csrf_token %}
 
     <hr>
 
     <div class="form-row">
         <label>Estado atual </label>
-        <select>
-            <option>🟢 LIBERADA</option>
-            <option>🟠 MANUTENÇÃO</option>
-            <option>🔴 FECHADA</option>
-        </select>
+        {{ form.estado_atual }}
     </div>
 
     <hr>
 
     <div class="form-row">
         <label>Localização </label>
-        <input type="text" placeholder="A17">
+        {{ form.localizacao }}
     </div>
 
     <hr>
 
     <div class="form-row">
-        <label>Prédio/Setor </label>
-        <select>
-            {% for predio in predios %}
-            {% for setor in setores %}
-            <option>{{ predio }} / {{ setor }}</option>
-            {% endfor %}
-            {% endfor %}
-        </select>
+        <label>Setor </label>
+        {{ form.setor }}
     </div>
 
     <hr>
