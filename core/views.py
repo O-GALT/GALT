@@ -4,8 +4,9 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from locais.forms import UsuarioForm, PredioForm, SetorForm, SalaForm, EquipamentoForm
 from core.emails.GerenciadorEmails import GerenciadorEmails
+from django.contrib.auth import authenticate, login
 
-def login(request):
+def pagina_login(request):
     return render(request, 'core/pages/login.html')
 
 def concluido_modal(request):
@@ -27,8 +28,8 @@ def criar_usuario_modal(request):
         form = UsuarioForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.username = user.email
-            user.nome = user.email
+            user.username = user.email_escolar
+            user.nome = user.email_escolar
             password = user.password
             user.set_password(form.cleaned_data['password'])
             user.save()
