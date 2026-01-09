@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -125,6 +126,7 @@ def predios(request):
     return HttpResponse(render(request, 'locais/paginas/predio/predio.html', context))
 
 
+@login_required
 def predios_equipamentos(request):
     context = {}
     context['equipamentos'] = [
