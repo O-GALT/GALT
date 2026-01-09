@@ -1,1 +1,1 @@
-from . Reporte import Reporte
+from . Reportes import Reportes

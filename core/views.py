@@ -1,35 +1,13 @@
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.http.response import HttpResponse
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from locais.forms import UsuarioForm, PredioForm, SetorForm, SalaForm, EquipamentoForm
+from core.emails.GerenciadorEmails import GerenciadorEmails
+from django.contrib.auth import authenticate, login
 
-def login(request):
+def pagina_login(request):
     return render(request, 'core/pages/login.html')
-
-def criar_equipamento_modal(request):
-    context = {
-        'salas': ['Sala 101', 'Sala 102', 'Sala 103'],
-    }
-    return render(request, 'core/pages/modais/modal-criar-equipamento.html', context)
-
-def criar_sala_modal(request):
-    context = {
-        'setores': ['Setor A', 'Setor B', 'Setor C'],
-        'predios' : ['Prédio 1', 'Prédio 2', 'Prédio 3'],
-    }
-    return render(request, 'core/pages/modais/modal-criar-sala.html', context)
-
-def criar_predio_modal(request):
-    context = {
-        'setores': ['Setor Administrativo', 'Setor Técnico', 'Setor Acadêmico'],
-    }
-    return render(request, 'core/pages/modais/modal-criar-predio.html', context)
-
-def criar_setor_modal(request):
-    return render(request, 'core/pages/modais/modal-criar-setor.html')
-
-def criar_usuario_modal(request):
-    context = {
-        'usuarios': ['Administrador', 'Aluno', 'Professor', 'Técnico de TI', 'Root']
-    }
-    return render(request, 'core/pages/modais/modal-criar-usuario.html', context)
 
 def concluido_modal(request):
     return render(request, 'core/pages/modais/modal-concluido.html')
@@ -43,3 +21,52 @@ def equipamento_visao_usuario(request):
 
 def report_visao_usuario(request): 
     return render(request, 'core/pages/visao-do-usuario/report-equipamento-usuario.html')
+
+
+def criar_usuario_modal(request):
+    if request.method == 'POST':
+        form = UsuarioForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.email_escolar
+            user.nome = user.email_escolar
+            password = user.password
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            form.save_m2m()
+            GerenciadorEmails.enviar_email(user.email, user.email_escolar, password, user.groups)
+            return HttpResponseRedirect(reverse('criar_recursos'))
+        else:
+            print(form.errors)
+            return HttpResponse('error')
+    else:
+        form = UsuarioForm()
+    return render(request, 'core/pages/modais/modal-criar-usuario.html', {'form': form})
+
+def criar_predio_modal(request):
+    form = PredioForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(reverse('criar_recursos'))
+    return render(request, 'core/pages/modais/modal-criar-predio.html', {'form': form})
+
+def criar_setor_modal(request):
+    form = SetorForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(reverse('criar_recursos'))
+    return render(request, 'core/pages/modais/modal-criar-setor.html', {'form': form})
+
+def criar_sala_modal(request):
+    form = SalaForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(reverse('criar_recursos'))
+    return render(request, 'core/pages/modais/modal-criar-sala.html', {'form': form})
+
+def criar_equipamento_modal(request):
+    form = EquipamentoForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(reverse('criar_recursos'))
+    return render(request, 'core/pages/modais/modal-criar-equipamento.html', {'form': form})

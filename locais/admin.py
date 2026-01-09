@@ -1,21 +1,17 @@
 from django.contrib import admin
 
-from locais.models import Predio, Setor, PredioSetor, Sala
+from locais.models import Predios, Setores, Salas
 
 
 # Register your models here.
-@admin.register(Predio)
+@admin.register(Predios)
 class PredioAdmin(admin.ModelAdmin):
     list_display = ('predio_id', 'predio')
 
-@admin.register(Setor)
+@admin.register(Setores)
 class SetorAdmin(admin.ModelAdmin):
-    list_display = ('setor_id', 'setor')
+    list_display = ('setor_id', 'predio', 'setor', 'localizacao')
 
-@admin.register(PredioSetor)
-class PredioSetorAdmin(admin.ModelAdmin):
-    list_display = ('predio', 'setor')
-
-@admin.register(Sala)
+@admin.register(Salas)
 class SalaAdmin(admin.ModelAdmin):
-    list_display = ('sala_id', 'numero', 'estado_sala', 'localizacao', 'predio_setor')
+    list_display = ('sala_id', 'setor', 'estado_atual', 'localizacao')

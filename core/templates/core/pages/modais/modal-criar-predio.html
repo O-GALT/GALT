@@ -19,39 +19,17 @@
 
 <hr>
 
-<form class="modal-form">
+<form class="modal-form" action="{% url 'criar_predio_modal' %}" method="post">
+    {% csrf_token %}
 
     <div class="form-row">
         <label>Prédio </label>
-        <input type="text" placeholder="Prédio principal">
+        {{ form.predio }}
     </div>
-
-    <div class="dropdown form-row" id="dropdown">
-        <div class="dropdown-header">
-
-            <label for="setores">Setores</label>
-
-            <!-- WRAPPER adicionada -->
-            <div class="dropdown-wrapper">
-                <div class="dropdown-btn" onclick="toggleDropdown()">Selecione os setores do prédio</div>
-
-                <div class="dropdown-content">
-                    {% for setor in setores %}
-                    <label><input type="checkbox" value="{{ setor }}"> {{ setor }}</label>
-                    {% endfor %}
-                </div>
-            </div>
-
-        </div>
-    </div>
-
 
     <hr>
 
     <div class="modal-actions">
-
-
-
         <a href="{% url 'criar_recursos' %}"><button type="button" class="btn-cancel">Cancelar</button></a>
         <button type="submit" class="btn-create">Criar</button>
     </div>

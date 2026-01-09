@@ -44,7 +44,7 @@ O sistema oferece ainda leitura de QR Codes para acesso rápido às informaçõe
 | Associação entre salas, setores e prédios | ❌ Não Implementada | Relacionamento entre todos os elementos da instituição |
 | Registro de chamados de manutenção | ❌ Não Implementada | Alunos e professores podem abrir chamados facilmente |
 | Atualização automática do estado dos equipamentos | ❌ Não Implementada | Mudança de estado para FUNCIONANDO, MANUTENÇÃO ou DEFEITUOSO |
-| Agendamento de manutenção | ❌ Não Implementada | Técnicos podem programar períodos de manutenção para equipamentos |
+| Agendamentos de manutenção | ❌ Não Implementada | Técnicos podem programar períodos de manutenção para equipamentos |
 | Visualização de planta das salas com cores de status | ❌ Não Implementada | Verde = funcionando, amarelo = manutenção, vermelho = defeituoso |
 | Notificações por email | ❌ Não Implementada | Alertas enviados quando um equipamento sai de manutenção |
 | Logs auditáveis | ❌ Não Implementada | Registro automático de todas as alterações importantes |

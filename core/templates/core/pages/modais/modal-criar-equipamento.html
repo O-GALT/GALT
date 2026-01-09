@@ -1,5 +1,39 @@
 {% extends 'core/pages/base/modal/modal_base.html' %}
 
+{% block extra_css %}
+<style>
+    .modal-overlay {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 20px !important;
+    }
+
+    .modal-content {
+        display: flex !important;
+        flex-direction: column !important;
+        max-height: 90vh !important;
+        width: 100% !important;
+        max-width: 600px !important;
+        background: white !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+    }
+
+    .modal-form {
+        flex: 1 !important;
+        overflow-y: auto !important;
+        padding: 20px !important;
+        display: block !important;
+    }
+
+    .modal-actions {
+        padding-top: 20px !important;
+        margin-top: 10px !important;
+    }
+</style>
+{% endblock %}
+
 {% load static %}
 {% block modal_content %}
 <div class="modal-header">
@@ -15,57 +49,55 @@
 
 <hr>
 
-<form class="modal-form">
+<form class="modal-form" action="{% url 'criar_equipamento_modal' %}" method="post">
+    {% csrf_token %}
 
     <div class="form-row">
         <label>Tipo do equipamento </label>
-        <input type="text" placeholder="Projetor">
-    </div>
-
-    <hr>
-
-    <div class="form-row">
-        <label>Modelo </label>
-        <input type="text" placeholder="Thunder V3">
+        {{ form.tipo }}
     </div>
 
     <hr>
 
     <div class="form-row">
         <label>Serial </label>
-        <input type="text" placeholder="123456789" maxlength="8">
+        {{ form.serial }}
     </div>
 
     <hr>
 
     <div class="form-row">
         <label>Estado atual </label>
-        <select>
-            <option>🟢 FUNCIONANDO</option>
-            <option>🟠 MANUTENÇÃO</option>
-            <option>🔴 DEFEITUOSO</option>
-
-        </select>
+        {{ form.estado_atual }}
     </div>
 
     <hr>
 
     <div class="form-row">
         <label>Posição </label>
-        <input type="text" placeholder="B45">
+        {{ form.posicao }}
     </div>
 
     <hr>
 
     <div class="form-row">
         <label>Sala </label>
-        <select>
-            {% for sala in salas %}
-            <option>{{ sala }}</option>
-            {% endfor %}
-        </select>
+        {{ form.sala }}
     </div>
 
+    <hr>
+
+    <div class="form-row">
+        <label>Fabricante </label>
+        {{ form.fabricante }}
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Data de aquisição </label>
+        {{ form.data_aquisicao }}
+    </div>
     <hr>
 
     <div class="modal-actions">

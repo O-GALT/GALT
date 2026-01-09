@@ -13,7 +13,7 @@ def equipamento(request):
         "modelo": "Dell Optiplex 7090",
         "tipo": "Desktop Corporativo",
         "serial": "SNX-8745-DF92",
-        "sala": "Sala A17",
+        "sala": "Salas A17",
         "fabricante": "Dell Technologies",
         "data_aquisicao": "15/07/2022",
         "data_garantia": "15/07/2025",
@@ -22,19 +22,19 @@ def equipamento(request):
         "historico_manutencoes": [
             {
                 "manutencao_id": "TASK-8782",
-                "titulo": "Equipamento com mau funcionamento na fonte",
+                "titulo": "Equipamentos com mau funcionamento na fonte",
                 "responsavel": "Alexandre Magno",
                 "data": "08/10/2024"
             },
             {
                 "manutencao_id": "TASK-8782",
-                "titulo": "Equipamento com suspeita de vírus",
+                "titulo": "Equipamentos com suspeita de vírus",
                 "responsavel": "Maximus Decimos Meridios",
                 "data": "25/10/2020"
             },
             {
                 "manutencao_id": "TASK-8782",
-                "titulo": "Equipamento com vírus em seu sistema operacional",
+                "titulo": "Equipamentos com vírus em seu sistema operacional",
                 "responsavel": "Carlos Magno",
                 "data": "02/10/2020"
             },
@@ -52,13 +52,13 @@ def equipamento(request):
             },
             {
                 "manutencao_id": "TASK-8782",
-                "titulo": "Equipamento com suspeita de vírus",
+                "titulo": "Equipamentos com suspeita de vírus",
                 "responsavel": "Maximus Decimos Meridios",
                 "data": "25/10/2020"
             },
             {
                 "manutencao_id": "TASK-8782",
-                "titulo": "Equipamento com vírus em seu sistema operacional",
+                "titulo": "Equipamentos com vírus em seu sistema operacional",
                 "responsavel": "Carlos Magno",
                 "data": "02/10/2020"
             }

@@ -18,12 +18,13 @@
                 O GALT centraliza informações essenciais do seu ambiente, facilita o acompanhamento das operações e
                 melhora a eficiência da sua equipe. Entre para começar a controlar tudo em um só lugar.</p>
 
-            <form method="post" class="login-form">
+            <form method="post" class="login-form" action="{% url 'login' %}">
                 {% csrf_token %}
-                <input type="email" name="email" placeholder="Email" required>
+                <input type="email" name="email_escolar" placeholder="Email" required>
+                <input type="hidden" name="next" value="{{ request.GET.next }}">
                 <div class="enter-password">
                     <input type="password" name="senha" placeholder="Senha" required>
-                    <button type="button" class="btn-login" onclick="window.location.href='{% url 'predios' %}'">
+                    <button type="submit" class="btn-login">
                         Entrar
                     </button>
                 </div>

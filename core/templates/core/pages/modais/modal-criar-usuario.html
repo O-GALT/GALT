@@ -3,6 +3,38 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'core/css/extra-css/modais/modal-criar-predio.css' %}">
+
+<style>
+    .modal-overlay {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 20px !important;
+    }
+
+    .modal-content {
+        display: flex !important;
+        flex-direction: column !important;
+        max-height: 90vh !important;
+        width: 100% !important;
+        max-width: 500px !important;
+        background: white !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+    }
+
+    .modal-form {
+        flex: 1 !important;
+        overflow-y: auto !important;
+        padding: 20px !important;
+        display: block !important;
+    }
+
+    .modal-actions {
+        padding-top: 20px !important;
+        margin-top: 10px !important;
+    }
+</style>
 {% endblock %}
 
 {% block modal_content %}
@@ -19,39 +51,47 @@
 
 <hr>
 
-<form class="modal-form">
+<form class="modal-form" action="{% url 'criar_usuario_modal' %}" method="post">
+    {% csrf_token %}
 
     <div class="form-row">
         <label>Email pessoal </label>
-        <input type="text" placeholder="usuário@gmail.com">
+        {{ form.email }}
     </div>
+
+    <hr>
 
     <div class="form-row">
         <label>Email escolar </label>
-        <input type="text" placeholder="usuário@escolar.dominio.educ.com">
+        {{ form.email_escolar }}
     </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>CPF</label>
+        {{ form.cpf }}
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Telefone</label>
+        {{ form.numero }}
+    </div>
+
+    <hr>
 
     <div class="form-row">
         <label>Senha</label>
-        <input type="text" placeholder="senha">
+        {{ form.password }}
     </div>
 
-    <div class="dropdown form-row" id="dropdown">
-        <div class="dropdown-header">
+    <hr>
 
-            <label for="setores">Tipo de usuário</label>
-
-            <div class="dropdown-wrapper">
-                <div class="dropdown-btn" onclick="toggleDropdown()">Selecione os níveis de acesso</div>
-
-                <div class="dropdown-content">
-                    {% for usuario in usuarios%}
-                    <label><input type="checkbox" value="{{ usuario }}"> {{ usuario }}</label>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-
+    <div class="form-row">
+        <label>Nível de acesso</label>
+        {{ form.groups }}
     </div>
 
     <hr>
