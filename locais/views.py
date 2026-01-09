@@ -126,7 +126,6 @@ def predios(request):
     return HttpResponse(render(request, 'locais/paginas/predio/predio.html', context))
 
 
-@login_required
 def predios_equipamentos(request):
     context = {}
     context['equipamentos'] = [
