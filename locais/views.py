@@ -5,7 +5,8 @@ from django.shortcuts import render
 from ativos.models import Equipamentos
 from core.graficos.GeradorGraficos import GeradorGraficos
 from locais.models import Salas
-
+from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
+from core.essenciais import TipoUsuario
 
 # Create your views here.
 def index(request):
@@ -124,7 +125,6 @@ def predios(request):
                         {'sala_id': 1, 'localizacao': 'A13'}
                         ]
     return HttpResponse(render(request, 'locais/paginas/predio/predio.html', context))
-
 
 def predios_equipamentos(request):
     context = {}

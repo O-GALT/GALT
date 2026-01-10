@@ -1,0 +1,35 @@
+<div class="kanban-card {{ tarefa.classe_status }}">
+    
+    <div class="kanban-top">
+        <span>{{ tarefa.titulo }}</span>
+
+        <div class="kanban-date">
+            <img class="kanban-icon" src="{% static 'agendas/img/calendar.svg' %}">
+            <span>{{ tarefa.data }}</span>
+        </div>
+    </div>
+
+    <div class="kanban-tags">
+        {% for tag in tarefa.tags %}
+            <span class="kanban-tag {{ tag.cor }}">{{ tag.nome }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="kanban-bottom">
+        <div class="kanban-avatars">
+            {% for user in tarefa.pessoas %}
+                <img src="{{ user.foto }}" alt="avatar">
+            {% endfor %}
+
+            {% if tarefa.mais_pessoas %}
+                <span class="kanban-more">+{{ tarefa.mais_pessoas }}</span>
+            {% endif %}
+        </div>
+
+        <div class="kanban-time">
+            <i class="fa-regular fa-clock"></i>
+            <span>{{ tarefa.tempo }}</span>
+        </div>
+    </div>
+
+</div>

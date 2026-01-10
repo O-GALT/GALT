@@ -7,6 +7,20 @@ from core.emails.GerenciadorEmails import GerenciadorEmails
 from django.contrib.auth import authenticate, login
 
 def pagina_login(request):
+    if request.method == 'POST':
+        user = authenticate(
+           request,
+           username=request.POST.get('email_escolar'),
+           password=request.POST.get('senha')
+        )
+    
+        if user:
+            login(request, user)
+            next_url = request.POST.get("next")
+            if next_url:
+                return redirect(next_url)
+            else:
+               return redirect('predios')
     return render(request, 'core/pages/login.html')
 
 def concluido_modal(request):
