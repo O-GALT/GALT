@@ -15,6 +15,8 @@ def index(request):
         render(request, 'locais/partials/headers/sala/sala_header.html'))
 
 
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def salas(request):
     context = {
         'equipamentos_esquerda': [
@@ -72,7 +74,8 @@ def salas(request):
     }
     return render(request, 'locais/paginas/sala/sala.html', context)
 
-
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def setores(request):
     context = {}
     context['grafico_saude_predio'] = GeradorGraficos.gerar_grafico_saude_local('setor')

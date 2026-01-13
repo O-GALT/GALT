@@ -1,3 +1,7 @@
+from django.contrib.auth.decorators import login_required
+from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
+from core.essenciais import TipoUsuario
+
 from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
@@ -9,6 +13,8 @@ from core.emails.GerenciadorEmails import GerenciadorEmails
 from django.contrib.auth import authenticate, login
 from core.auditorias.GerenciadorAuditoria import GerenciadorAuditoria
 
+
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI, TipoUsuario.ALUNO, TipoUsuario.SERVIDOR])
 def pagina_login(request):
     if request.method == 'POST':
         user = authenticate(
@@ -26,20 +32,30 @@ def pagina_login(request):
                return redirect('predios')
     return render(request, 'core/pages/login.html')
 
+@login_required
+@nivel_acesso_permitido(TipoUsuario.ADMINISTRADOR)
 def concluido_modal(request):
     return render(request, 'core/pages/modais/modal-concluido.html')
 
+@login_required
+@nivel_acesso_permitido(TipoUsuario.ADMINISTRADOR)
 def exclusao_modal(request):
     return render(request, 'core/pages/modais/modal-exclusao.html')
 
 
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI, TipoUsuario.ALUNO, TipoUsuario.SERVIDOR])
 def equipamento_visao_usuario(request): 
     return render(request, 'core/pages/visao-do-usuario/equipamento-visao-usuario.html')
 
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI, TipoUsuario.ALUNO, TipoUsuario.SERVIDOR])
+@login_required
 def report_visao_usuario(request): 
     return render(request, 'core/pages/visao-do-usuario/report-equipamento-usuario.html')
 
 
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])
 def criar_usuario_modal(request):
     if request.method == 'POST':
         form = UsuarioForm(request.POST)
@@ -63,6 +79,8 @@ def criar_usuario_modal(request):
         form = UsuarioForm()
     return render(request, 'core/pages/modais/modal-criar-usuario.html', {'form': form})
 
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])
 def criar_predio_modal(request):
     form = PredioForm(request.POST or None)
     if form.is_valid():
@@ -72,6 +90,8 @@ def criar_predio_modal(request):
         return HttpResponseRedirect(reverse('criar_recursos'))
     return render(request, 'core/pages/modais/modal-criar-predio.html', {'form': form})
 
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])
 def criar_setor_modal(request):
     form = SetorForm(request.POST or None)
     if form.is_valid():
@@ -81,6 +101,8 @@ def criar_setor_modal(request):
         return HttpResponseRedirect(reverse('criar_recursos'))
     return render(request, 'core/pages/modais/modal-criar-setor.html', {'form': form})
 
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])
 def criar_sala_modal(request):
     form = SalaForm(request.POST or None)
     if form.is_valid():
@@ -90,6 +112,8 @@ def criar_sala_modal(request):
         return HttpResponseRedirect(reverse('criar_recursos'))
     return render(request, 'core/pages/modais/modal-criar-sala.html', {'form': form})
 
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])
 def criar_equipamento_modal(request):
     form = EquipamentoForm(request.POST or None)
     if form.is_valid():
