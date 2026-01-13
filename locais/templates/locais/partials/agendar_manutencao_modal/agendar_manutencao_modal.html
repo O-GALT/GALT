@@ -48,25 +48,26 @@
 
             <!-- Datas -->
             <div class="form-group">
-                <label>Data de início da manutenção <span>*</span></label>
-                <div class="input-icon">
-                    <input type="datetime-local" name="start_date"/>
-                </div>
+                <label>Data da manutenção <span>*</span></label>
+                    <input type="date" name="date"/>
             </div>
 
             <div class="form-group">
-                <label>Data de término da manutenção <span>*</span></label>
-                <div class="input-icon">
-                    <input type="datetime-local" name="end_date"/>
-                </div>
+                <label>Horário de inícío da manutenção <span>*</span></label>
+                    <input type="time" name="start_hour"/>
+            </div>
+
+            <div class="form-group">
+                <label>Horário de término da manutenção <span>*</span></label>
+                    <input type="time" name="end_hour"/>
             </div>
 
             <!-- Descrição -->
             <div class="form-group">
                 <label>Descrição <span>*</span></label>
                 <textarea
-                    name="description"
-                    placeholder="Descreva um breve motivo pelo qual você estará realizando essa manutenção.">
+                        name="description"
+                        placeholder="Descreva um breve motivo pelo qual você estará realizando essa manutenção.">
                 </textarea>
             </div>
 
@@ -86,63 +87,63 @@
 
 
 <script>
-const technicianSelect = document.getElementById('technicianSelect');
-const techniciansList = document.getElementById('techniciansList');
-const techniciansInput = document.getElementById('techniciansInput');
-const form = document.getElementById('manutencaoForm');
+    const technicianSelect = document.getElementById('technicianSelect');
+    const techniciansList = document.getElementById('techniciansList');
+    const techniciansInput = document.getElementById('techniciansInput');
+    const form = document.getElementById('manutencaoForm');
 
 
-const selectedTechnicians = [];
+    const selectedTechnicians = [];
 
 
-technicianSelect.addEventListener('change', () => {
-    const value = technicianSelect.value;
-    const text = technicianSelect.options[technicianSelect.selectedIndex].text;
+    technicianSelect.addEventListener('change', () => {
+        const value = technicianSelect.value;
+        const text = technicianSelect.options[technicianSelect.selectedIndex].text;
 
-    if (!value) return;
+        if (!value) return;
 
-    const exists = selectedTechnicians.some(t => t.value === value);
-    if (exists) {
+        const exists = selectedTechnicians.some(t => t.value === value);
+        if (exists) {
+            technicianSelect.value = '';
+            return;
+        }
+
+        selectedTechnicians.push({ value, text });
         technicianSelect.value = '';
-        return;
-    }
 
-    selectedTechnicians.push({ value, text });
-    technicianSelect.value = '';
-
-    renderTechnicians();
-});
+        renderTechnicians();
+    });
 
 
 
-function renderTechnicians() {
-    techniciansList.innerHTML = '';
+    function renderTechnicians() {
+        techniciansList.innerHTML = '';
 
-    selectedTechnicians.forEach((tech, index) => {
-        const item = document.createElement('div');
-        item.className = 'technician-item';
+        selectedTechnicians.forEach((tech, index) => {
+            const item = document.createElement('div');
+            item.className = 'technician-item';
 
-        item.innerHTML = `
+            item.innerHTML = `
             <span>${tech.text}</span>
             <button type="button" onclick="removeTechnician(${index})">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         `;
 
-        techniciansList.appendChild(item);
+            techniciansList.appendChild(item);
+        });
+    }
+
+
+    function removeTechnician(index) {
+        selectedTechnicians.splice(index, 1);
+        renderTechnicians();
+    }
+
+
+    form.addEventListener('submit', () => {
+        techniciansInput.value = JSON.stringify(
+            selectedTechnicians.map(t => t.value)
+        );
     });
-}
-
-
-function removeTechnician(index) {
-    selectedTechnicians.splice(index, 1);
-    renderTechnicians();
-}
-
-
-form.addEventListener('submit', () => {
-    techniciansInput.value = JSON.stringify(
-        selectedTechnicians.map(t => t.value)
-    );
-});
 </script>
