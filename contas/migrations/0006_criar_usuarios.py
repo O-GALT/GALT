@@ -30,9 +30,6 @@ def criar_usuarios(apps, schema_editor):
         admin.password = make_password('senha')
         admin.save()
         admin.groups.add(group_admin)
-        admin.groups.add(group_tecnico)
-        admin.groups.add(group_aluno)
-        admin.groups.add(group_servidor)
 
     aluno, created_aluno = Usuario_model.objects.get_or_create(
         username='aluno@escolar.com',

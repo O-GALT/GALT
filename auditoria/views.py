@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from auditoria.models import AuditoriaLog
 from contas.models import Usuarios
 from core.essenciais import TipoUsuario, Acao, TipoAlvo
+from django.core.paginator import Paginator
 
 
 # Create your views here.

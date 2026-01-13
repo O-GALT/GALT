@@ -15,4 +15,4 @@ class AuditoriaLog(models.Model):
         verbose_name_plural = 'Logs de auditoria'
 
     def __str__(self):
-        return f"{self.acao} - {self.user or 'Usuário desconhecido'} - {self.data.strftime('%d/%m/%Y %H:%M')}"
+        return f"{self.acao} - {self.usuario or 'Usuário desconhecido'} - {self.data.strftime('%d/%m/%Y %H:%M')}"
