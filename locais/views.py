@@ -133,6 +133,8 @@ def predios(request):
     return HttpResponse(render(request, 'locais/paginas/predio/predio.html', context))
 
 
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def predios_equipamentos(request):
     context = {}
     context['equipamentos'] = [
@@ -163,6 +165,8 @@ def predios_equipamentos(request):
     return HttpResponse(render(request, 'locais/paginas/predio/equipamento/predio_equipamentos.html', context))
 
 
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def predios_setores(request):
     context = {
         'setores': [
@@ -184,7 +188,8 @@ def predios_setores(request):
     }
     return HttpResponse(render(request, 'locais/paginas/predio/setor/predio_setores.html', context))
 
-
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def predios_salas(request):
     context = {
         'salas': [
