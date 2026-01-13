@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from ativos.models import Equipamentos
+from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
+from core.essenciais import TipoUsuario
 from core.graficos.GeradorGraficos import GeradorGraficos
 from locais.models import Salas
 
@@ -102,6 +104,8 @@ def setores(request):
     return HttpResponse(render(request, 'locais/paginas/setor/setor.html', context))
 
 
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def predios(request):
     context = {}
     context['grafico_estado_equipamentos'] = GeradorGraficos.gerar_grafico_estado_equipamentos(261, 170, 69)
