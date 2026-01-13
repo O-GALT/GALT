@@ -1,0 +1,78 @@
+{% extends 'core/paginas/base/estrutura_base/estrutura_base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'agendas/css/partials/kanban/kanban.css' %}">
+{% endblock %}
+
+
+{% block header %}
+    {% include 'agendas/partials/headers/agendamentos_header.html' %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="board">
+
+        <div class="column">
+            <div class="column-header">
+                <h2>A Serem realizadas</h2>
+                <span class="count yellow">{{ pendentes.count }}</span>
+            </div>
+
+            {% for card in pendentes.cards %}
+                {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.nome_sala nome_setor=card.nome_setor nome_predio=card.nome_predio hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos %}
+            {% endfor %}
+
+        </div>
+
+        <div class="column">
+            <div class="column-header">
+                <h2>Fazendo</h2>
+                <span class="count pink">{{ em_andamento.count }}</span>
+            </div>
+
+            {% for card in em_andamento.cards %}
+                {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.nome_sala nome_setor=card.nome_setor nome_predio=card.nome_predio hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos %}
+            {% endfor %}
+
+        </div>
+
+        <div class="column">
+            <div class="column-header">
+                <h2>Esperando Confirmação</h2>
+                <span class="count purple">{{ feedback.count }}</span>
+            </div>
+
+            {% for card in feedback.cards %}
+                {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.nome_sala nome_setor=card.nome_setor nome_predio=card.nome_predio hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos %}
+            {% endfor %}
+
+        </div>
+
+        <div class="column">
+            <div class="column-header">
+                <h2>Inacabado</h2>
+                <span class="count green">{{ inacabado.count }}</span>
+            </div>
+
+            {% for card in inacabado.cards %}
+                {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.nome_sala nome_setor=card.nome_setor nome_predio=card.nome_predio hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos %}
+            {% endfor %}
+
+        </div>
+
+        <div class="column">
+            <div class="column-header">
+                <h2>Finalizado</h2>
+                <span class="count blue">{{ finalizado.count }}</span>
+            </div>
+
+            {% for card in finalizado.cards %}
+                {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.nome_sala nome_setor=card.nome_setor nome_predio=card.nome_predio hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos %}
+            {% endfor %}
+
+        </div>
+    </div>
+
+{% endblock %}

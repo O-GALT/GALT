@@ -1,0 +1,39 @@
+{% load static %}
+
+<div class="card">
+    <div class="card-top">
+        <span>Agendamento para</span>
+        <div class="date">
+            {{ date }}
+            <i class="fa-solid fa-calendar-week icon"></i>
+        </div>
+    </div>
+
+    <div class="tags">
+        <span class="tag green">{{ nome_sala }}</span>
+        <span class="tag blue">{{ nome_setor }}</span>
+        <span class="tag yellow">{{ nome_predio }}</span>
+    </div>
+
+    <div class="card-bottom">
+        <div class="avatars">
+            <img src="https://randomuser.me/api/portraits/men/40.jpg"  alt="imagem do técnico">
+
+            {% if numero_tecnicos > 2 %}
+                <img src="https://randomuser.me/api/portraits/women/43.jpg"  alt="imagem do técnico">
+                <span class="more"> + {{ numero_tecnicos }}</span>
+            {% elif numero_tecnicos < 3 %}
+                <img src="https://randomuser.me/api/portraits/women/43.jpg"  alt="imagem do técnico">
+            {% else %}
+
+            {% endif %}
+
+        </div>
+        <div class="time">
+            {{ hora_inicio }} - {{ hora_fim }}
+            <svg class="icon" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M12 20a8 8 0 1 0 0-16a8 8 0 0 0 0 16zM12.5 7h-1v6l5 3l.5-.86l-4.5-2.64z" />
+            </svg>
+        </div>
+    </div>
+</div>
