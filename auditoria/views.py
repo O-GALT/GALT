@@ -8,8 +8,14 @@ from contas.models import Usuarios
 from core.essenciais import TipoUsuario, Acao, TipoAlvo
 from django.core.paginator import Paginator
 
+from django.contrib.auth.decorators import login_required
+from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
+from core.essenciais import TipoUsuario
 
 # Create your views here.
+
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])
 def index(request):
     context = {}
     context['tipo_autores'] = [TipoUsuario.SERVIDOR.label, TipoUsuario.ALUNO.label, TipoUsuario.TECNICO_TI.label,
