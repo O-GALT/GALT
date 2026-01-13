@@ -14,7 +14,6 @@ from django.contrib.auth import authenticate, login
 from core.auditorias.GerenciadorAuditoria import GerenciadorAuditoria
 
 
-@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI, TipoUsuario.ALUNO, TipoUsuario.SERVIDOR])
 def pagina_login(request):
     if request.method == 'POST':
         user = authenticate(
@@ -42,13 +41,9 @@ def concluido_modal(request):
 def exclusao_modal(request):
     return render(request, 'core/pages/modais/modal-exclusao.html')
 
-
-@login_required
-@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI, TipoUsuario.ALUNO, TipoUsuario.SERVIDOR])
 def equipamento_visao_usuario(request): 
     return render(request, 'core/pages/visao-do-usuario/equipamento-visao-usuario.html')
 
-@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI, TipoUsuario.ALUNO, TipoUsuario.SERVIDOR])
 @login_required
 def report_visao_usuario(request): 
     return render(request, 'core/pages/visao-do-usuario/report-equipamento-usuario.html')
