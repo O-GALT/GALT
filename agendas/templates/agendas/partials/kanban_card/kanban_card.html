@@ -1,6 +1,15 @@
 {% load static %}
 
-<div class="card">
+<div class="card kanban-card"
+     data-date="{{ date }}"
+     data-nome-sala="{{ nome_sala }}"
+     data-nome-setor="{{ nome_setor }}"
+     data-nome-predio="{{ nome_predio }}"
+     data-hora-inicio="{{ hora_inicio }}"
+     data-hora-fim="{{ hora_fim }}"
+     data-numero-tecnicos="{{ numero_tecnicos }}"
+     data-descricao="{{ descricao }}"
+>
     <div class="card-top">
         <span>Agendamento para</span>
         <div class="date">
@@ -17,22 +26,21 @@
 
     <div class="card-bottom">
         <div class="avatars">
-            <img src="https://randomuser.me/api/portraits/men/40.jpg"  alt="imagem do técnico">
+            <img src="https://randomuser.me/api/portraits/men/40.jpg" alt="imagem do técnico">
 
             {% if numero_tecnicos > 2 %}
-                <img src="https://randomuser.me/api/portraits/women/43.jpg"  alt="imagem do técnico">
-                <span class="more"> + {{ numero_tecnicos }}</span>
+                <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="imagem do técnico">
+                <span class="more">+{{ numero_tecnicos }}</span>
             {% elif numero_tecnicos < 3 %}
-                <img src="https://randomuser.me/api/portraits/women/43.jpg"  alt="imagem do técnico">
-            {% else %}
-
+                <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="imagem do técnico">
             {% endif %}
-
         </div>
+
         <div class="time">
             {{ hora_inicio }} - {{ hora_fim }}
             <svg class="icon" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M12 20a8 8 0 1 0 0-16a8 8 0 0 0 0 16zM12.5 7h-1v6l5 3l.5-.86l-4.5-2.64z" />
+                <path fill="currentColor"
+                      d="M12 20a8 8 0 1 0 0-16a8 8 0 0 0 0 16zM12.5 7h-1v6l5 3l.5-.86l-4.5-2.64z" />
             </svg>
         </div>
     </div>
