@@ -20,12 +20,11 @@ header p {
 }
 
 .board {
-    display: flex;
-    grid-template-columns: repeat(5, 300px);
-    gap: 2px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 300px));
+    gap: 8px;
     padding: 20px 0;
     align-items: start;
-
 }
 
 .column {
@@ -82,112 +81,55 @@ header p {
     color: #2b5b47;
 }
 
-.card {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    width: 95%;
-    border-radius: 14px;
-    padding: 18px 20px;
-    background: #fff;
-    border: 1px solid #eceee9;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-    margin-bottom: 18px;
+
+
+
+@media (min-width:  951px ) and (max-width: 1200px) {
+    .board{
+        grid-template-columns: repeat(3 , minmax(250px, 400px));
+        gap: 20px;
+    }
 }
 
-.card-top {
-    display: flex;
-    justify-content: space-between;
-    font-size: 13px;
-    font-weight: 650;
-    color: #0e0e0e;
-}
 
-.date {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    font-weight: 650;
-}
 
-.icon {
-    width: 14px;
-    height: 14px;
-}
-
-.tags {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.tag {
-    padding: 2px 8px;
-    border-radius: 14px;
-    font-size: 11px;
-    font-weight: 600;
-    white-space: nowrap;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-}
-
-.tag.green {
-    background: #d8efea;
-    color: #0dcd53;
-}
-
-.tag.blue {
-    background: #e0f1ff;
-    color: #0d4cdf;
-}
-
-.tag.yellow {
-    background: #fff0cc;
-    color: #c58c11;
-}
-
-.card-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.avatars {
-    display: flex;
-    align-items: center;
-}
-
-.avatars img {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    border: 2px solid white;
-    margin-left: -8px;
-}
-
-.more {
-    margin-left: 8px;
-    background: #f1f1f1;
-    padding: 4px 8px;
-    font-size: 11px;
-    border-radius: 50%;
-}
-
-.time {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 13px;
-    font-weight: 650;
-}
-
-@media (max-width: 768px) {
-    .board {
-        overflow-x: auto;
+@media (min-width:  640px ) and (max-width: 950px) {
+    .board{
+        grid-template-columns: repeat(2 , minmax(250px, 450px));
+        gap: 30px;
     }
 
-    .layout {
-        display: inline;
+    .column{
+        width: 100%;
+    }
+
+    .card{
+        width: 90%;
+        min-width: 285px;
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 640px) {
+    .board{
+        grid-template-columns: repeat(1 , 100%);
+        gap: 50px;
+    }
+
+    .column{
+        width: 100%;
+    }
+
+    .card{
+        width: 90%;
+        min-width: 285px;
+        max-width: 370px;
+    }
+
+    .card-wrapper{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
 }
