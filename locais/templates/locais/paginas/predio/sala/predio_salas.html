@@ -15,7 +15,7 @@
 {% block content %}
     <div class="container-salas">
         {% for sa in salas %}
-            <a href="{% url 'salas' %}">
+            <a href="{% url 'sala_detail' 0 %}">
             {% include 'locais/partials/predio/salas/sala_card.html' with classe_estado=sa.classe_estado posicao=sa.posicao estado=sa.estado quantidade_projetor=sa.quantidade_projetor quantidade_computador=sa.quantidade_computador quantidade_ar_condicionado=sa.quantidade_ar_condicionado %}
             </a>
         {% endfor %}

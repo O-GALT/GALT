@@ -42,7 +42,7 @@
                 <h2 class="grid-title">Fileira de computadores a esquerda</h2>
                 <div class="grid-coluna">
                     {% for eq in equipamentos_esquerda %}
-                        <a href="{% url 'equipamento' %}">
+                        <a href="{% url 'ativos_equipamento_detail' 0 %}">
                             {% include 'locais/partials/predio/equipamentos/equipamento_card.html' with classe_estado=eq.classe_estado nome_equipamento=eq.nome_equipamento estado=eq.estado sala=eq.sala posicao=eq.posicao tipo_equipamento=eq.tipo_equipamento %}
                         </a>
                     {% endfor %}
@@ -53,7 +53,7 @@
                 <h2 class="grid-title">Fileira de computadores a direita</h2>
                 <div class="grid-coluna">
                     {% for eq in equipamentos_direita %}
-                        <a href="{% url 'equipamento' %}">
+                        <a href="{% url 'ativos_equipamento_detail' 0 %}">
                             {% include 'locais/partials/predio/equipamentos/equipamento_card.html' with classe_estado=eq.classe_estado nome_equipamento=eq.nome_equipamento estado=eq.estado sala=eq.sala posicao=eq.posicao tipo_equipamento=eq.tipo_equipamento %}
                         </a>
                     {% endfor %}
@@ -66,7 +66,7 @@
             <h2 class="grid-title">Demais equipamentos cadastrados na sala</h2>
             <div class="grid-auxiliares">
                 {% for eq in equipamentos_auxiliares %}
-                    <a href="{% url 'equipamento' %}">
+                    <a href="{% url 'ativos_equipamento_detail' 0 %}">
                         {% include 'locais/partials/predio/equipamentos/equipamento_card.html' with classe_estado=eq.classe_estado nome_equipamento=eq.nome_equipamento estado=eq.estado sala=eq.sala posicao=eq.posicao tipo_equipamento=eq.tipo_equipamento %}
                     </a>
                 {% endfor %}

@@ -14,7 +14,7 @@ def index(request):
 
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI, TipoUsuario.ALUNO, TipoUsuario.SERVIDOR])  
-def equipamento(request):
+def equipamento(request, equipamento_id):
     dados_do_equipamento = {
         "modelo": "Dell Optiplex 7090",
         "tipo": "Desktop Corporativo",

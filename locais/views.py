@@ -17,7 +17,7 @@ def index(request):
 
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
-def salas(request):
+def salas(request, sala_id):
     context = {
         'equipamentos_esquerda': [
             {'classe_estado': 'manutencao', 'nome_equipamento': 'Brigs V79', 'estado': 'Manutenção', 'sala': 'A17',
@@ -76,7 +76,7 @@ def salas(request):
 
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
-def setores(request):
+def setores(request, setor_id):
     context = {}
     context['grafico_saude_predio'] = GeradorGraficos.gerar_grafico_saude_local('setor')
     context['salas'] = [Salas(sala_id=1, localizacao='A13'), Salas(sala_id=2, localizacao='M92'),
@@ -109,7 +109,7 @@ def setores(request):
 
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
-def predios(request):
+def predios(request, predio_id):
     context = {}
     context['grafico_estado_equipamentos'] = GeradorGraficos.gerar_grafico_estado_equipamentos(261, 170, 69)
     context['grafico_estado_salas'] = GeradorGraficos.gerar_grafico_estado_salas(200, 160, 30)
@@ -135,7 +135,7 @@ def predios(request):
 
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
-def predios_equipamentos(request):
+def predios_equipamentos(request, predio_id):
     context = {}
     context['equipamentos'] = [
         {'classe_estado': 'defeituoso', 'nome_equipamento': 'Thunder V12', 'estado': 'Defeituoso', 'sala': 'A17',
@@ -167,7 +167,7 @@ def predios_equipamentos(request):
 
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
-def predios_setores(request):
+def predios_setores(request, predio_id):
     context = {
         'setores': [
             {'setor': 'Setores administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
@@ -190,7 +190,7 @@ def predios_setores(request):
 
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
-def predios_salas(request):
+def predios_salas(request, predio_id):
     context = {
         'salas': [
             {'classe_estado': 'manutencao', 'posicao': 'A27', 'estado': 'Manutenção', 'quantidade_projetores': '12',
