@@ -1,3 +1,7 @@
+from django.contrib.auth.decorators import login_required
+from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
+from core.essenciais import TipoUsuario
+
 from django.shortcuts import render
 from django.http import HttpResponse
 
@@ -8,6 +12,8 @@ def index(request):
     return HttpResponse("Página de Ativos funcionando!")
 
 
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI, TipoUsuario.ALUNO, TipoUsuario.SERVIDOR])  
 def equipamento(request):
     dados_do_equipamento = {
         "modelo": "Dell Optiplex 7090",
