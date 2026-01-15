@@ -3,7 +3,7 @@ from django.contrib import admin
 from core import views
 
 urlpatterns = [
-    path('login', views.pagina_login, name='login'),
+    path('login/', views.pagina_login, name='core_login'),
     path('criar-equipamento-modal', views.criar_equipamento_modal, name='criar_equipamento_modal'),
     path('criar-sala-modal', views.criar_sala_modal, name='criar_sala_modal'),
     path('concluido-modal', views.concluido_modal, name='concluido_modal'),

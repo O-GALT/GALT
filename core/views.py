@@ -28,7 +28,7 @@ def pagina_login(request):
             if next_url:
                 return redirect(next_url)
             else:
-               return redirect('predios')
+               return redirect('locais_predio_detail', 0)
     return render(request, 'core/pages/login.html')
 
 @login_required

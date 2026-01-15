@@ -1,22 +1,22 @@
 <nav class="actions">
     <div class="visao-geral-container">
-        <a href="{% url 'predios' %}" class="visao-geral">Visão geral</a>
+        <a href="{% url 'locais_predio_detail' 0 %}" class="visao-geral">Visão geral</a>
         <div class="visao-geral-selecionado selecionado"></div>
     </div>
 
     <div class="setores-container">
-        <a href="{% url 'predios_setores' %}" class="setores">Setores</a>
+        <a href="{% url 'locais_predio_setores' 0 %}" class="setores">Setores</a>
         <div class="setores-selecionado selecionado"></div>
     </div>
 
     <div class="salas-laboratorios-container">
-        <a href="{% url 'predios_salas' %}" class="salas-laboratorios">Salas/Laboratios</a>
+        <a href="{% url 'locais_predio_salas' 0 %}" class="salas-laboratorios">Salas/Laboratios</a>
         <div class="salas-laboratorios-selecionado selecionado"></div>
 
     </div>
 
     <div class="equipamento-container">
-        <a href="{% url 'predios_equipamentos' %}" class="equipamentos">Equipamentos</a>
+        <a href="{% url 'locais_predio_equipamentos' 0 %}" class="equipamentos">Equipamentos</a>
         <div class="equipamento-selecionado selecionado"></div>
     </div>
 </nav>

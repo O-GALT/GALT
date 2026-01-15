@@ -15,7 +15,7 @@
 {% block content %}
     <div class="container-setores">
             {% for se in setores %}
-        <a href="{% url 'setores' %}">
+        <a href="{% url 'locais_setor_detail' 0 %}">
                 {% include 'locais/partials/predio/setores/setor_card.html' with setor=se.setor predio=se.predio localizacao=se.localizacao quantidade_salas=se.quantidade_salas %}
         </a>
             {% endfor %}
