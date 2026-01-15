@@ -14,7 +14,7 @@
 {% block content %}
     <div class="container-equipamentos">
         {% for eq in equipamentos %}
-            <a href="{% url 'equipamento' %}">
+            <a href="{% url 'ativos_equipamento_detail' 0 %}">
                 {% include 'locais/partials/predio/equipamentos/equipamento_card.html' with classe_estado=eq.classe_estado nome_equipamento=eq.nome_equipamento estado=eq.estado sala=eq.sala posicao=eq.posicao tipo_equipamento=eq.tipo_equipamento %}
             </a>
         {% endfor %}
