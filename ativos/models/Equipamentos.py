@@ -2,6 +2,8 @@ from django.db import models
 from core.essenciais import EstadoEquipamento, TipoEquipamento
 from locais.models.Salas import Salas
 
+from django.db.models import Count
+
 
 class Equipamentos(models.Model):
     equipamento_id = models.AutoField(primary_key=True)
@@ -22,3 +24,7 @@ class Equipamentos(models.Model):
 
     def __srt__(self):
         return f'{self.tipo} / {self.serial}'
+
+    @staticmethod
+    def listar_equipamentos_mais_defeituosos_predio(predio_id):
+        return Equipamentos.objects.filter(historico_manutencoes__equipamento__sala__setor__predio__predio_id=predio_id).values('equipamento_id', 'serial').annotate(manutencoes=Count('historico_manutencoes'), necessidade_substituicao=(Count('historico_manutencoes') * 100)/20).order_by('-manutencoes')

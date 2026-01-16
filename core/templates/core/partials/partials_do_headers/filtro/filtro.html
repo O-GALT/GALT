@@ -1,8 +1,13 @@
-<label>
-    <select class="filtro-select">
-        <option value="" disabled selected hidden class="titulo-opcao">{{ titulo }}</option>
-        {% for escolha in escolhas %}
-            <option value="{{ escolha }}">{{ escolha }}</option>
-        {% endfor %}
-    </select>
-</label>
+
+    <label>
+        <select class="filtro-select" name="{{ filtro_name }}" onchange="this.form.submit()">
+            <option value="" class="titulo-opcao">{{ titulo }}</option>
+            {% for escolha in escolhas %}
+                <option value="{{ escolha.input }}"
+                {% if filtro_value == escolha.input %}
+                        selected
+                {% endif %}
+                >{{ escolha.output }}</option>
+            {% endfor %}
+        </select>
+    </label>

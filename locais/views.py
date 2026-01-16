@@ -6,7 +6,9 @@ from ativos.models import Equipamentos
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
 from core.essenciais import TipoUsuario
 from core.graficos.GeradorGraficos import GeradorGraficos
+from core.sql.SQLNativo import SQLNativo
 from locais.models import Salas
+from suporte.models import Reportes
 
 
 # Create your views here.
@@ -110,33 +112,40 @@ def setores(request, setor_id):
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def predios(request, predio_id):
+    indicadores_predio = SQLNativo.carregar_indicadores_predio(predio_id)[0]
+
     context = {}
-    context['grafico_estado_equipamentos'] = GeradorGraficos.gerar_grafico_estado_equipamentos(261, 170, 69)
-    context['grafico_estado_salas'] = GeradorGraficos.gerar_grafico_estado_salas(200, 160, 30)
-    context['grafico_saude_predio'] = GeradorGraficos.gerar_grafico_saude_local('predio')
-    context['grafico_reporte_tipo_equipamento'] = GeradorGraficos.gerar_grafico_reports_por_tipo()
+    context['predio_id'] = indicadores_predio['predio_id']
+    context['nome_predio'] = indicadores_predio['predio']
+    context['total_salas'] = indicadores_predio['total_salas']
+    context['total_equipamentos'] = indicadores_predio['total_equipamentos']
+    context['total_setores'] = indicadores_predio['total_setores']
+    context['reportes_abertos'] = indicadores_predio['reportes_abertos']
+    context['manutencoes_hoje'] = indicadores_predio['manutencoes_hoje']
+    context['salas_precisam_cuidados'] = indicadores_predio['salas_inapta']
+    context['manutencoes_pendentes'] = indicadores_predio['manutencoes_pendentes']
+    context['grafico_estado_equipamentos'] = GeradorGraficos.gerar_grafico_estado_equipamentos(indicadores_predio['equipamentos_funcionando'], indicadores_predio['equipamentos_manutencao'], indicadores_predio['equipamentos_defeituoso'])
+    context['grafico_estado_salas'] = GeradorGraficos.gerar_grafico_estado_salas(indicadores_predio['salas_liberada'], indicadores_predio['salas_manutencao'], indicadores_predio['salas_inapta'])
+    context['grafico_saude_predio'] = GeradorGraficos.gerar_grafico_saude_local('predio', indicadores_predio['saude_predio'])
+    context['grafico_reporte_tipo_equipamento'] = GeradorGraficos.gerar_grafico_reports_por_tipo(Reportes.carregar_reportes_durante_a_semana_do_predio(predio_id))
     context['grafico_indice_manutencoes'] = GeradorGraficos.gerar_grafico_indice_manutencoes()
     context['quantidade_tecnicos'] = range(7)
-    context['equipamentos'] = [{'equipamento_id':1, 'serial':  '1002', 'manutencoes': 7},
-                               {'equipamento_id': 1, 'serial': '1002', 'manutencoes': 7},
-                               {'equipamento_id': 1, 'serial': '1002', 'manutencoes': 7},
-                               {'equipamento_id': 1, 'serial': '1002', 'manutencoes': 7}
-                               ]
-    context['salas'] = [{'sala_id':1, 'localizacao':'A13'},
-                        {'sala_id': 1, 'localizacao': 'A13'},
-                        {'sala_id': 1, 'localizacao': 'A13'},
-                        {'sala_id': 1, 'localizacao': 'A13'},
-                        {'sala_id': 1, 'localizacao': 'A13'},
-                        {'sala_id': 1, 'localizacao': 'A13'},
-                        {'sala_id': 1, 'localizacao': 'A13'}
-                        ]
+    context['equipamentos'] = [{'equipamento_id':equipamento['equipamento_id'], 'serial': equipamento['serial'], 'manutencoes': equipamento['manutencoes'], 'necessidade_substituicao': equipamento['necessidade_substituicao']} for equipamento in Equipamentos.listar_equipamentos_mais_defeituosos_predio(predio_id)]
+    context['salas'] = [{'sala_id':sala['sala_id'], 'localizacao':sala['localizacao'], 'necessidade_interditacao':sala['necessidade_interditacao'], 'equipamentos_defeituosos':sala['equipamentos_defeituosos']} for sala in Salas.listar_salas_com_equipamentos_mais_defeituoso_predio(predio_id)]
+
     return HttpResponse(render(request, 'locais/paginas/predio/predio.html', context))
 
 
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def predios_equipamentos(request, predio_id):
+    info_predio = SQLNativo.carregar_nome_salas_equipamentos_setores_predio(predio_id)[0]
     context = {}
+    context['predio_id'] = info_predio['predio_id']
+    context['nome_predio'] = info_predio['predio']
+    context['total_salas'] = info_predio['total_salas']
+    context['total_equipamentos'] = info_predio['total_equipamentos']
+    context['total_setores'] = info_predio['total_setores']
     context['equipamentos'] = [
         {'classe_estado': 'defeituoso', 'nome_equipamento': 'Thunder V12', 'estado': 'Defeituoso', 'sala': 'A17',
          'posicao': 'A12', 'tipo_equipamento': 'computador'},
@@ -160,7 +169,6 @@ def predios_equipamentos(request, predio_id):
          'posicao': 'A1', 'tipo_equipamento': 'projetor'},
         {'classe_estado': 'manutencao', 'nome_equipamento': 'Brigs V79', 'estado': 'Manutenção', 'sala': 'A17',
          'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-
     ]
     return HttpResponse(render(request, 'locais/paginas/predio/equipamento/predio_equipamentos.html', context))
 
@@ -168,42 +176,46 @@ def predios_equipamentos(request, predio_id):
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def predios_setores(request, predio_id):
-    context = {
-        'setores': [
-            {'setor': 'Setores administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
-             'quantidade_salas': '12'},
-            {'setor': 'Setores administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
-             'quantidade_salas': '12'},
-            {'setor': 'Setores administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
-             'quantidade_salas': '12'},
-            {'setor': 'Setores administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
-             'quantidade_salas': '12'},
-            {'setor': 'Setores administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
-             'quantidade_salas': '12'},
-            {'setor': 'Setores administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
-             'quantidade_salas': '12'},
-            {'setor': 'Setores administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar',
-             'quantidade_salas': '12'},
-        ]
-    }
+    '''
+        PARA ALLANA
+        AS INFORMAÇÕES DO PRÉDIO JÁ ESTÃO SENDO CARREGADAS, ENTÃO VOCÊ SÓ PRECISA SE PREOCUPAR EM LISTAR OS SETORES DESSE
+        PREDIO. VOCE PODE USAR UM MÉTODO QUE JÁ ESTÁ PRONTO DENTRO DO MODEL DE SETORES. É SÓ CHAMAR ELE PASSANDO O
+        ID DO PRÉDIO E ENTÃO EU VOU QUERER QUE VOCÊ ORGANIZE AS INFORMAÇÕES QUE VAO SER RETORNADAS (EH UM MAP) DENTRO
+        DESSE CONTEXT DE SETORES QUE ESTÁ COMENTADO. EU QUERO QUE VOCÊ ORGANIZE USANDO UM FOR DE LINHA UNICA NAVEGANDO PELO
+        DICIONARIO QUE VAI SER RETORNADO. ISSO DO FOR DE LINHA ÚNICA TU PODE VER UM EXEMPLO QUE FIZ AQUI NESSA VIEW
+        NAS LINHAS 133 OU 134 E NAO MUDE AS CHAVES DO DICIONARIO
+    '''
+    info_predio = SQLNativo.carregar_nome_salas_equipamentos_setores_predio(predio_id)[0]
+    context = {}
+    context['predio_id'] = info_predio['predio_id']
+    context['nome_predio'] = info_predio['predio']
+    context['total_salas'] = info_predio['total_salas']
+    context['total_equipamentos'] = info_predio['total_equipamentos']
+    context['total_setores'] = info_predio['total_setores']
+    # context['setores'] = [{'setor': 'Setores administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar', 'quantidade_salas': '12'}]
+
     return HttpResponse(render(request, 'locais/paginas/predio/setor/predio_setores.html', context))
 
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def predios_salas(request, predio_id):
-    context = {
-        'salas': [
-            {'classe_estado': 'manutencao', 'posicao': 'A27', 'estado': 'Manutenção', 'quantidade_projetores': '12',
-             'quantidade_computadores': '2', 'quantidade_ar_condicionados': '10'},
-            {'classe_estado': 'manutencao', 'posicao': 'A27', 'estado': 'Manutenção', 'quantidade_projetores': '12',
-             'quantidade_computadores': '2', 'quantidade_ar_condicionados': '10'},
-            {'classe_estado': 'inativa', 'posicao': 'A27', 'estado': 'Inativa', 'quantidade_projetores': '12',
-             'quantidade_computadores': '2', 'quantidade_ar_condicionados': '10'},
-            {'classe_estado': '', 'posicao': 'A27', 'estado': 'Manutenção', 'quantidade_projetores': '12',
-             'quantidade_computadores': '2', 'quantidade_ar_condicionados': '10'},
-            {'classe_estado': 'manutencao', 'posicao': 'A27', 'estado': 'Manutenção', 'quantidade_projetores': '12',
-             'quantidade_computadores': '2', 'quantidade_ar_condicionados': '10'},
-
-        ]
-    }
+    info_predio = SQLNativo.carregar_nome_salas_equipamentos_setores_predio(predio_id)[0]
+    context = {}
+    context['predio_id'] = info_predio ['predio_id']
+    context['nome_predio'] = info_predio ['predio']
+    context['total_salas'] = info_predio ['total_salas']
+    context['total_equipamentos'] = info_predio ['total_equipamentos']
+    context['total_setores'] = info_predio ['total_setores']
+    context['salas'] = [
+    {'classe_estado': 'manutencao', 'posicao': 'A27', 'estado': 'Manutenção', 'quantidade_projetores': '12',
+    'quantidade_computadores': '2', 'quantidade_ar_condicionados': '10'},
+    {'classe_estado': 'manutencao', 'posicao': 'A27', 'estado': 'Manutenção', 'quantidade_projetores': '12',
+    'quantidade_computadores': '2', 'quantidade_ar_condicionados': '10'},
+                {'classe_estado': 'inativa', 'posicao': 'A27', 'estado': 'Inativa', 'quantidade_projetores': '12',
+                 'quantidade_computadores': '2', 'quantidade_ar_condicionados': '10'},
+                {'classe_estado': '', 'posicao': 'A27', 'estado': 'Manutenção', 'quantidade_projetores': '12',
+                 'quantidade_computadores': '2', 'quantidade_ar_condicionados': '10'},
+                {'classe_estado': 'manutencao', 'posicao': 'A27', 'estado': 'Manutenção', 'quantidade_projetores': '12',
+                 'quantidade_computadores': '2', 'quantidade_ar_condicionados': '10'},
+    ]
     return HttpResponse(render(request, 'locais/paginas/predio/sala/predio_salas.html', context))

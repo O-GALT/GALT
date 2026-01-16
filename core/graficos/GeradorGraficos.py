@@ -2,6 +2,9 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objs as go
 
+from core.essenciais import TipoEquipamento
+
+
 class GeradorGraficos:
 
     @staticmethod
@@ -200,15 +203,12 @@ class GeradorGraficos:
         return html_out
 
     @staticmethod
-    def gerar_grafico_saude_local(local):
-        # value between 0 and 100
-        v = max(0, min(100, 84))
-
+    def gerar_grafico_saude_local(local, porcentagem):
         # construímos um pie com três fatias:
         # 1) arco preenchido (v)
         # 2) arco restante (100-v)
         # 3) metade invisível (100) -> cria o efeito semicirculo
-        values = [v, 100 - v, 100]
+        values = [porcentagem, 100-porcentagem, 100]
         # cores: arco preenchido, arco restante (desbotado), metade invisível (background)
         colors = ["#2FCF6A", "rgba(254, 231, 190, 1)", "rgba(0,0,0,0)"]
 
@@ -238,7 +238,7 @@ class GeradorGraficos:
                 font=dict(family="Open Sans", size=15, color="#365C3B", weight="bold"),
             ),
             annotations=[dict(
-                text=f"<span style='font-size:20px; font-weight:700; color:#111'>{v}%</span>",
+                text=f"<span style='font-size:20px; font-weight:700; color:#111'>{porcentagem}%</span>",
                 x=0.5, y=0.6,
                 showarrow=False,
                 xanchor='center',
@@ -257,7 +257,46 @@ class GeradorGraficos:
         return fig.to_html()
 
     @staticmethod
-    def gerar_grafico_reports_por_tipo():
+    def gerar_grafico_reports_por_tipo(equipamentos_reportes):
+        valores_matriz = [
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0]
+        ]
+
+        equipamento = 0
+        controlador = 0
+        while controlador < len(equipamentos_reportes):
+            map_equipamento_reporte = equipamentos_reportes[controlador]
+
+            if equipamento == 0 and map_equipamento_reporte['tipo_equipamento'] == TipoEquipamento.AR_CONDICIONADO:
+                valores_matriz[0][map_equipamento_reporte['dia']-1] = map_equipamento_reporte['reportes']
+                equipamento = 1
+            else:
+                equipamento = 1
+
+            if equipamento == 1 and map_equipamento_reporte['tipo_equipamento'] == TipoEquipamento.COMPUTADOR:
+                valores_matriz[1][map_equipamento_reporte['dia']-1] = map_equipamento_reporte['reportes']
+                equipamento = 2
+            else:
+                equipamento = 2
+
+
+            if equipamento == 2 and map_equipamento_reporte['tipo_equipamento'] == TipoEquipamento.PROJETOR:
+                valores_matriz[2][map_equipamento_reporte['dia']-1] = map_equipamento_reporte['reportes']
+
+            controlador = controlador + 1
+            equipamento = 0
+
+
+        lista_dias_equipamentos = []
+
+        for dia in range(7):  # colunas
+            for equipamento in range(3):  # linhas
+                lista_dias_equipamentos.append(
+                    valores_matriz[equipamento][dia]
+                )
+
         # Exemplo de dados (substitua pelos teus valores reais)
         df = pd.DataFrame({
             "dia": ["Segunda", "Segunda", "Segunda",
@@ -267,16 +306,8 @@ class GeradorGraficos:
                     "Sexta", "Sexta", "Sexta",
                     "Sábado", "Sábado", "Sábado",
                     "Domingo", "Domingo", "Domingo"],
-            "tipo": ["Computador", "Ar-condicionado", "Projetores"] * 7,
-            "valor": [
-                30, 28, 10,  # Segunda
-                40, 75, 3,  # Terça
-                35, 12, 15,  # Quarta
-                38, 55, 4,  # Quinta
-                12, 30, 0,  # Sexta
-                10, 8, 12,  # Sábado
-                1, 2, 1  # Domingo
-            ]
+            "tipo": ["Ar-condicionado", "Computador", "Projetores"] * 7,
+            "valor": lista_dias_equipamentos
         })
 
         # Ordem dos dias (garante a sequência correta)
@@ -295,7 +326,7 @@ class GeradorGraficos:
             y="valor",
             color="tipo",
             color_discrete_map=cores,
-            category_orders={"dia": dias_ordem, "tipo": ["Computador", "Ar-condicionado", "Projetores"]},
+            category_orders={"dia": dias_ordem, "tipo": ["Ar-condicionado", "Computador", "Projetores"]},
             barmode="group",
             labels={"dia": "", "valor": ""},  # remove labels desnecessários
             height=320

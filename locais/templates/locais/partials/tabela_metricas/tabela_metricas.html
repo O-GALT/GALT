@@ -24,10 +24,10 @@
 
         {% for objeto in objetos %}
             {% if tipo_metrica == 'equipamento' %}
-                {% include 'locais/partials/tabela_metricas/partials_tabela_metricas/metrica_detalhada/metrica_detalhada.html' with numero=objeto.equipamento_id objeto_metrica=objeto.serial porcentagem=55 quantidade_metrica=objeto.manutencoes %}
+                {% include 'locais/partials/tabela_metricas/partials_tabela_metricas/metrica_detalhada/metrica_detalhada.html' with numero=objeto.equipamento_id objeto_metrica=objeto.serial porcentagem=objeto.necessidade_substituicao quantidade_metrica=objeto.manutencoes%}
 
             {% elif tipo_metrica == 'sala' %}
-                {% include 'locais/partials/tabela_metricas/partials_tabela_metricas/metrica_detalhada/metrica_detalhada.html' with numero=objeto.sala_id objeto_metrica='Salas '|add:objeto.localizacao porcentagem=55 quantidade_metrica='19' %}
+                {% include 'locais/partials/tabela_metricas/partials_tabela_metricas/metrica_detalhada/metrica_detalhada.html' with numero=objeto.sala_id objeto_metrica='Salas '|add:objeto.localizacao porcentagem=objeto.necessidade_interditacao quantidade_metrica=objeto.equipamentos_defeituosos %}
             {% endif %}
         {% endfor %}
     </div>
