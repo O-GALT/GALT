@@ -16,8 +16,8 @@ from core.essenciais import TipoUsuario
 
 # Create your views here.
 
-#@login_required
-#@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])
 def index(request):
     '''
     PARA LUCAS:
