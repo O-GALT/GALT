@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import F, Count
 
 from locais.models import Predios
 
@@ -15,3 +16,7 @@ class Setores(models.Model):
 
     def __str__(self):
         return self.setor
+
+    @staticmethod
+    def listar_setores_predio(predio_id):
+        return Setores.objects.filter(salas__setor__predio__predio_id=1).values('setor', 'localizacao', predio_nome=F('predio__predio')).annotate(salas=Count('salas'))

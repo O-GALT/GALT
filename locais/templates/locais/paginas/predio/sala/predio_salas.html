@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block header %}
-    {% include 'locais/partials/headers/predio/predio_salas_header.html' %}
+    {% include 'locais/partials/headers/predio/predio_salas_header.html' with predio_id=predio_id nome_predio=nome_predio total_setores=total_setores total_salas=total_salas total_equipamentos=total_equipamentos %}
 {% endblock %}
 
 
@@ -16,7 +16,7 @@
     <div class="container-salas">
         {% for sa in salas %}
             <a href="{% url 'locais_sala_detail' 0 %}">
-            {% include 'locais/partials/predio/salas/sala_card.html' with classe_estado=sa.classe_estado posicao=sa.posicao estado=sa.estado quantidade_projetor=sa.quantidade_projetor quantidade_computador=sa.quantidade_computador quantidade_ar_condicionado=sa.quantidade_ar_condicionado %}
+            {% include 'locais/partials/predio/salas/sala_card.html' with classe_estado=sa.classe_estado posicao=sa.posicao estado=sa.estado quantidade_projetor=sa.quantidade_projetores quantidade_computador=sa.quantidade_computadores quantidade_ar_condicionado=sa.quantidade_ar_condicionados %}
             </a>
         {% endfor %}
     </div>

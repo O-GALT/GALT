@@ -32,12 +32,12 @@ def pagina_login(request):
     return render(request, 'core/pages/login.html')
 
 @login_required
-@nivel_acesso_permitido(TipoUsuario.ADMINISTRADOR)
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])
 def concluido_modal(request):
     return render(request, 'core/pages/modais/modal-concluido.html')
 
 @login_required
-@nivel_acesso_permitido(TipoUsuario.ADMINISTRADOR)
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])
 def exclusao_modal(request):
     return render(request, 'core/pages/modais/modal-exclusao.html')
 
