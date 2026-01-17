@@ -39,7 +39,6 @@ def index(request):
     acao = request.GET.get('acao')
     alvo = request.GET.get('alvo_acao')
 
-    query_set = AuditoriaLog.listar_auditorias()
     
     if tipo_autor and autor and acao and alvo:
         query_set = AuditoriaLog.listar_por_tipo_autor_email_escolar_acao_alvo(TipoUsuario(tipo_autor), autor, Acao(acao), TipoAlvo(alvo))
@@ -67,10 +66,12 @@ def index(request):
 
     elif acao:
         query_set = AuditoriaLog.listar_por_acao(Acao(acao))
+
+    elif alvo:
+        query_set = AuditoriaLog.listar_por_alvo_acao(TipoAlvo(alvo))
     
-    # 0 filtros
     else:
-        query_set = AuditoriaLog.listar_por_tipo_autor_email_escolar_acao_alvo(TipoUsuario(tipo_autor), autor, Acao(acao), TipoAlvo(alvo))
+        query_set = AuditoriaLog.listar_auditorias()
 
     paginator = Paginator(query_set, 7)
     page_obj: Page
