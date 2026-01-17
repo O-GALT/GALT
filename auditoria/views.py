@@ -28,7 +28,7 @@ def index(request):
     DE TODOS OS FILTROS JUNTOS. AO FINAL, QUANDO NÃO TIVER NENHUMA COMBINAÇÃO PARA FAZER DE FILTRO TU APENAS
     FAZ UMA SIMPLES LISTAGEM DE TUDO QUE ESTÁ NA AUDITORIA (JÁ TEM UM MÉTODO PARA ISSO NO MODEL DE AUDITORIA)
 
-    NA LINHA 39 TEM UMA CONSULTA QUE FIZ QUE PEGA LOGO DE CARA TODAS AS AUDITORIAS, MAS NÃO EH PARA ELA ESTAR AÍ. EU SÓ FIL ISSO
+    NA LINHA 43 TEM UMA CONSULTA QUE FIZ QUE PEGA LOGO DE CARA TODAS AS AUDITORIAS, MAS NÃO EH PARA ELA ESTAR AÍ. EU SÓ FIL ISSO
     PARA NÃO ESTOURAR UM ERRO NA HORA QUE TU FOR ABRIR A PÁGINA DE AUDITORIAS. ESSA CONSULTA É PARA SER A ÚLTIMA,
     QUANDO NÃO TIVER NENHUM FILTRO SETADO. MAS ANTES DE TIRAR ELA, OLHA A PÁGINA DE AUDITORIA E DÁ UMA TESTADA
 
@@ -39,9 +39,39 @@ def index(request):
     acao = request.GET.get('acao')
     alvo = request.GET.get('alvo_acao')
 
-    query_set = AuditoriaLog.listar_auditorias()
+    
     if tipo_autor and autor and acao and alvo:
         query_set = AuditoriaLog.listar_por_tipo_autor_email_escolar_acao_alvo(TipoUsuario(tipo_autor), autor, Acao(acao), TipoAlvo(alvo))
+
+    elif tipo_autor and autor and acao:
+        query_set = AuditoriaLog.listar_por_tipo_autor_email_escolar_acao(TipoUsuario(tipo_autor), autor, Acao(acao))
+
+    elif autor and acao and alvo:
+        query_set = AuditoriaLog.listar_por_email_escolar_acao_alvo(autor, Acao(acao), TipoAlvo(alvo))
+
+    elif tipo_autor and autor:
+        query_set = AuditoriaLog.listar_por_tipo_autor_email_escolar(TipoUsuario(tipo_autor), autor)
+
+    elif autor and acao:
+        query_set = AuditoriaLog.listar_por_email_escolar_acao(autor, Acao(acao))
+
+    elif acao and alvo:
+        query_set = AuditoriaLog.listar_acao_alvo(Acao(acao), TipoAlvo(alvo))
+
+    elif tipo_autor:
+        query_set = AuditoriaLog.listar_por_tipo_autor(TipoUsuario(tipo_autor))
+
+    elif autor:
+        query_set = AuditoriaLog.listar_por_email_escolar(autor)
+
+    elif acao:
+        query_set = AuditoriaLog.listar_por_acao(Acao(acao))
+
+    elif alvo:
+        query_set = AuditoriaLog.listar_por_alvo_acao(TipoAlvo(alvo))
+    
+    else:
+        query_set = AuditoriaLog.listar_auditorias()
 
     paginator = Paginator(query_set, 7)
     page_obj: Page
