@@ -2,7 +2,7 @@ from django.db import models
 from core.essenciais import EstadoEquipamento, TipoEquipamento
 from locais.models.Salas import Salas
 
-from django.db.models import Count
+from django.db.models import Count, F
 
 
 class Equipamentos(models.Model):
@@ -27,4 +27,36 @@ class Equipamentos(models.Model):
 
     @staticmethod
     def listar_equipamentos_mais_defeituosos_predio(predio_id):
-        return Equipamentos.objects.filter(historico_manutencoes__equipamento__sala__setor__predio__predio_id=predio_id).values('equipamento_id', 'serial').annotate(manutencoes=Count('historico_manutencoes'), necessidade_substituicao=(Count('historico_manutencoes') * 100)/20).order_by('-manutencoes')
+        return Equipamentos.objects.filter(historico_manutencoes__equipamento__sala__setor__predio__predio_id=predio_id).values('equipamento_id', 'serial').annotate(manutencoes=Count('historico_manutencoes'), necessidade_substituicao=(Count('historico_manutencoes') * 100)/20).order_by('-manutencoes')\
+
+    @staticmethod
+    def listar_equipamentos_do_predio(predio_id):
+        return Equipamentos.objects.filter(sala__setor__predio__predio_id=predio_id)
+
+    @staticmethod
+    def listar_por_setor_sala_estado(setor_id, sala_id, estado:EstadoEquipamento):
+        return Equipamentos.objects.filter(sala__sala_id=sala_id, sala__setor__setor_id=setor_id, estado_atual=estado.name)
+
+    @staticmethod
+    def listar_por_setor_sala(setor_id, sala_id):
+        return Equipamentos.objects.filter(sala__sala_id=sala_id, sala__setor__setor_id=setor_id)
+
+    @staticmethod
+    def listar_por_sala_estado(sala_id, estado:EstadoEquipamento):
+        return Equipamentos.objects.filter(sala__sala_id=sala_id, estado_atual=estado.name)
+
+    @staticmethod
+    def listar_por_setor_estado(setor_id, estado:EstadoEquipamento):
+        return Equipamentos.objects.filter(sala__setor__setor_id=setor_id, estado_atual=estado.name)
+
+    @staticmethod
+    def listar_por_setor(setor_id):
+        return Equipamentos.objects.filter(sala__setor__setor_id=setor_id)
+
+    @staticmethod
+    def listar_por_sala(sala_id):
+        return Equipamentos.objects.filter(sala__sala_id=sala_id)
+
+    @staticmethod
+    def listar_por_estado(estado:EstadoEquipamento):
+        return Equipamentos.objects.filter(estado_atual=estado.name)

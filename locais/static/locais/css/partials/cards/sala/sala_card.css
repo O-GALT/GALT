@@ -46,14 +46,14 @@
   color: #6C5C3D;
 }
 
-.inativa {
+.inapta {
   background-color: #FABABB;
   color: #A26774;
 }
 
-.inativa p,
-.inativa i,
-.inativa h2,
-.inativa p.estado {
+.inapta p,
+.inapta i,
+.inapta h2,
+.inapta p.estado {
   color: #A26774;
 }

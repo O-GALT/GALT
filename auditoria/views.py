@@ -43,17 +43,20 @@ def index(request):
     if tipo_autor and autor and acao and alvo:
         query_set = AuditoriaLog.listar_por_tipo_autor_email_escolar_acao_alvo(TipoUsuario(tipo_autor), autor, Acao(acao), TipoAlvo(alvo))
 
-    elif tipo_autor and autor and acao:
+    elif tipo_autor and autor:
         query_set = AuditoriaLog.listar_por_tipo_autor_email_escolar_acao(TipoUsuario(tipo_autor), autor, Acao(acao))
 
-    elif autor and acao and alvo:
-        query_set = AuditoriaLog.listar_por_email_escolar_acao_alvo(autor, Acao(acao), TipoAlvo(alvo))
-
-    elif tipo_autor and autor:
+    elif tipo_autor and acao:
         query_set = AuditoriaLog.listar_por_tipo_autor_email_escolar(TipoUsuario(tipo_autor), autor)
 
+    elif tipo_autor and alvo:
+        query_set = AuditoriaLog.listar_por_tipo_autor_alvo(TipoUsuario(tipo_autor), TipoAlvo(alvo))
+
     elif autor and acao:
-        query_set = AuditoriaLog.listar_por_email_escolar_acao(autor, Acao(acao))
+        query_set = AuditoriaLog.listar_por_email_escolar_acao(TipoUsuario(tipo_autor), Acao(acao))
+
+    elif autor and alvo:
+        query_set = AuditoriaLog.listar_por_email_escolar_alvo(autor, TipoAlvo(alvo))
 
     elif acao and alvo:
         query_set = AuditoriaLog.listar_acao_alvo(Acao(acao), TipoAlvo(alvo))

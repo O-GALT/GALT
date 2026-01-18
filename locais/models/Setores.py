@@ -19,4 +19,8 @@ class Setores(models.Model):
 
     @staticmethod
     def listar_setores_predio(predio_id):
-        return Setores.objects.filter(salas__setor__predio__predio_id=1).values('setor', 'localizacao', predio_nome=F('predio__predio')).annotate(salas=Count('salas'))
+        return Setores.objects.filter(salas__setor__predio__predio_id=predio_id).values('setor', 'localizacao', predio_nome=F('predio__predio')).annotate(salas=Count('salas'))
+
+    @staticmethod
+    def listar_setores_predio_filtro(predio_id):
+        return Setores.objects.filter(predio__predio_id=predio_id)

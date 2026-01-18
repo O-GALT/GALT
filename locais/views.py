@@ -4,10 +4,10 @@ from django.shortcuts import render
 
 from ativos.models import Equipamentos
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
-from core.essenciais import TipoUsuario
+from core.essenciais import TipoUsuario, TipoEquipamento, EstadoEquipamento, EstadoSala
 from core.graficos.GeradorGraficos import GeradorGraficos
 from core.sql.SQLNativo import SQLNativo
-from locais.models import Salas
+from locais.models import Salas, Setores
 from suporte.models import Reportes
 
 
@@ -139,6 +139,27 @@ def predios(request, predio_id):
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def predios_equipamentos(request, predio_id):
+    setor = request.GET.get('setor')
+    sala = request.GET.get('sala')
+    estado = request.GET.get('estado')
+
+    if setor and sala and estado:
+        equipamentos = [{'classe_estado':equipamento.estado_atual.lower(), 'nome_equipamento':equipamento.serial, 'estado':EstadoEquipamento(equipamento.estado_atual).label, 'sala':equipamento.sala.localizacao,'posicao':equipamento.posicao, 'tipo_equipamento': TipoEquipamento(equipamento.tipo).label} for equipamento in Equipamentos.listar_por_setor_sala_estado(setor, sala, EstadoEquipamento(estado))]
+    elif setor and sala:
+        equipamentos = [{'classe_estado': equipamento.estado_atual.lower(), 'nome_equipamento': equipamento.serial,'estado': EstadoEquipamento(equipamento.estado_atual).label,'sala': equipamento.sala.localizacao, 'posicao': equipamento.posicao,'tipo_equipamento': TipoEquipamento(equipamento.tipo).label} for equipamento in Equipamentos.listar_por_setor_sala(setor, sala)]
+    elif setor and estado:
+        equipamentos = [{'classe_estado': equipamento.estado_atual.lower(), 'nome_equipamento': equipamento.serial,'estado': EstadoEquipamento(equipamento.estado_atual).label, 'sala': equipamento.sala.localizacao, 'posicao': equipamento.posicao, 'tipo_equipamento': TipoEquipamento(equipamento.tipo).label} for equipamento in Equipamentos.listar_por_setor_estado(setor, EstadoEquipamento(estado))]
+    elif sala and estado:
+        equipamentos = [{'classe_estado': equipamento.estado_atual.lower(), 'nome_equipamento': equipamento.serial,'estado': EstadoEquipamento(equipamento.estado_atual).label,'sala': equipamento.sala.localizacao, 'posicao': equipamento.posicao,'tipo_equipamento': TipoEquipamento(equipamento.tipo).label} for equipamento in Equipamentos.listar_por_sala_estado(sala, EstadoEquipamento(estado))]
+    elif setor:
+        equipamentos = [{'classe_estado': equipamento.estado_atual.lower(), 'nome_equipamento': equipamento.serial,'estado': EstadoEquipamento(equipamento.estado_atual).label,'sala': equipamento.sala.localizacao, 'posicao': equipamento.posicao,'tipo_equipamento': TipoEquipamento(equipamento.tipo).label} for equipamento in Equipamentos.listar_por_setor(setor)]
+    elif sala:
+        equipamentos = [{'classe_estado': equipamento.estado_atual.lower(), 'nome_equipamento': equipamento.serial,'estado': EstadoEquipamento(equipamento.estado_atual).label,'sala': equipamento.sala.localizacao, 'posicao': equipamento.posicao,'tipo_equipamento': TipoEquipamento(equipamento.tipo).label} for equipamento in Equipamentos.listar_por_sala(sala)]
+    elif estado:
+        equipamentos = [{'classe_estado': equipamento.estado_atual.lower(), 'nome_equipamento': equipamento.serial,'estado': EstadoEquipamento(equipamento.estado_atual).label,'sala': equipamento.sala.localizacao, 'posicao': equipamento.posicao,'tipo_equipamento': TipoEquipamento(equipamento.tipo).label} for equipamento in Equipamentos.listar_por_estado(EstadoEquipamento(estado))]
+    else:
+        equipamentos = [{'classe_estado': equipamento.estado_atual.lower(), 'nome_equipamento': equipamento.serial,'estado': EstadoEquipamento(equipamento.estado_atual).label,'sala': equipamento.sala.localizacao, 'posicao': equipamento.posicao,'tipo_equipamento': TipoEquipamento(equipamento.tipo).label} for equipamento in Equipamentos.listar_equipamentos_do_predio(predio_id)]
+
     info_predio = SQLNativo.carregar_nome_salas_equipamentos_setores_predio(predio_id)[0]
     context = {}
     context['predio_id'] = info_predio['predio_id']
@@ -146,30 +167,11 @@ def predios_equipamentos(request, predio_id):
     context['total_salas'] = info_predio['total_salas']
     context['total_equipamentos'] = info_predio['total_equipamentos']
     context['total_setores'] = info_predio['total_setores']
-    context['equipamentos'] = [
-        {'classe_estado': 'defeituoso', 'nome_equipamento': 'Thunder V12', 'estado': 'Defeituoso', 'sala': 'A17',
-         'posicao': 'A12', 'tipo_equipamento': 'computador'},
-        {'classe_estado': 'manutencao', 'nome_equipamento': 'Maximus V12', 'estado': 'Manutenção', 'sala': 'A17',
-         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-        {'classe_estado': 'defeituoso', 'nome_equipamento': 'Maximus V12', 'estado': 'Defeituoso', 'sala': 'A17',
-         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-        {'classe_estado': 'manutencao', 'nome_equipamento': 'Maximus V12', 'estado': 'Manutenção', 'sala': 'A17',
-         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-        {'classe_estado': 'manutencao', 'nome_equipamento': 'Maximus V12', 'estado': 'Manutenção', 'sala': 'A17',
-         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-        {'classe_estado': 'funcionando', 'nome_equipamento': 'Maximus V12', 'estado': 'Funcionando', 'sala': 'A17',
-         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-        {'classe_estado': 'manutencao', 'nome_equipamento': 'Thunder V12', 'estado': 'Manutenção', 'sala': 'A17',
-         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-        {'classe_estado': 'alerta-report', 'nome_equipamento': 'Thunder V12', 'estado': 'Alerta', 'sala': 'A17',
-         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-        {'classe_estado': 'manutencao', 'nome_equipamento': 'Brigs V79', 'estado': 'Manutenção', 'sala': 'A17',
-         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-        {'classe_estado': 'manutencao', 'nome_equipamento': 'Brigs V79', 'estado': 'Manutenção', 'sala': 'A17',
-         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-        {'classe_estado': 'manutencao', 'nome_equipamento': 'Brigs V79', 'estado': 'Manutenção', 'sala': 'A17',
-         'posicao': 'A1', 'tipo_equipamento': 'projetor'},
-    ]
+    context['setores'] = [{'input': str(setor.setor_id), 'output': setor.setor} for setor in Setores.listar_setores_predio_filtro(predio_id)]
+    context['salas'] = [{'input': str(sala.sala_id), 'output': 'Sala ' + sala.localizacao} for sala in Salas.listar_salas_predio(predio_id)]
+    context['equipamentos'] = equipamentos
+    context['estados'] = [{'input': estado.name, 'output': estado.label} for estado in [tipo_estado for tipo_estado in EstadoEquipamento]]
+
     return HttpResponse(render(request, 'locais/paginas/predio/equipamento/predio_equipamentos.html', context))
 
 
@@ -199,6 +201,20 @@ def predios_setores(request, predio_id):
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def predios_salas(request, predio_id):
+    # setor = request.GET.get('setor')
+    # estado = request.GET.get('estado')
+
+    # if setor and estado:
+    #     salas = [{'classe_estado': sala.estado_atual.lower(), 'posicao': sala.localizacao,'estado': EstadoSala(sala.estado_atual).label,'quantidade_projetores': sala.equipamentos.filter(tipo=TipoEquipamento.PROJETOR).count(),'quantidade_computadores': sala.equipamentos.filter(tipo=TipoEquipamento.COMPUTADOR).count(),'quantidade_ar_condicionados': sala.equipamentos.filter(tipo=TipoEquipamento.AR_CONDICIONADO).count()} for sala in Salas.listar_por_setor_estado(setor, EstadoSala(estado))]
+    #
+    # elif setor:
+    #     salas = [{'classe_estado': sala.estado_atual.lower(), 'posicao': sala.localizacao,'estado': EstadoSala(sala.estado_atual).label,'quantidade_projetores': sala.equipamentos.filter(tipo=TipoEquipamento.PROJETOR).count(),'quantidade_computadores': sala.equipamentos.filter(tipo=TipoEquipamento.COMPUTADOR).count(),'quantidade_ar_condicionados': sala.equipamentos.filter(tipo=TipoEquipamento.AR_CONDICIONADO).count()} for sala in Salas.listar_por_setor(setor)]
+    #
+    # elif estado:
+    #     salas = [{'classe_estado': sala.estado_atual.lower(), 'posicao': sala.localizacao,'estado': EstadoSala(sala.estado_atual).label,'quantidade_projetores': sala.equipamentos.filter(tipo=TipoEquipamento.PROJETOR).count(),'quantidade_computadores': sala.equipamentos.filter(tipo=TipoEquipamento.COMPUTADOR).count(),'quantidade_ar_condicionados': sala.equipamentos.filter(tipo=TipoEquipamento.AR_CONDICIONADO).count()} for sala in Salas.listar_por_estado(EstadoSala(estado))]
+    # else:
+    #     salas = [{'classe_estado': sala.estado_atual.lower(), 'posicao': sala.localizacao,'estado': EstadoSala(sala.estado_atual).label,'quantidade_projetores': sala.equipamentos.filter(tipo=TipoEquipamento.PROJETOR).count(),'quantidade_computadores': sala.equipamentos.filter(tipo=TipoEquipamento.COMPUTADOR).count(),'quantidade_ar_condicionados': sala.equipamentos.filter(tipo=TipoEquipamento.AR_CONDICIONADO).count()} for sala in Salas.listar_salas_predio(predio_id)]
+
     info_predio = SQLNativo.carregar_nome_salas_equipamentos_setores_predio(predio_id)[0]
     context = {}
     context['predio_id'] = info_predio ['predio_id']
@@ -206,16 +222,7 @@ def predios_salas(request, predio_id):
     context['total_salas'] = info_predio ['total_salas']
     context['total_equipamentos'] = info_predio ['total_equipamentos']
     context['total_setores'] = info_predio ['total_setores']
-    context['salas'] = [
-    {'classe_estado': 'manutencao', 'posicao': 'A27', 'estado': 'Manutenção', 'quantidade_projetores': '12',
-    'quantidade_computadores': '2', 'quantidade_ar_condicionados': '10'},
-    {'classe_estado': 'manutencao', 'posicao': 'A27', 'estado': 'Manutenção', 'quantidade_projetores': '12',
-    'quantidade_computadores': '2', 'quantidade_ar_condicionados': '10'},
-                {'classe_estado': 'inativa', 'posicao': 'A27', 'estado': 'Inativa', 'quantidade_projetores': '12',
-                 'quantidade_computadores': '2', 'quantidade_ar_condicionados': '10'},
-                {'classe_estado': '', 'posicao': 'A27', 'estado': 'Manutenção', 'quantidade_projetores': '12',
-                 'quantidade_computadores': '2', 'quantidade_ar_condicionados': '10'},
-                {'classe_estado': 'manutencao', 'posicao': 'A27', 'estado': 'Manutenção', 'quantidade_projetores': '12',
-                 'quantidade_computadores': '2', 'quantidade_ar_condicionados': '10'},
-    ]
+    context['salas'] = salas
+    context['setores'] = [{'input': str(setor.setor_id), 'output': setor.setor} for setor in Setores.listar_setores_predio_filtro(predio_id)]
+    context['estados'] = [{'input': estado.name, 'output': estado.label} for estado in[tipo_estado for tipo_estado in EstadoSala]]
     return HttpResponse(render(request, 'locais/paginas/predio/sala/predio_salas.html', context))

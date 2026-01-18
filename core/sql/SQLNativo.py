@@ -35,20 +35,26 @@ class SQLNativo:
                     INNER JOIN locais_setores se USING (setor_id)
                     INNER JOIN locais_predios p USING (predio_id)
                     WHERE p.predio_id = %s
-                )
+                ),
 
+                predios AS (
+                    SELECT
+                        predio_id, predio
+                    FROM locais_predios WHERE predio_id = %s
+                )
+                    
                 SELECT
                     predio_id,
                     predio,
                     total_setores,
                     total_salas,
                     total_equipamentos
-                FROM locais_predios,
+                FROM predios,
                      setores,
                      salas,
                      equipamentos;
                 """,
-                [predio_id, predio_id, predio_id],
+                [predio_id, predio_id, predio_id, predio_id],
             )
 
             colunas = [col[0] for col in cursor.description]

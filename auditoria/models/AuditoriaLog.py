@@ -61,3 +61,11 @@ class AuditoriaLog(models.Model):
     def listar_acao_alvo(acao:Acao, alvo:TipoAlvo):
         return AuditoriaLog.objects.filter(acao=acao.name, alvo_acao=alvo.name)
 
+    @staticmethod
+    def listar_por_email_escolar_alvo(email_escolar, alvo:TipoAlvo):
+        return AuditoriaLog.objects.filter(usuario__email_escolar=email_escolar, alvo_acao=alvo.name)
+
+    @staticmethod
+    def listar_por_tipo_autor_alvo(tipo_autor:TipoUsuario, alvo:TipoAlvo):
+        return AuditoriaLog.objects.filter(usuario__groups__name=tipo_autor.name, alvo_acao=alvo.name)
+
