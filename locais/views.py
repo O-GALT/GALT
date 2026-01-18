@@ -174,19 +174,10 @@ def predios_equipamentos(request, predio_id):
 
     return HttpResponse(render(request, 'locais/paginas/predio/equipamento/predio_equipamentos.html', context))
 
-
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def predios_setores(request, predio_id):
-    '''
-        PARA ALLANA
-        AS INFORMAÇÕES DO PRÉDIO JÁ ESTÃO SENDO CARREGADAS, ENTÃO VOCÊ SÓ PRECISA SE PREOCUPAR EM LISTAR OS SETORES DESSE
-        PREDIO. VOCE PODE USAR UM MÉTODO QUE JÁ ESTÁ PRONTO DENTRO DO MODEL DE SETORES. É SÓ CHAMAR ELE PASSANDO O
-        ID DO PRÉDIO E ENTÃO EU VOU QUERER QUE VOCÊ ORGANIZE AS INFORMAÇÕES QUE VAO SER RETORNADAS (EH UM MAP) DENTRO
-        DESSE CONTEXT DE SETORES QUE ESTÁ COMENTADO. EU QUERO QUE VOCÊ ORGANIZE USANDO UM FOR DE LINHA UNICA NAVEGANDO PELO
-        DICIONARIO QUE VAI SER RETORNADO. ISSO DO FOR DE LINHA ÚNICA TU PODE VER UM EXEMPLO QUE FIZ AQUI NESSA VIEW
-        NAS LINHAS 133 OU 134 E NAO MUDE AS CHAVES DO DICIONARIO
-    '''
+
     info_predio = SQLNativo.carregar_nome_salas_equipamentos_setores_predio(predio_id)[0]
     context = {}
     context['predio_id'] = info_predio['predio_id']
@@ -194,8 +185,8 @@ def predios_setores(request, predio_id):
     context['total_salas'] = info_predio['total_salas']
     context['total_equipamentos'] = info_predio['total_equipamentos']
     context['total_setores'] = info_predio['total_setores']
-    # context['setores'] = [{'setor': 'Setores administrativo', 'predio': 'Predio principal', 'localizacao': 'Primeiro andar', 'quantidade_salas': '12'}]
-
+    context['setores'] = [{'setor': setor['setor'], 'predio': setor['predio_nome'], 'localizacao': setor['localizacao'], 'quantidade_salas': setor['salas']} for setor in Setores.listar_setores_predio(predio_id)]
+    
     return HttpResponse(render(request, 'locais/paginas/predio/setor/predio_setores.html', context))
 
 @login_required
