@@ -20,16 +20,19 @@
 {% endblock %}
 
 {% block quantidade_objeto %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade=total_setores objeto='Setores' %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade=total_salas objeto='Salas' %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade=total_equipamentos objeto='Equipamentos' %}
+    {% url 'locais_predio_setores' predio_id as url_setores_predio %}
+    {% url 'locais_predio_salas' predio_id as url_salas_predio %}
+    {% url 'locais_predio_equipamentos' predio_id as url_equipamentos_predio %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref=url_setores_predio quantidade=total_setores objeto='Setores' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref=url_salas_predio quantidade=total_salas objeto='Salas' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref=url_equipamentos_predio quantidade=total_equipamentos objeto='Equipamentos' %}
 {% endblock %}
 
 {% block filtro %}
     <div class="filtro-container">
-        <form method="get" action="{% url 'locais_predio_salas' 0 %}">
-            {% include 'core/partials/partials_do_headers/filtro/filtro.html' with titulo='Setores' escolhas=setor filtro_name='setor' filtro_value=request.GET.setor %}
-            {% include 'core/partials/partials_do_headers/filtro/filtro.html' with titulo='Estado' escolhas=estado filtro_name='estado' filtro_value=request.GET.estado %}
+        <form method="get" action="{% url 'locais_predio_salas' predio_id %}">
+            {% include 'core/partials/partials_do_headers/filtro/filtro.html' with titulo='Setores' escolhas=setores filtro_name='setor' filtro_value=request.GET.setor %}
+            {% include 'core/partials/partials_do_headers/filtro/filtro.html' with titulo='Estado' escolhas=estados filtro_name='estado' filtro_value=request.GET.estado %}
         </form>
     </div>
 {% endblock %}

@@ -19,7 +19,10 @@
 {% endblock %}
 
 {% block quantidade_objeto %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade=total_setores objeto='Setores' %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade=total_salas objeto='Salas' %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade=total_equipamentos objeto='Equipamentos' %}
+    {% url 'locais_predio_setores' predio_id as url_setores_predio %}
+    {% url 'locais_predio_salas' predio_id as url_salas_predio %}
+    {% url 'locais_predio_equipamentos' predio_id as url_equipamentos_predio %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref=url_setores_predio quantidade=total_setores objeto='Setores' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref=url_salas_predio quantidade=total_salas objeto='Salas' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref=url_equipamentos_predio quantidade=total_equipamentos objeto='Equipamentos' %}
 {% endblock %}
