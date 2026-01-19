@@ -11,11 +11,11 @@
 {% endblock %}
 
 {% block nome_objeto %}
-    {% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome='Thunder V12' %}
+    {% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome=serial %}
 {% endblock %}
 
 {% block estado %}
-    {% include 'core/partials/partials_do_headers/estado/estado_header.html' with classe='DEFEITUOSO' estado='Defeituoso' %}
+    {% include 'core/partials/partials_do_headers/estado/estado_header.html' with classe=classe_estado estado=estado_atual %}
 {% endblock %}
 
 {% block descricao %}
@@ -23,7 +23,6 @@
 {% endblock %}
 
 {% block quantidade_objeto %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='18' objeto='Reportes abertos' %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='7' objeto='Manutenções realizadas' %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='10%' objeto='Confiabilidade' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade=reportes_abertos objeto='Reportes abertos' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade=manutencoes_realizadas objeto='Manutenções realizadas' %}
 {% endblock %}

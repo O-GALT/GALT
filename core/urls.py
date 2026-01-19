@@ -1,3 +1,5 @@
+from os import name
+
 from django.urls import path, include
 from django.contrib import admin
 from core import views
@@ -14,4 +16,8 @@ urlpatterns = [
 
     path('equipamento-visao-usuario', views.equipamento_visao_usuario, name='equipamento_visao_usuario'),
     path('report-visao-usuario', views.report_visao_usuario, name='report_visao_usuario'),
+
+    path('qr_code/<path:url>/', views.exibir_qr_code, name='gerar_qr_code'),
+
+    path('qr-code/download/<path:url>/<str:identificador>', views.baixar_qr_code, name='baixar_qr_code')
 ]

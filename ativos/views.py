@@ -1,9 +1,15 @@
 from django.contrib.auth.decorators import login_required
+
+from ativos.models import HistoricoManutencoes
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
-from core.essenciais import TipoUsuario
+from core.essenciais import TipoUsuario, TipoEquipamento, EstadoEquipamento
 
 from django.shortcuts import render
 from django.http import HttpResponse
+
+from core.qrcode.GeradorQrCode import GeradorQrCode
+from core.sql.SQLNativo import SQLNativo
+from suporte.models import Reportes
 
 
 # Create your views here.
@@ -13,92 +19,55 @@ def index(request):
 
 
 @login_required
-@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI, TipoUsuario.ALUNO, TipoUsuario.SERVIDOR])  
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def equipamento(request, equipamento_id):
+    info_equipamento = SQLNativo.carregar_indicadores_equipamento(equipamento_id)[0]
     dados_do_equipamento = {
+        'qr_code_url': 'equipamento_visao_usuario',
         "modelo": "Dell Optiplex 7090",
-        "tipo": "Desktop Corporativo",
-        "serial": "SNX-8745-DF92",
-        "sala": "Salas A17",
-        "fabricante": "Dell Technologies",
-        "data_aquisicao": "15/07/2022",
-        "data_garantia": "15/07/2025",
-        "data_ultima_manutencao": "08/10/2024",
-        "status": "defeituoso",
-        "historico_manutencoes": [
-            {
-                "manutencao_id": "TASK-8782",
-                "titulo": "Equipamentos com mau funcionamento na fonte",
-                "responsavel": "Alexandre Magno",
-                "data": "08/10/2024"
-            },
-            {
-                "manutencao_id": "TASK-8782",
-                "titulo": "Equipamentos com suspeita de vírus",
-                "responsavel": "Maximus Decimos Meridios",
-                "data": "25/10/2020"
-            },
-            {
-                "manutencao_id": "TASK-8782",
-                "titulo": "Equipamentos com vírus em seu sistema operacional",
-                "responsavel": "Carlos Magno",
-                "data": "02/10/2020"
-            },
-            {
-                "manutencao_id": "TASK-8782",
-                "titulo": "Falha no cabo HDMI – substituição completa",
-                "responsavel": "Tales de Mileto",
-                "data": "02/10/2020"
-            },
-            {
-                "manutencao_id": "TASK-8782",
-                "titulo": "Revisão de rotina sem anomalias",
-                "responsavel": "Carlos Drummond de Andrade",
-                "data": "02/10/2020"
-            },
-            {
-                "manutencao_id": "TASK-8782",
-                "titulo": "Equipamentos com suspeita de vírus",
-                "responsavel": "Maximus Decimos Meridios",
-                "data": "25/10/2020"
-            },
-            {
-                "manutencao_id": "TASK-8782",
-                "titulo": "Equipamentos com vírus em seu sistema operacional",
-                "responsavel": "Carlos Magno",
-                "data": "02/10/2020"
-            }
-        ],
+        "tipo": TipoEquipamento(info_equipamento['tipo']).label,
+        'classe_estado': info_equipamento['estado_atual'],
+        'estado_atual': EstadoEquipamento(info_equipamento['estado_atual']).label,
+        'reportes_abertos': info_equipamento['reportes_abertos'],
+        'manutencoes_realizadas': info_equipamento['manutencoes_realizadas'],
+        "serial": info_equipamento['serial'],
+        "sala": "Sala " + info_equipamento['sala'],
+        "fabricante": info_equipamento['fabricante'],
+        "data_aquisicao": info_equipamento['data_aquisicao'],
+        "data_ultima_manutencao": info_equipamento['data_ultima_manutencao'],
+        "status": info_equipamento['estado_atual'],
+        'info_reportes_abertos': [reporte for reporte in Reportes.listar_reportes_equipamento(equipamento_id)],
+        'historico_manutencoes': [{"manutencao_id": historico['historico_manutencoes_id'], "titulo":historico['titulo'], "responsavel":historico['responsavel'], "data":historico['data']} for historico in HistoricoManutencoes.listar_historico_equipamento(equipamento_id)],
         "insights": [
             {
-                "titulo": "Confiabilidade",
-                "status": "ruim",
-                "valor": "10%",
+                "titulo": "Última manuteção",
+                "status": "boa",
+                "valor": str(info_equipamento['ultima_manutencao']) + " dias atrás",
             },
             {
-                "titulo": "Ultima verificação",
-                "status": "ruim",
-                "valor": "100 dias atrás",
+                "titulo": "Manutenções preventivas",
+                "status": "preocupante",
+                "valor": info_equipamento['manutencoes_preventivas'],
             },
             {
                 "titulo": "Tempo médio entre falhas",
                 "status": "preocupante",
-                "valor": "40 dias",
+                "valor": str(info_equipamento['tempo_medio_entre_falhas']) + " dias",
             },
             {
                 "titulo": "Tendência de falhas",
                 "status": "ruim",
-                "valor": "Alta",
+                "valor": info_equipamento['tedencias_a_falhas'],
             },
             {
-                "titulo": "Tempo médio de reparo",
-                "status": "bom",
-                "valor": "1h10",
+                "titulo": "Manutenções nesse mês",
+                "status": "preocupante",
+                "valor": info_equipamento['manutencoes_nesse_mes'],
             },
             {
                 "titulo": "Recomendação de subistituição",
-                "status": "preocupante",
-                "valor": "50%",
+                "status": "ruim",
+                "valor": str(info_equipamento['recomendacao_substituicao']) + "%",
             }
         ]
     }

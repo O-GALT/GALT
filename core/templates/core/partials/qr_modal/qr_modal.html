@@ -5,16 +5,18 @@
     <div class="qr-modal">
 
         <div class="qr-modal-header">
-            <img src="{% static 'assets/images/image-qr-code.png' %}" alt="qr code" class="qr-image"/>
+                <img src="{% url 'gerar_qr_code' qr_code_url %}" alt="qr code" class="qr-image"/>
         </div>
 
         <div class="qr-modal-body">
             <h2 class="qr-title">{{ title }}</h2>
             <p class="qr-description">{{ descricao }}</p>
 
-            <button class="qr-button"  {% if onclick %} onclick="{{ onclick }}" {% endif %}>
-                {{ button_text }}
-            </button>
+            <a href="{% url 'baixar_qr_code' qr_code_url identificador %}">
+                <button class="qr-button"  {% if onclick %} onclick="{{ onclick }}" {% endif %}>
+                    {{ button_text }}
+                </button>
+            </a>
         </div>
 
     </div>

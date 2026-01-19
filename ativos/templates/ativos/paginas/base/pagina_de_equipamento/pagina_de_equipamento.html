@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block header %}
-    {% include 'ativos/partials/headers/equipamento_header.html' %}
+    {% include 'ativos/partials/headers/equipamento_header.html' with serial=serial classe_estado=classe_estado estado_atual=estado_atual reportes_abertos=reportes_abertos manutencoes_realizadas=manutencoes_realizadas %}
 {% endblock %}
 
 {% block content %}
@@ -124,9 +124,9 @@
 
 
 {% block modais %}
-    {% include 'core/partials/qr_modal/qr_modal.html' with modal_id='qr_modal' title='Thunder v12'  descricao='Escaneie o Qrcode para ter acesso as informações do equipamentos Thunder v12' button_text='Link para download' onclick="closeModal('qr_modal')" %}
+    {% include 'core/partials/qr_modal/qr_modal.html' with modal_id='qr_modal' title='Thunder v12'  descricao='Escaneie o Qrcode para ter acesso as informações do equipamentos Thunder v12' button_text='Link para download' qr_code_url=qr_code_url identificador=serial onclick="closeModal('qr_modal')" %}
     {% include 'core/partials/alterar_localizacao_do_equipamento_modal/alterar_localizacao_do_equipamento_modal.html' with modal_id='modalFormulario' equipment_name='Thunder V12' onclick="closeModal('modalFormulario')" %}
-    {% include 'core/partials/visualizar_reportes_modal/visualizar_reportes_modal.html' with modal_id='modal-reports' onclick="closeModal('modal-reports')" %}
+    {% include 'core/partials/visualizar_reportes_modal/visualizar_reportes_modal.html' with modal_id='modal-reports' onclick="closeModal('modal-reports')" reportes_abertos=reportes_abertos info_reportes_abertos=info_reportes_abertos%}
 {% endblock %}
 
 {% block script %}

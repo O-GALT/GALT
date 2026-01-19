@@ -28,3 +28,7 @@ class Reportes(models.Model):
         return Reportes.objects.filter(equipamento__sala__setor__predio__predio_id=predio_id).annotate(
             dia=ExtractWeekDay('data')).values(tipo_equipamento=F('equipamento__tipo'), dia=F('dia')).annotate(
             reportes=Count('reporte_id')).order_by('dia', 'tipo_equipamento')
+
+    @staticmethod
+    def listar_reportes_equipamento(equipamento_id):
+        return Reportes.objects.filter(equipamento__equipamento_id=equipamento_id, estado_atual='ABERTO')

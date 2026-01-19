@@ -2,7 +2,7 @@ from django.db import models
 from core.essenciais import EstadoEquipamento, TipoEquipamento
 from locais.models.Salas import Salas
 
-from django.db.models import Count, F
+from django.db.models import Count, F, Avg
 
 
 class Equipamentos(models.Model):
