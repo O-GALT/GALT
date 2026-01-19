@@ -7,7 +7,6 @@ from core.essenciais import TipoUsuario, TipoEquipamento, EstadoEquipamento
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from core.qrcode.GeradorQrCode import GeradorQrCode
 from core.sql.SQLNativo import SQLNativo
 from suporte.models import Reportes
 
