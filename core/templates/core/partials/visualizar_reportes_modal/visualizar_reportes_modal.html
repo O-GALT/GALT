@@ -12,61 +12,74 @@
             do equipamento Thunder v12
         </p>
 
-        <p class="modal-count">Número de reports (10)</p>
+        <p class="modal-count">Número de reports ({{ reportes_abertos }})</p>
 
         <div class="modal-list">
-            <div class="modal-item">
-                <div class="modal-user-report">
-                    <img src="{% static 'assets/images/person.png' %}" class="modal-avatar" alt="avatar"/>
-                    <p class="modal-user">Natali Craig</p>
-                </div>
-                <div class="modal-texts">
-                    <p class="modal-item-title">Ruído excessivo durante o uso</p>
-                    <p class="modal-item-description">
-                        O equipamento emite um barulho alto do ventilador, especialmente após 10 minutos
-                        de uso contínuo. Pode indicar poeira interna ou rolamento desgastado.
-                    </p>
-                </div>
-            </div>
 
-            <div class="modal-item">
-                <div class="modal-user-report">
-                    <img src="{% static 'assets/images/person.png' %}" class="modal-avatar" alt="avatar"/>
-                    <p class="modal-user">Natali Craig</p>
+            {% for reporte in info_reportes_abertos %}
+                <div class="modal-item">
+                    <div class="modal-user-report">
+                        <img src="{% static 'assets/images/person.png' %}" class="modal-avatar" alt="avatar"/>
+                        <p class="modal-user">{{ reporte.usuario.email_escolar }}</p>
+                    </div>
+                    <div class="modal-texts">
+                        <p class="modal-item-title">{{ reporte.titulo }}</p>
+                        <p class="modal-item-description">{{ reporte.mensagem }}</p>
+                    </div>
                 </div>
-                <div class="modal-texts">
-                    <p class="modal-item-title">Superaquecimento constante</p>
-                    <p class="modal-item-description">
-                        O projetor desliga sozinho após cerca de 15 minutos ligado. A carcaça fica muito quente.
-                    </p>
-                </div>
-            </div>
-
-            <div class="modal-item">
-                <div class="modal-user-report">
-                    <img src="{% static 'assets/images/person.png' %}" class="modal-avatar" alt="avatar"/>
-                    <p class="modal-user">Natali Craig</p>
-                </div>
-                <div class="modal-texts">
-                    <p class="modal-item-title">Imagem desfocada e tremida</p>
-                    <p class="modal-item-description">
-                        A lente parece desalinhada. A nitidez não melhora mesmo após ajuste manual do foco.
-                    </p>
-                </div>
-            </div>
-
-            <div class="modal-item">
-                <div class="modal-user-report">
-                    <img src="{% static 'assets/images/person.png' %}" class="modal-avatar" alt="avatar"/>
-                    <p class="modal-user">Natali Craig</p>
-                </div>
-                <div class="modal-texts">
-                    <p class="modal-item-title">Tela azul com ruído na imagem</p>
-                    <p class="modal-item-description">
-                        Tela azul intermitente com ruído digital, possivelmente falha na placa de vídeo.
-                    </p>
-                </div>
-            </div>
+            {% endfor %}
+{#            <div class="modal-item">#}
+{#                <div class="modal-user-report">#}
+{#                    <img src="{% static 'assets/images/person.png' %}" class="modal-avatar" alt="avatar"/>#}
+{#                    <p class="modal-user">Natali Craig</p>#}
+{#                </div>#}
+{#                <div class="modal-texts">#}
+{#                    <p class="modal-item-title">Ruído excessivo durante o uso</p>#}
+{#                    <p class="modal-item-description">#}
+{#                        O equipamento emite um barulho alto do ventilador, especialmente após 10 minutos#}
+{#                        de uso contínuo. Pode indicar poeira interna ou rolamento desgastado.#}
+{#                    </p>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#            <div class="modal-item">#}
+{#                <div class="modal-user-report">#}
+{#                    <img src="{% static 'assets/images/person.png' %}" class="modal-avatar" alt="avatar"/>#}
+{#                    <p class="modal-user">Natali Craig</p>#}
+{#                </div>#}
+{#                <div class="modal-texts">#}
+{#                    <p class="modal-item-title">Superaquecimento constante</p>#}
+{#                    <p class="modal-item-description">#}
+{#                        O projetor desliga sozinho após cerca de 15 minutos ligado. A carcaça fica muito quente.#}
+{#                    </p>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#            <div class="modal-item">#}
+{#                <div class="modal-user-report">#}
+{#                    <img src="{% static 'assets/images/person.png' %}" class="modal-avatar" alt="avatar"/>#}
+{#                    <p class="modal-user">Natali Craig</p>#}
+{#                </div>#}
+{#                <div class="modal-texts">#}
+{#                    <p class="modal-item-title">Imagem desfocada e tremida</p>#}
+{#                    <p class="modal-item-description">#}
+{#                        A lente parece desalinhada. A nitidez não melhora mesmo após ajuste manual do foco.#}
+{#                    </p>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#            <div class="modal-item">#}
+{#                <div class="modal-user-report">#}
+{#                    <img src="{% static 'assets/images/person.png' %}" class="modal-avatar" alt="avatar"/>#}
+{#                    <p class="modal-user">Natali Craig</p>#}
+{#                </div>#}
+{#                <div class="modal-texts">#}
+{#                    <p class="modal-item-title">Tela azul com ruído na imagem</p>#}
+{#                    <p class="modal-item-description">#}
+{#                        Tela azul intermitente com ruído digital, possivelmente falha na placa de vídeo.#}
+{#                    </p>#}
+{#                </div>#}
+{#            </div>#}
 
         </div>
 

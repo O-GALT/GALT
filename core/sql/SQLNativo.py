@@ -199,3 +199,191 @@ class SQLNativo:
             ]
 
         return resultados
+
+    @staticmethod
+    def listar_equipamentos_mais_defeituosos_predio(predio_id):
+        with connection.cursor() as cursor:
+            cursor.execute('''
+                        WITH manutencoes_por_mes AS (
+            
+                SELECT
+                    e.equipamento_id,
+                    EXTRACT(MONTH FROM a.data) AS mes,
+                    COUNT(*) AS manutencoes_no_mes
+            
+                FROM ativos_historicomanutencoes a
+                INNER JOIN ativos_equipamentos e USING (equipamento_id)
+                INNER JOIN locais_salas s USING (sala_id)
+                INNER JOIN locais_setores se USING (setor_id)
+                INNER JOIN locais_predios p USING (predio_id)
+            
+                WHERE p.predio_id = %s
+                GROUP BY e.equipamento_id, mes
+            )
+            
+            SELECT
+                e.equipamento_id,
+                e.serial,
+            
+                SUM(mpm.manutencoes_no_mes) AS manutencoes,
+            
+                ROUND((AVG(mpm.manutencoes_no_mes) * 100) / 5, 0) AS necessidade_substituicao
+            
+            FROM manutencoes_por_mes mpm
+            INNER JOIN ativos_equipamentos e USING (equipamento_id)
+            
+            GROUP BY e.equipamento_id, e.serial
+            ORDER BY manutencoes DESC;
+            ''', [predio_id])
+
+            colunas = [col[0] for col in cursor.description]
+            resultados = [
+                dict(zip(colunas, row))
+                for row in cursor.fetchall()
+            ]
+
+        return resultados
+
+
+    @staticmethod
+    def carregar_indicadores_equipamento(equipamento_id):
+        with connection.cursor() as cursor:
+            cursor.execute('''
+                        WITH 
+            
+            equipamento AS (
+                SELECT
+                
+                e.serial, e.estado_atual, e.tipo, s.localizacao AS sala, e.fabricante, e.data_aquisicao,
+                (
+                    SELECT h.data FROM ativos_historicomanutencoes h
+                    WHERE h.equipamento_id = e.equipamento_id
+                    ORDER BY h.data DESC
+                    LIMIT 1
+                ) AS data_ultima_manutencao
+                
+                FROM ativos_equipamentos e 
+                INNER JOIN locais_salas s USING(sala_id)
+                WHERE e.equipamento_id = %s
+            
+            ),
+            
+            manutencoes_preventivas AS (
+                SELECT
+                
+                COUNT(*) AS manutencoes_preventivas
+                
+                FROM agendas_agendamentos a
+                INNER JOIN locais_salas s USING(sala_id)
+                INNER JOIN ativos_equipamentos e USING(sala_id)
+                WHERE a.estado_atual = 'A_SER_REALIZADO'
+                AND e.equipamento_id = %s
+            
+            ),
+            reportes_abertos AS (
+                SELECT
+                
+                COUNT(*) AS reportes_abertos
+                
+                FROM suporte_reportes r
+                INNER JOIN ativos_equipamentos e USING(equipamento_id)
+                WHERE e.equipamento_id = %s
+                AND r.estado_atual = 'ABERTO'
+            
+            ),
+            
+            ultima_manutencao AS (
+                    SELECT 
+                    
+                    CURRENT_DATE - (
+                        SELECT data FROM ativos_historicomanutencoes
+                        WHERE equipamento_id = e.equipamento_id
+                        ORDER BY data DESC
+                        LIMIT 1
+                    ) AS ultima_manutencao
+                
+                FROM ativos_historicomanutencoes a
+                INNER JOIN ativos_equipamentos e USING(equipamento_id)
+                WHERE e.equipamento_id = %s
+                GROUP BY e.equipamento_id
+            ),
+            
+            falhas_no_mes AS (
+                SELECT 
+                
+                EXTRACT('month' FROM a.data) AS mes,
+                COUNT(*) AS manutencoes_no_mes
+                
+                FROM ativos_historicomanutencoes a
+                INNER JOIN ativos_equipamentos e USING(equipamento_id)
+                WHERE e.equipamento_id = %s
+                GROUP BY mes
+                
+            ),
+            
+            dias_entre_falhas AS (
+                SELECT
+                
+                a.data - LAG(a.data) OVER (ORDER BY a.data) AS dias_entre_falhas
+                
+                FROM ativos_historicomanutencoes a
+                INNER JOIN ativos_equipamentos e USING(equipamento_id)
+                WHERE e.equipamento_id = %s
+            ),
+            
+            
+            indicadores_manutencoes AS (
+                SELECT 
+                
+                COUNT(a.historico_manutencoes_id) 
+                FILTER (WHERE a.data >= DATE_TRUNC('month', CURRENT_DATE) AND a.data < CURRENT_DATE + INTERVAL '1 month') AS
+                manutencoes_nesse_mes,
+                
+                COUNT(a.historico_manutencoes_id) AS manutencoes_realizadas
+                
+                
+                FROM ativos_historicomanutencoes a
+                INNER JOIN ativos_equipamentos e USING(equipamento_id)
+                WHERE e.equipamento_id = %s
+            )
+            
+            
+            SELECT 
+            
+            serial,
+            estado_atual,
+            manutencoes_realizadas,
+            reportes_abertos,
+            tipo,
+            sala,
+            fabricante,
+            data_aquisicao,
+            manutencoes_preventivas,
+            data_ultima_manutencao,
+            ultima_manutencao,
+            manutencoes_nesse_mes,
+            
+            ROUND((AVG(manutencoes_no_mes) * 100)/5, 0) AS recomendacao_substituicao,
+            
+            ROUND(AVG(dias_entre_falhas), 0) AS tempo_medio_entre_falhas,
+            
+            CASE 
+                WHEN (AVG(manutencoes_no_mes) * 100)/5 >= 10 AND AVG(manutencoes_no_mes * 100)/5 <= 29 THEN 'baixo'
+                WHEN (AVG(manutencoes_no_mes) * 100)/5 >= 30 AND AVG(manutencoes_no_mes * 100)/5 <= 55 THEN 'mediano'
+                WHEN (AVG(manutencoes_no_mes) * 100)/5 >= 56 AND AVG(manutencoes_no_mes * 100)/5 <= 100 THEN 'alto'
+                
+            END AS tedencias_a_falhas	
+            
+            FROM indicadores_manutencoes, ultima_manutencao, dias_entre_falhas, falhas_no_mes, equipamento, reportes_abertos, manutencoes_preventivas
+            
+            GROUP BY ultima_manutencao, manutencoes_nesse_mes, serial, estado_atual, manutencoes_realizadas, reportes_abertos, tipo, sala, fabricante, data_ultima_manutencao, data_aquisicao, manutencoes_preventivas;
+            ''', [equipamento_id, equipamento_id, equipamento_id, equipamento_id, equipamento_id, equipamento_id, equipamento_id])
+
+            colunas = [col[0] for col in cursor.description]
+            resultados = [
+                dict(zip(colunas, row))
+                for row in cursor.fetchall()
+            ]
+
+        return resultados
+

@@ -264,34 +264,35 @@ class GeradorGraficos:
             [0, 0, 0, 0, 0, 0, 0]
         ]
 
-        equipamento = 0
-        controlador = 0
-        while controlador < len(equipamentos_reportes):
-            map_equipamento_reporte = equipamentos_reportes[controlador]
-
-            if equipamento == 0 and map_equipamento_reporte['tipo_equipamento'] == TipoEquipamento.AR_CONDICIONADO:
-                valores_matriz[0][map_equipamento_reporte['dia']-1] = map_equipamento_reporte['reportes']
-                equipamento = 1
-            else:
-                equipamento = 1
-
-            if equipamento == 1 and map_equipamento_reporte['tipo_equipamento'] == TipoEquipamento.COMPUTADOR:
-                valores_matriz[1][map_equipamento_reporte['dia']-1] = map_equipamento_reporte['reportes']
-                equipamento = 2
-            else:
-                equipamento = 2
-
-
-            if equipamento == 2 and map_equipamento_reporte['tipo_equipamento'] == TipoEquipamento.PROJETOR:
-                valores_matriz[2][map_equipamento_reporte['dia']-1] = map_equipamento_reporte['reportes']
-
-            controlador = controlador + 1
-            equipamento = 0
-
-
         lista_dias_equipamentos = []
 
+        if equipamentos_reportes:
+            equipamento = 0
+            controlador = 0
+            while controlador < len(equipamentos_reportes):
+                map_equipamento_reporte = equipamentos_reportes[controlador]
+
+                if equipamento == 0 and map_equipamento_reporte['tipo_equipamento'] == TipoEquipamento.AR_CONDICIONADO:
+                    valores_matriz[0][map_equipamento_reporte['dia']-1] = map_equipamento_reporte['reportes']
+                    equipamento = 1
+                else:
+                    equipamento = 1
+
+                if equipamento == 1 and map_equipamento_reporte['tipo_equipamento'] == TipoEquipamento.COMPUTADOR:
+                    valores_matriz[1][map_equipamento_reporte['dia']-1] = map_equipamento_reporte['reportes']
+                    equipamento = 2
+                else:
+                    equipamento = 2
+
+
+                if equipamento == 2 and map_equipamento_reporte['tipo_equipamento'] == TipoEquipamento.PROJETOR:
+                    valores_matriz[2][map_equipamento_reporte['dia']-1] = map_equipamento_reporte['reportes']
+
+                controlador = controlador + 1
+                equipamento = 0
+
         for dia in range(7):  # colunas
+
             for equipamento in range(3):  # linhas
                 lista_dias_equipamentos.append(
                     valores_matriz[equipamento][dia]
