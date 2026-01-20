@@ -17,16 +17,16 @@
 {% endblock %}
 
  {% block header %}
-     {% include 'locais/partials/headers/predio/predio_header.html' %}
+     {% include 'locais/partials/headers/predio/predio_header.html' with predio_id=predio_id nome_predio=nome_predio total_setores=total_setores total_salas=total_salas total_equipamentos=total_equipamentos %}
  {% endblock %}
 
 {% block content %}
     <div class="container-conteudo-predio">
             <section class="cards-container">
-                {% include 'locais/partials/cards_metricas_predio/card_metricas_predio.html' with titulo='Reportes abertos' quantidade='50' porcentagem='+15.03%' tipo_card='reportes-abertos' %}
-                {% include 'locais/partials/cards_metricas_predio/card_metricas_predio.html' with titulo='Manutenções agendadas para hoje' quantidade='25' porcentagem='+6.08%' tipo_card='manutencoes-agendadas' %}
-                {% include 'locais/partials/cards_metricas_predio/card_metricas_predio.html' with titulo='Salas que precisam de cuidados' quantidade='10' porcentagem='+11.01%' tipo_card='salas-cuidados' %}
-                {% include 'locais/partials/cards_metricas_predio/card_metricas_predio.html' with titulo='Manutenções pendentes' quantidade='7' porcentagem='-0.03%' tipo_card='salas-inviaveis' %}
+                {% include 'locais/partials/cards_metricas_predio/card_metricas_predio.html' with titulo='Reportes abertos' quantidade=reportes_abertos porcentagem='+15.03%' tipo_card='reportes-abertos' %}
+                {% include 'locais/partials/cards_metricas_predio/card_metricas_predio.html' with titulo='Manutenções agendadas para hoje' quantidade=manutencoes_hoje porcentagem='+6.08%' tipo_card='manutencoes-agendadas' %}
+                {% include 'locais/partials/cards_metricas_predio/card_metricas_predio.html' with titulo='Salas que precisam de cuidados' quantidade=salas_precisam_cuidados porcentagem='+11.01%' tipo_card='salas-cuidados' %}
+                {% include 'locais/partials/cards_metricas_predio/card_metricas_predio.html' with titulo='Manutenções pendentes' quantidade=manutencoes_pendentes porcentagem='-0.03%' tipo_card='salas-inviaveis' %}
             </section>
 
             <section class="estado-sala-equipamento">

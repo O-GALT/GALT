@@ -18,7 +18,7 @@
                 O GALT centraliza informações essenciais do seu ambiente, facilita o acompanhamento das operações e
                 melhora a eficiência da sua equipe. Entre para começar a controlar tudo em um só lugar.</p>
 
-            <form method="post" class="login-form" action="{% url 'login' %}">
+            <form method="post" class="login-form" action="{% url 'core_login' %}">
                 {% csrf_token %}
                 <input type="email" name="email_escolar" placeholder="Email" required>
                 <input type="hidden" name="next" value="{{ request.GET.next }}">

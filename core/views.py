@@ -1,9 +1,12 @@
+import qrcode
+import socket
+from io import BytesIO
 from django.contrib.auth.decorators import login_required
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
 from core.essenciais import TipoUsuario
 
 from django.http import HttpResponseRedirect
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, FileResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
@@ -21,23 +24,26 @@ def pagina_login(request):
            username=request.POST.get('email_escolar'),
            password=request.POST.get('senha')
         )
-    
+
+
         if user:
             login(request, user)
             next_url = request.POST.get("next")
             if next_url:
                 return redirect(next_url)
             else:
-               return redirect('predios')
+               return redirect('locais_predio_detail', 1)
+        else:
+            return render(request, 'core/pages/login.html')
     return render(request, 'core/pages/login.html')
 
 @login_required
-@nivel_acesso_permitido(TipoUsuario.ADMINISTRADOR)
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])
 def concluido_modal(request):
     return render(request, 'core/pages/modais/modal-concluido.html')
 
 @login_required
-@nivel_acesso_permitido(TipoUsuario.ADMINISTRADOR)
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])
 def exclusao_modal(request):
     return render(request, 'core/pages/modais/modal-exclusao.html')
 
@@ -117,3 +123,44 @@ def criar_equipamento_modal(request):
         GerenciadorAuditoria.persistir_auditoria(admin, Acao.CRIAR_EQUIPAMENTO, TipoAlvo(form.cleaned_data['tipo']))
         return HttpResponseRedirect(reverse('criar_recursos'))
     return render(request, 'core/pages/modais/modal-criar-equipamento.html', {'form': form})
+
+def gerar_qr_code(request, url):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))  # não envia nada
+    ip = s.getsockname()[0]
+    s.close()
+
+    url = request.scheme + '://' + ip + ':8000' + reverse(url)
+
+    qr_code = qrcode.QRCode(
+        version=None,
+        error_correction=qrcode.constants.ERROR_CORRECT_H,
+        box_size=8,
+        border=4
+    )
+
+    qr_code.add_data(url)
+    qr_code.make(fit=True)
+
+    img = qr_code.make_image(
+        fill_color='white',
+        back_color='blue'
+    )
+
+    buffer = BytesIO()
+    img.save(buffer, format='PNG')
+    buffer.seek(0)
+    return buffer
+
+def exibir_qr_code(request, url):
+    return HttpResponse(
+        gerar_qr_code(request, url).getvalue(),
+        content_type='image/png'
+    )
+
+def baixar_qr_code(request, url, identificador):
+    return FileResponse(
+        gerar_qr_code(request, url),
+        as_attachment=True,
+        filename= identificador + '_qrcode.png'
+    )

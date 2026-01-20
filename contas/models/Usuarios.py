@@ -13,3 +13,7 @@ class Usuarios(AbstractUser):
 
     def __str__(self):
         return self.email_escolar
+
+    @staticmethod
+    def listar_usuarios():
+        return Usuarios.objects.all()

@@ -2,6 +2,9 @@ from django.db import models
 from ativos.models.Equipamentos import Equipamentos
 from contas.models.Usuarios import Usuarios
 from core.essenciais.EstadoReporte import EstadoReporte
+from django.db.models import Count
+from django.db.models import F
+from django.db.models.functions import ExtractWeekDay
 
 
 class Reportes(models.Model):
@@ -19,3 +22,13 @@ class Reportes(models.Model):
 
     def __str__(self):
         return f"{self.titulo} ({self.usuario.nome} -> {self.equipamento.tipo})"
+
+    @staticmethod
+    def carregar_reportes_durante_a_semana_do_predio(predio_id):
+        return Reportes.objects.filter(equipamento__sala__setor__predio__predio_id=predio_id).annotate(
+            dia=ExtractWeekDay('data')).values(tipo_equipamento=F('equipamento__tipo'), dia=F('dia')).annotate(
+            reportes=Count('reporte_id')).order_by('dia', 'tipo_equipamento')
+
+    @staticmethod
+    def listar_reportes_equipamento(equipamento_id):
+        return Reportes.objects.filter(equipamento__equipamento_id=equipamento_id, estado_atual='ABERTO')

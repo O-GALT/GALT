@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-^)c05a71ly^)a5^=$i5c#wjjnvnpb)$6(mfrp82m(s)=8ocqzv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -79,6 +79,7 @@ WSGI_APPLICATION = 'GALT.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+
 
 # DATABASES = {
 #     'default': {
@@ -146,4 +147,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL= 'contas.Usuarios'
 
-LOGIN_URL = 'login'
+LOGIN_URL = 'core_login'

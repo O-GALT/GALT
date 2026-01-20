@@ -11,15 +11,18 @@
 {% endblock %}
 
 {% block nome_objeto %}
-    {% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome='Prédio principal' %}
+    {% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome=nome_predio %}
 {% endblock %}
 
 {% block actions_visao_setores_salas_equipamentos %}
-    {% include 'locais/partials/headers/partials_do_header/visao_setores_salas_equipamentos/actions_visao_setores_salas_equipamentos_header.html' %}
+    {% include 'locais/partials/headers/partials_do_header/visao_setores_salas_equipamentos/actions_visao_setores_salas_equipamentos_header.html' with predio_id=predio_id %}
 {% endblock %}
 
 {% block quantidade_objeto %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='10' objeto='Setores' %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='53' objeto='Salas' %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='500' objeto='Equipamentos' %}
+    {% url 'locais_predio_setores' predio_id as url_setores_predio %}
+    {% url 'locais_predio_salas' predio_id as url_salas_predio %}
+    {% url 'locais_predio_equipamentos' predio_id as url_equipamentos_predio %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref=url_setores_predio quantidade=total_setores objeto='Setores' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref=url_salas_predio quantidade=total_salas objeto='Salas' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref=url_equipamentos_predio quantidade=total_equipamentos objeto='Equipamentos' %}
 {% endblock %}

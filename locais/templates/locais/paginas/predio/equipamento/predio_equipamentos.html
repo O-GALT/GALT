@@ -8,13 +8,13 @@
 {% endblock %}
 
 {% block header %}
-    {% include 'locais/partials/headers/predio/predio_equipamentos_header.html' %}
+    {% include 'locais/partials/headers/predio/predio_equipamentos_header.html' with predio_id=predio_id nome_predio=nome_predio total_setores=total_setores total_salas=total_salas total_equipamentos=total_equipamentos setores=setores salas=salas estados=estados %}
 {% endblock %}
 
 {% block content %}
     <div class="container-equipamentos">
         {% for eq in equipamentos %}
-            <a href="{% url 'equipamento' %}">
+            <a href="{% url 'ativos_equipamento_detail' eq.equipamento_id %}">
                 {% include 'locais/partials/predio/equipamentos/equipamento_card.html' with classe_estado=eq.classe_estado nome_equipamento=eq.nome_equipamento estado=eq.estado sala=eq.sala posicao=eq.posicao tipo_equipamento=eq.tipo_equipamento %}
             </a>
         {% endfor %}
