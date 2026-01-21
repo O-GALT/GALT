@@ -1,0 +1,152 @@
+:root {
+    --red-primary: #c83a3a;
+    --red-dark: #9f2b2b;
+    --gray-900: #1f1f1f;
+    --gray-700: #3a3a3a;
+    --gray-500: #8f8a8a;
+    --gray-200: #e4dddd;
+    --background: #f7f6f6;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background: var(--background);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-900);
+}
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    padding: 40px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    padding: 55px 48px;
+    gap: 30px;
+}
+
+.card img {
+    margin: 20px;
+}
+
+
+/* Conteúdo */
+
+
+.content {
+    width: 100%;
+    text-align: center;
+}
+
+.content h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.content p {
+    width: 100%;
+    font-size: 16px;
+    color: var(--gray-700);
+    line-height: 1.6;
+    margin-bottom: 32px;
+}
+
+.content p span {
+    color: var(--red-dark);
+    font-weight: 600;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.btn-primary {
+    padding: 14px 28px;
+    background: var(--red-primary);
+    color: var(--white);
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: var(--red-dark);
+}
+
+.btn-secondary {
+    padding: 14px 34px;
+    background: var(--gray-200);
+    color: var(--gray-700);
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background: #d8cfcf;
+}
+
+
+/* Responsivo */
+
+
+@media (max-width: 900px) {
+    .card img {
+        width: 100%;
+        max-width: 450px;
+        margin: 0;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .container {
+        padding: 18px;
+    }
+
+    .card {
+        padding: 32px 16px;
+        gap: 30px;
+    }
+
+    .card img {
+        max-width: 250px;
+        margin: 0;
+    }
+
+    .card h2 {
+        font-size: 22px;
+    }
+
+    .card p {
+        font-size: 12px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+}

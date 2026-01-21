@@ -3,7 +3,7 @@ from . import views
 from .views import predios_equipamentos
 
 urlpatterns = [
-    path('', views.index, name='locais_index'),
+    path('', views.home, name='home'),
     path('predios/<int:predio_id>/', views.predios, name='locais_predio_detail'),
     path('predios/<int:predio_id>/setores/', views.predios_setores, name='locais_predio_setores'),
     path('predios/<int:predio_id>/salas/', views.predios_salas, name='locais_predio_salas'),
