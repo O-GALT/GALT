@@ -1,0 +1,162 @@
+{% extends 'core/paginas/base/estrutura_base/estrutura_base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'agendas/css/partials/kanban/kanban.css' %}">
+    <link rel="stylesheet" href="{% static 'agendas/css/partials/info_kanban_card/info_kanban_card.css' %}">
+    <link rel="stylesheet" href="{% static 'agendas/css/partials/kanban_card/kanban_card.css' %}">
+{% endblock %}
+
+
+{% block header %}
+    {% include 'agendas/partials/headers/agendamentos_header.html' %}
+{% endblock %}
+
+{% block modais %}
+    {% include 'agendas/partials/info_kanban_card/info_kanban_card.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="board">
+
+        <div class="column">
+            <div class="column-header">
+                <h2>A Serem realizadas</h2>
+                <span class="count yellow">{{ pendentes.count }}</span>
+            </div>
+
+            <div class="card-wrapper">
+                {% for card in pendentes.cards %}
+                    {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.nome_sala nome_setor=card.nome_setor nome_predio=card.nome_predio hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos descricao=card.descricao %}
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div class="column">
+            <div class="column-header">
+                <h2>Fazendo</h2>
+                <span class="count pink">{{ em_andamento.count }}</span>
+            </div>
+
+            <div class="card-wrapper">
+                {% for card in em_andamento.cards %}
+                    {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.nome_sala nome_setor=card.nome_setor nome_predio=card.nome_predio hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos descricao=card.descricao %}
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div class="column">
+            <div class="column-header">
+                <h2>Esperando Confirmação</h2>
+                <span class="count purple">{{ feedback.count }}</span>
+            </div>
+
+            <div class="card-wrapper">
+                {% for card in feedback.cards %}
+                    {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.nome_sala nome_setor=card.nome_setor nome_predio=card.nome_predio hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos descricao=card.descricao %}
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div class="column">
+            <div class="column-header">
+                <h2>Inacabado</h2>
+                <span class="count green">{{ inacabado.count }}</span>
+            </div>
+
+            <div class="card-wrapper">
+                {% for card in inacabado.cards %}
+                    {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.nome_sala nome_setor=card.nome_setor nome_predio=card.nome_predio hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos descricao=card.descricao %}
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div class="column">
+            <div class="column-header">
+                <h2>Finalizado</h2>
+                <span class="count blue">{{ finalizado.count }}</span>
+            </div>
+
+            <div class="card-wrapper">
+                {% for card in finalizado.cards %}
+                    {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.nome_sala nome_setor=card.nome_setor nome_predio=card.nome_predio hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos descricao=card.descricao %}
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const board = document.querySelector(".board");
+            const overlay = document.getElementById("overlay");
+            const closeModal = document.getElementById("closeModal");
+
+            const modal = {
+                title: document.getElementById("modalTitle"),
+                date: document.getElementById("modalDate"),
+                setor: document.getElementById("modalSetor"),
+                predio: document.getElementById("modalPredio"),
+                horario: document.getElementById("modalHorario"),
+                tecnicos: document.getElementById("modalTecnicos"),
+                descricao: document.getElementById("modalDescription"),
+            };
+
+            board.addEventListener("click", (event) => {
+                const card = event.target.closest(".kanban-card");
+                if (!card) return;
+
+                preencherModal(card.dataset);
+                overlay.classList.add("active");
+            });
+
+            function adicionarTecnicos(numeroTecnicos) {
+                let container = ''
+
+                for (let i = 1; i <= numeroTecnicos; i++) {
+
+                    if (i !== 0 && i % 2 === 0) {
+                        container += '<img src="https://randomuser.me/api/portraits/men/40.jpg" alt="imagem do técnico">'
+                    } else {
+                        container += '<img src="https://randomuser.me/api/portraits/women/43.jpg" alt="imagem do técnico">'
+                    }
+
+                }
+
+                return container
+            }
+
+            function preencherModal(data) {
+                modal.title.textContent = `Manutenção da ${data.nomeSala}` ;
+                modal.date.textContent = data.date || "—";
+                modal.setor.textContent = data.nomeSetor || "—";
+                modal.predio.textContent = data.nomePredio || "—";
+                modal.horario.textContent =
+                    `${data.horaInicio || "--"} - ${data.horaFim || "--"}`;
+                modal.descricao.textContent = data.descricao || "Sem descrição";
+
+                modal.tecnicos.innerHTML = adicionarTecnicos(data.numeroTecnicos)
+            }
+
+            function fecharModal() {
+                overlay.classList.remove("active");
+            }
+
+            closeModal.addEventListener("click", fecharModal);
+
+            overlay.addEventListener("click", (e) => {
+                if (e.target === overlay) fecharModal();
+            });
+
+        });
+
+{% endblock %}
+
+

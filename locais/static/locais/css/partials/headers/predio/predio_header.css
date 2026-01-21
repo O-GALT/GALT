@@ -3,6 +3,10 @@
     gap: 1.5vw;
 }
 
-.conteudo-direita {
-    justify-content: start;
+
+
+@media screen and (max-width: 450px){
+    .conteudo-esquerda .actions {
+        display: none;
+    }
 }

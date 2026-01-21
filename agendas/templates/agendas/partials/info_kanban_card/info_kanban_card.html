@@ -1,0 +1,46 @@
+{% load static %}
+
+<div class="overlay" id="overlay">
+    <div class="modal">
+
+        <header class="modal-header">
+            <h2 id="modalTitle">Manutenção da </h2>
+            <button class="close-btn" id="closeModal">&times;</button>
+        </header>
+
+        <section class="meta-grid">
+
+            <div class="meta-item">
+                <span class="label">Data</span>
+                <span id="modalDate">—</span>
+            </div>
+
+            <div class="meta-item">
+                <span class="label">Setor</span>
+                <span id="modalSetor">—</span>
+            </div>
+
+            <div class="meta-item">
+                <span class="label">Prédio</span>
+                <span id="modalPredio">—</span>
+            </div>
+
+            <div class="meta-item">
+                <span class="label">Horário</span>
+                <span id="modalHorario">—</span>
+            </div>
+
+            <div class="meta-item">
+                <span class="label">Técnicos</span>
+                <span class="avatars" id="modalTecnicos"></span>
+            </div>
+
+        </section>
+
+        <section class="description">
+            <span class="label">Descrição</span >
+            <p id="modalDescription">—</p>
+        </section>
+
+    </div>
+</div>

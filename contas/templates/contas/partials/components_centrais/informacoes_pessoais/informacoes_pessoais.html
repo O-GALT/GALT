@@ -17,7 +17,7 @@
             <div class="profile-header">
                 <div class="profile-info">
 
-                    <img src="https://i.imgur.com/CzXTtJV.png" alt="Foto de perfil" class="profile-img"/>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe9hj1SVBykNeadEEmA6T8U7OQKQvmVmbUtQ&s" alt="Foto de perfil" class="profile-img"/>
 
                     <div class="profile-name">
                         <h2>Alexa Rawles</h2>
@@ -25,14 +25,20 @@
                     </div>
                 </div>
 
-                <button class="edit-btn">Edit</button>
+                <div class="actions">
+                    <button class="edit-btn" title="Editar informações">Edit</button>
+                    <button class="exclude-btn" title="Excluir conta">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+
             </div>
 
             <form class="info-form">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="nome">Nome</label>
-                        <input type="text" id="nome" value="Alexa Rawles" readonly/>
+                        <input type="text" id="nome" value="Alexa Rawles" readonly />
                     </div>
 
                     <div class="form-group">
@@ -56,7 +62,12 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="cargo">Cargo/Função</label>
-                        <input type="text" id="cargo" value="Assistente de Manutenção" readonly/>
+                        <select name="Cargo" id="cargp">
+                            <option value="admin">Administrador</option>
+                            <option value="ajudante">Servidor</option>
+                            <option value="tecnico">Técnico de TI</option>
+                            <option value="tecnico">Aluno</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
