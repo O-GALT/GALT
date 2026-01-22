@@ -152,7 +152,7 @@ class SQLNativo:
                     INNER JOIN locais_predios p USING (predio_id)
                     WHERE p.predio_id = %s
                 )
-
+    
                 SELECT
                     predio_id,
                     predio,
@@ -182,12 +182,12 @@ class SQLNativo:
                     equipamentos_funcionando,
                     equipamentos_manutencao,
                     equipamentos_defeituoso
-                FROM salas,
-                     manutencoes,
-                     reportes,
-                     equipamentos,
-                     setores,
-                     predios;
+                FROM predios 
+                    INNER JOIN salas ON TRUE
+                    INNER JOIN manutencoes ON TRUE
+                    INNER JOIN reportes ON TRUE
+                    INNER JOIN equipamentos ON TRUE
+                    INNER JOIN setores ON TRUE
                 """,
                 [predio_id, predio_id, predio_id, predio_id, predio_id, predio_id],
             )
@@ -350,31 +350,46 @@ class SQLNativo:
             
             SELECT 
             
-            serial,
-            estado_atual,
-            manutencoes_realizadas,
-            reportes_abertos,
-            tipo,
-            sala,
-            fabricante,
-            data_aquisicao,
-            manutencoes_preventivas,
-            data_ultima_manutencao,
-            ultima_manutencao,
-            manutencoes_nesse_mes,
-            
-            ROUND((AVG(manutencoes_no_mes) * 100)/5, 0) AS recomendacao_substituicao,
-            
-            ROUND(AVG(dias_entre_falhas), 0) AS tempo_medio_entre_falhas,
+            e.serial,
+            e.estado_atual,
+            COALESCE(im.manutencoes_realizadas, 0) AS manutencoes_realizadas,
+            COALESCE(re.reportes_abertos, 0) AS reportes_abertos,
+            e.tipo,
+            e.sala,
+            e.fabricante,
+            e.data_aquisicao,
+            COALESCE(mp.manutencoes_preventivas, 0) AS manutencoes_preventivas, 
+            COALESCE(e.data_ultima_manutencao, NULL) AS data_ultima_manutencao,
+            COALESCE(ul.ultima_manutencao, NULL) AS ultima_manutencao,
+            COALESCE(im.manutencoes_nesse_mes,0) AS manutencoes_nesse_mes,
             
             CASE 
-                WHEN (AVG(manutencoes_no_mes) * 100)/5 >= 10 AND AVG(manutencoes_no_mes * 100)/5 <= 29 THEN 'baixo'
-                WHEN (AVG(manutencoes_no_mes) * 100)/5 >= 30 AND AVG(manutencoes_no_mes * 100)/5 <= 55 THEN 'mediano'
-                WHEN (AVG(manutencoes_no_mes) * 100)/5 >= 56 AND AVG(manutencoes_no_mes * 100)/5 <= 100 THEN 'alto'
+                WHEN COALESCE(AVG(fa.manutencoes_no_mes), 0) = 0 THEN 0
+                ELSE
+                    ROUND((AVG(fa.manutencoes_no_mes) * 100)/5, 0)
+            END AS recomendacao_substituicao,
+                
+            CASE 
+                WHEN COALESCE(AVG(df.dias_entre_falhas), 0) = 0 THEN 0
+                ELSE                    
+                    ROUND(AVG(df.dias_entre_falhas), 0)
+            END AS tempo_medio_entre_falhas,
+            
+            CASE 
+                WHEN COALESCE(AVG(fa.manutencoes_no_mes), 0) = 0 THEN 'sem medida'
+                WHEN (AVG(fa.manutencoes_no_mes) * 100)/5 >= 10 AND AVG(fa.manutencoes_no_mes * 100)/5 <= 29 THEN 'baixo'
+                WHEN (AVG(fa.manutencoes_no_mes) * 100)/5 >= 30 AND AVG(fa.manutencoes_no_mes * 100)/5 <= 55 THEN 'mediano'
+                WHEN (AVG(fa.manutencoes_no_mes) * 100)/5 >= 56 AND AVG(fa.manutencoes_no_mes * 100)/5 <= 100 THEN 'alto'
                 
             END AS tedencias_a_falhas	
             
-            FROM indicadores_manutencoes, ultima_manutencao, dias_entre_falhas, falhas_no_mes, equipamento, reportes_abertos, manutencoes_preventivas
+            FROM equipamento e
+                LEFT JOIN indicadores_manutencoes im ON true
+                LEFT JOIN ultima_manutencao ul ON true
+                LEFT JOIN dias_entre_falhas df ON true
+                LEFT JOIN falhas_no_mes fa ON true
+                LEFT JOIN reportes_abertos re ON true
+                LEFT JOIN manutencoes_preventivas mp ON true
             
             GROUP BY ultima_manutencao, manutencoes_nesse_mes, serial, estado_atual, manutencoes_realizadas, reportes_abertos, tipo, sala, fabricante, data_ultima_manutencao, data_aquisicao, manutencoes_preventivas;
             ''', [equipamento_id, equipamento_id, equipamento_id, equipamento_id, equipamento_id, equipamento_id, equipamento_id])
@@ -387,3 +402,153 @@ class SQLNativo:
 
         return resultados
 
+
+    @staticmethod
+    def carregar_indicadores_sala(sala_id):
+        with connection.cursor() as cursor:
+            cursor.execute('''
+            SELECT 
+                s.localizacao,
+                s.estado_atual,
+                COALESCE((
+                    SELECT u.email_escolar FROM contas_usuarios u
+                    
+                    
+                    INNER JOIN contas_tecnicosti t ON t.usuario_id = u.id
+                    INNER JOIN agendas_tecnicostiagendamentos at ON at.tecnico_id = t.usuario_id
+                    INNER JOIN agendas_agendamentos a USING(agendamento_id)
+                    INNER JOIN locais_salas s USING(sala_id)
+                    WHERE s.sala_id = %s
+                    ORDER BY a.data DESC
+                    LIMIT 1
+                ), 'Sem agendamentos cadastrados') AS responsavel_manutencao,
+                
+                COUNT(*) FILTER (WHERE e.tipo = 'COMPUTADOR') AS computadores,
+                COUNT(*) FILTER (WHERE e.tipo = 'PROJETOR') AS projetores,
+                COUNT(*) FILTER (WHERE e.tipo = 'AR_CONDICIONADO') AS ar_condicionados
+                
+                
+                FROM locais_salas s
+                LEFT JOIN ativos_equipamentos e USING(sala_id)
+                
+                WHERE s.sala_id = %s
+                GROUP BY s.localizacao, s.estado_atual;
+            ''', [sala_id, sala_id])
+
+            colunas = [col[0] for col in cursor.description]
+            resultados = [
+                dict(zip(colunas, row))
+                for row in cursor.fetchall()
+            ]
+
+        return resultados
+
+
+    @staticmethod
+    def carregar_indicadores_setor(setor_id):
+        with connection.cursor() as cursor:
+            cursor.execute('''
+                                WITH
+                    
+                    setores AS (
+                        SELECT s.setor FROM locais_setores s
+                        WHERE s.setor_id = 1
+                    ),
+                    
+                    manutencoes AS (
+                        SELECT
+                    
+                        COUNT(*) FILTER(WHERE a.data = CURRENT_DATE) AS manutencoes_hoje,
+                        COUNT(*) AS manutencoes_agendadas,
+                    
+                        COUNT(*) FILTER (
+                            WHERE a.data >= DATE_TRUNC('month', CURRENT_DATE) 
+                            AND a.data < DATE_TRUNC('month', CURRENT_DATE + INTERVAL '1 month')
+                            AND a.estado_atual = 'FEITO'
+                        ) AS manutencoes_mes_atual,
+                        COUNT(*) FILTER (
+                            WHERE a.data >= DATE_TRUNC('month', CURRENT_DATE - INTERVAL '1 month')
+                            AND a.data < DATE_TRUNC('month', CURRENT_DATE)
+                            AND a.estado_atual = 'FEITO'
+                        ) AS manutencoes_mes_passado
+                    
+                        FROM agendas_agendamentos a
+                        INNER JOIN locais_salas s USING(sala_id)
+                        INNER JOIN locais_setores se USING(setor_id)
+                        WHERE se.setor_id = 1
+                    ),
+                    
+                    equipamentos AS (
+                        SELECT
+                    
+                        COUNT(*) FILTER (WHERE e.estado_atual = 'FUNCIONANDO') AS equipamentos_funcionando,
+                        COUNT(*) FILTER (WHERE e.estado_atual = 'MANUTENCAO') AS equipamentos_manutencao,
+                        COUNT(*) FILTER (WHERE e.estado_atual = 'DEFEITUOSO') AS equipamentos_defeituosos,
+                        COUNT(*) AS equipamentos_total
+                    
+                        FROM ativos_equipamentos e
+                        INNER JOIN locais_salas s USING(sala_id)
+                        INNER JOIN locais_setores se USING(setor_id)
+                        WHERE se.setor_id = 1
+                    ),
+                    
+                    salas AS (
+                        SELECT
+                        COUNT(*) FILTER (WHERE s.estado_atual = 'FUNCIONANDO') AS salas_funcionando,
+                        COUNT(*) FILTER (WHERE s.estado_atual = 'MANUTENCAO') AS salas_manutencao,
+                        COUNT(*) FILTER (WHERE s.estado_atual = 'INAPTA') AS salas_inaptas,
+                        COUNT(*) AS salas_total
+                    
+                        FROM locais_salas s
+                        INNER JOIN locais_setores se USING(setor_id)
+                        WHERE se.setor_id = 1
+                    ),
+                    
+                    reportes AS (
+                        SELECT COUNT(*) AS reportes_total
+                        FROM suporte_reportes r
+                        INNER JOIN ativos_equipamentos e USING(equipamento_id)
+                        INNER JOIN locais_salas s USING(sala_id)
+                        INNER JOIN locais_setores se USING(setor_id)
+                        WHERE se.setor_id = 1
+                    )
+                    
+                    SELECT 
+                        s.setor,
+                        manutencoes.manutencoes_hoje,
+                        manutencoes.manutencoes_agendadas,
+                        reportes.reportes_total,
+                    
+                        ROUND(((equipamentos.equipamentos_funcionando * 1.0) + (equipamentos.equipamentos_manutencao * 0.5)) / equipamentos.equipamentos_total * 100.0, 0) AS nivel_de_saude_setor,
+                    
+                    
+                        CASE
+                    
+                        WHEN manutencoes.manutencoes_mes_passado = 0 THEN 100
+                    
+                        ELSE ROUND((manutencoes.manutencoes_mes_atual - manutencoes.manutencoes_mes_passado) / manutencoes.manutencoes_mes_passado * 100.0, 0)
+                        END AS produtividade_setor,
+                    
+                        equipamentos.equipamentos_funcionando,
+                        equipamentos.equipamentos_manutencao,
+                        equipamentos.equipamentos_defeituosos,
+                        equipamentos.equipamentos_total,
+                        
+                        salas.salas_funcionando,
+                        salas.salas_manutencao,
+                        salas.salas_inaptas,
+                        salas.salas_total
+                    
+                        FROM setores s
+                        INNER JOIN manutencoes ON TRUE
+                        INNER JOIN equipamentos ON TRUE 
+                        INNER JOIN salas ON TRUE
+                        INNER JOIN reportes ON TRUE;
+            ''')
+
+            colunas = [col[0] for col in cursor.description]
+            resultados = [
+                dict(zip(colunas, row))
+                for row in cursor.fetchall()
+            ]
+        return resultados

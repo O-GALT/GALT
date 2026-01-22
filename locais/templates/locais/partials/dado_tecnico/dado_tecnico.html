@@ -1,6 +1,9 @@
 <div class="container-info-tecnico">
         <div>
-            <img src="{{ foto }}" width="30" height="28">
+            {% if info_extra != 'Sem agendamentos cadastrados' %}
+                <img src="{{ foto }}" width="30" height="28">
+            {% endif %}
+
         </div>
 
         <div class="info-tecnico">

@@ -1,7 +1,9 @@
 <div class="equipamento-card {{ classe_estado }}">
-    <h2>{{ nome_equipamento }}</h2>
-    <p class="estado"><strong>Estado:</strong> {{ estado }}</p>
-    <div class="info"><i class="fa-solid fa-building"></i><span>Sala {{ sala }}</span></div>
-    <div class="info"><i class="fa-solid fa-location-dot"></i><span>Posição {{ posicao }}</span></div>
-    <div class="info"><i class="fa-solid fa-laptop"></i><span>{{ tipo_equipamento }}</span></div>
+    {% if classe_estado != 'posicao-vaga' %}
+        <h2>{{ nome_equipamento }}</h2>
+        <p class="estado"><strong>Estado:</strong> {{ estado }}</p>
+        <div class="info"><i class="fa-solid fa-building"></i><span>Sala {{ sala }}</span></div>
+        <div class="info"><i class="fa-solid fa-location-dot"></i><span>Posição {{ posicao }}</span></div>
+        <div class="info"><i class="fa-solid fa-laptop"></i><span>{{ tipo_equipamento }}</span></div>
+    {% endif %}
 </div>

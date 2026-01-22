@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block header %}
-    {% include 'locais/partials/headers/setor/setor_header.html' %}
+    {% include 'locais/partials/headers/setor/setor_header.html' with nome_setor=nome_setor salas_total=salas_total equipamentos_total=equipamentos_total reportes_total=reportes_total %}
 {% endblock %}
 
 
@@ -42,7 +42,7 @@
 
                     <div class="produtividade-porcentagem-icone">
                         <div class="produtividade-porcentagem">
-                            <p>15%</p>
+                            <p>{{ produtividade_setor }}%</p>
                         </div>
 
                         <div class="produtividade-icone">

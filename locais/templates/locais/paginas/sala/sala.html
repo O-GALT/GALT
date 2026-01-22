@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block header %}
-    {% include 'locais/partials/headers/sala/sala_header.html' %}
+    {% include 'locais/partials/headers/sala/sala_header.html' with localizacao=localizacao estado_atual_classe=estado_atual_classe estado_atual=estado_atual computadores=computadores projetores=projetores ar_condicionados=ar_condicionados responsavel_manutencao=responsavel_manutencao %}
 {% endblock %}
 
 {% block content %}
@@ -42,9 +42,13 @@
                 <h2 class="grid-title">Fileira de computadores a esquerda</h2>
                 <div class="grid-coluna">
                     {% for eq in equipamentos_esquerda %}
-                        <a href="{% url 'ativos_equipamento_detail' 0 %}">
-                            {% include 'locais/partials/predio/equipamentos/equipamento_card.html' with classe_estado=eq.classe_estado nome_equipamento=eq.nome_equipamento estado=eq.estado sala=eq.sala posicao=eq.posicao tipo_equipamento=eq.tipo_equipamento %}
-                        </a>
+                        {% if eq.classe_estado != 'posicao-vaga' %}
+                            <a href="{% url 'ativos_equipamento_detail' eq.equipamento_id %}">
+                                {% include 'locais/partials/predio/equipamentos/equipamento_card.html' with classe_estado=eq.classe_estado nome_equipamento=eq.nome_equipamento estado=eq.estado sala=eq.sala posicao=eq.posicao tipo_equipamento=eq.tipo_equipamento %}
+                            </a>
+                        {% else %}
+                            {% include 'locais/partials/predio/equipamentos/equipamento_card.html' with classe_estado=eq.classe_estado %}
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -53,9 +57,13 @@
                 <h2 class="grid-title">Fileira de computadores a direita</h2>
                 <div class="grid-coluna">
                     {% for eq in equipamentos_direita %}
-                        <a href="{% url 'ativos_equipamento_detail' 0 %}">
-                            {% include 'locais/partials/predio/equipamentos/equipamento_card.html' with classe_estado=eq.classe_estado nome_equipamento=eq.nome_equipamento estado=eq.estado sala=eq.sala posicao=eq.posicao tipo_equipamento=eq.tipo_equipamento %}
-                        </a>
+                        {% if eq.classe_estado != 'posicao-vaga' %}
+                            <a href="{% url 'ativos_equipamento_detail' eq.equipamento_id %}">
+                                {% include 'locais/partials/predio/equipamentos/equipamento_card.html' with classe_estado=eq.classe_estado nome_equipamento=eq.nome_equipamento estado=eq.estado sala=eq.sala posicao=eq.posicao tipo_equipamento=eq.tipo_equipamento %}
+                            </a>
+                        {% else %}
+                            {% include 'locais/partials/predio/equipamentos/equipamento_card.html' with classe_estado=eq.classe_estado %}
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -66,9 +74,13 @@
             <h2 class="grid-title">Demais equipamentos cadastrados na sala</h2>
             <div class="grid-auxiliares">
                 {% for eq in equipamentos_auxiliares %}
-                    <a href="{% url 'ativos_equipamento_detail' 0 %}">
-                        {% include 'locais/partials/predio/equipamentos/equipamento_card.html' with classe_estado=eq.classe_estado nome_equipamento=eq.nome_equipamento estado=eq.estado sala=eq.sala posicao=eq.posicao tipo_equipamento=eq.tipo_equipamento %}
-                    </a>
+                    {% if eq.classe_estado != 'posicao-vaga' %}
+                        <a href="{% url 'ativos_equipamento_detail' eq.equipamento_id %}">
+                            {% include 'locais/partials/predio/equipamentos/equipamento_card.html' with classe_estado=eq.classe_estado nome_equipamento=eq.nome_equipamento estado=eq.estado sala=eq.sala posicao=eq.posicao tipo_equipamento=eq.tipo_equipamento %}
+                        </a>
+                    {% else %}
+                            {% include 'locais/partials/predio/equipamentos/equipamento_card.html' with classe_estado=eq.classe_estado %}
+                        {% endif %}
                 {% endfor %}
             </div>
         </div>
@@ -78,7 +90,7 @@
 
 
 {% block modais %}
-    {% include 'core/partials/qr_modal/qr_modal.html' with modal_id='qr_modal' title='Thunder v12'  descricao='Escaneie o Qrcode para ter acesso as informações do equipamentos Thunder v12' button_text='Link para download' onclick="closeModal('qr_modal')" %}
+    {% include 'core/partials/qr_modal/qr_modal.html' with modal_id='qr_modal' title='Thunder v12'  descricao='Escaneie o Qrcode para ter acesso as informações do equipamentos Thunder v12' button_text='Link para download' qr_code_url=qr_code_url identificador=localizacao onclick="closeModal('qr_modal')" %}
     {% include 'core/partials/alterar_localizacao_do_equipamento_modal/alterar_localizacao_do_equipamento_modal.html' with modal_id='modalFormulario' onclick="closeModal('modalFormulario')" %}
     {% include 'locais/partials/agendar_manutencao_modal/agendar_manutencao_modal.html' with modal_id='modal-manutencao' onclick="closeModal('modal-manutencao')" %}
 {% endblock %}

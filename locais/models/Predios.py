@@ -10,3 +10,8 @@ class Predios(models.Model):
 
     def __str__(self):
         return self.predio
+
+    @staticmethod
+    def get_predios():
+        return Predios.objects.all()
+        

@@ -10,3 +10,6 @@ class TecnicosTIAgendamentos(models.Model):
     class Meta:
         verbose_name = 'TecnicosTI e Agendamentos'
         verbose_name_plural = 'TécnicosTI e agendamentos'
+
+    def get(self):
+        TecnicosTIAgendamentos.objects.all()

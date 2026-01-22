@@ -130,7 +130,11 @@ def gerar_qr_code(request, url):
     ip = s.getsockname()[0]
     s.close()
 
-    url = request.scheme + '://' + ip + ':8000' + reverse(url)
+    if ',' in url:
+        url_splited = url.split(',')
+        url = request.scheme + '://' + ip + ':8000' + reverse(url_splited[0], args=url_splited[1])
+    else:
+        url = request.scheme + '://' + ip + ':8000' + reverse(url)
 
     qr_code = qrcode.QRCode(
         version=None,

@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block nome_objeto %}
-    {% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome='Setores administrativo' %}
+    {% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome=nome_setor %}
 {% endblock %}
 
 {% block descricao %}
@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block quantidade_objeto %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='10' objeto='Salas' %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='75' objeto='Equipamentos' %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='20' objeto='Reportes' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade=salas_total objeto='Salas' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade=equipamentos_total objeto='Equipamentos' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade=reportes_total objeto='Reportes' %}
 {% endblock %}
