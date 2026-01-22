@@ -164,3 +164,9 @@ def baixar_qr_code(request, url, identificador):
         as_attachment=True,
         filename= identificador + '_qrcode.png'
     )
+
+def custom_page_not_found_view(request, exception):
+    return render(request, 'core/pages/page_not_found/page_not_found.html', status=404)
+
+def custom_permission_denied_view(request, exception):
+    return render(request, 'core/pages/not_access/not_access.html', status=403)
