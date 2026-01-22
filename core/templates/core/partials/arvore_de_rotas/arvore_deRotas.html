@@ -1,0 +1,122 @@
+{% load static %}
+
+<nav class="breadcrumb">
+    <ul id="breadcrumbList"></ul>
+</nav>
+
+<script>
+    const BREADCRUMB_MAP = {
+
+        '/locais/predios/': [
+            { label: 'Dashboard', url: null },
+            { label: 'Prédio principal', url: null },
+            { label: 'Visão geral', url: null },
+        ],
+
+        '/locais/predios/setores/': [
+            { label: 'Dashboard', url: null },
+            { label: 'Prédio principal', url: '/locais/predios/' },
+            { label: 'Setores', url: null },
+        ],
+
+        '/locais/predios/salas/': [
+            { label: 'Dashboard', url: null },
+            { label: 'Prédio principal', url: '/locais/predios/' },
+            { label: 'Salas', url: null },
+        ],
+
+        '/locais/predios/equipamentos/': [
+            { label: 'Dashboard', url: null },
+            { label: 'Prédio principal', url: '/locais/predios/' },
+            { label: 'Equipamentos', url: null },
+        ],
+
+        '/locais/setores/': [
+            { label: 'Dashboard', url: null },
+            { label: 'Prédio principal', url: '/locais/predios/' },
+            { label: 'Setores', url: '/locais/predios/setores/' },
+            { label: 'Setor atual', url: null },
+        ],
+
+        '/locais/salas/': [
+            { label: 'Dashboard', url: null },
+            { label: 'Prédio principal', url: '/locais/predios/' },
+            { label: 'Salas', url: '/locais/predios/salas/' },
+            { label: 'Sala atual', url: null },
+        ],
+
+        '/ativos/equipamento/': [
+            { label: 'Dashboard', url: null },
+            { label: 'Prédio principal', url: '/locais/predios/' },
+            { label: 'Equipamentos', url: '/locais/predios/equipamentos/' },
+            { label: 'Equipamento atual', url: null },
+        ],
+
+        '/contas/criar-recursos/': [
+            { label: 'Dashboard', url: null },
+            { label: 'Recursos', url: null },
+        ],
+
+        '/auditoria/': [
+            { label: 'Dashboard', url: null },
+            { label: 'Auditoria', url: null },
+        ],
+
+        '/agendas/': [
+            { label: 'Dashboard', url: null },
+            { label: 'Agendas', url: null },
+        ],
+
+        '/contas/@eu/' : [
+            { label: 'Dashboard', url: null },
+            { label: 'Conta do usuário', url: null },
+        ],
+    };
+
+
+
+    function resolveDynamicBreadcrumb(map, currentPath) {
+        for (const pattern in map) {
+
+            const regex = new RegExp(
+                '^' + pattern
+                    .replace(/:id/g, '[^/]+') +
+                '$'
+            );
+
+            if (regex.test(currentPath)) {
+                return map[pattern];
+            }
+        }
+        return null;
+    }
+
+
+    function renderBreadcrumb(map, currentPath) {
+        const list = document.getElementById('breadcrumbList');
+        if (!list) return;
+
+        list.innerHTML = '';
+
+        const sequence =
+            map[currentPath] ||
+            resolveDynamicBreadcrumb(map, currentPath) ||
+            [{ label: 'Dashboard', url: '/' }];
+
+        sequence.forEach((item, index) => {
+            const li = document.createElement('li');
+            const isLast = index === sequence.length - 1;
+
+            li.innerHTML = item.url && !isLast
+                ? `<a href="${item.url}">${item.label}</a>`
+                : `<span>${item.label}</span>`;
+
+            list.appendChild(li);
+        });
+    }
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderBreadcrumb(BREADCRUMB_MAP, window.location.pathname);
+    });
+</script>

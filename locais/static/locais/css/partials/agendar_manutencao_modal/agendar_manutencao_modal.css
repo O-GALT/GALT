@@ -77,35 +77,32 @@ label span {
     color: red;
 }
 
-.select-box select {
+
+select {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+}
+
+select::selection{
+    border: none;
+}
+
+
+input , .select-box{
     width: 100%;
     padding: 12px 14px;
     border: 1px solid #dcdcdc;
     border-radius: 10px;
     font-size: 0.95rem;
-    background: white;
 }
 
-.input-icon {
-    position: relative;
-}
-
-.input-icon input[type="date"] {
-    width: 100%;
-    padding: 12px 40px 12px 14px;
+input[type="time"] {
+    width: 125px;
+    padding: 12px 14px;
     border: 1px solid #dcdcdc;
     border-radius: 10px;
     font-size: 0.95rem;
-}
-
-.calendar-icon {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 18px;
-    opacity: 0.6;
-    pointer-events: none;
 }
 
 textarea {
@@ -154,4 +151,28 @@ textarea {
 
 .confirm-btn:hover {
     background: #446f50;
+}
+
+.technicians-list {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.technician-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #a7ffb6;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.technician-item button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #555;
 }

@@ -1,30 +1,15 @@
-/* ====== RESET ====== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-}
-
-body {
-    background-color: #F4F6F8;
-}
-
-/* ====== MAIN CONTAINER ====== */
 .container {
     padding: 20px;
 }
 
-/* ====== PROFILE CARD ====== */
 .profile-card {
-    background: #fff;
     padding: 35px 40px;
     border-radius: 12px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     background-color: #F1F2ED;
 }
 
-/* ====== HEADER (FOTO + NOME + BOTÃO) ====== */
+/* HEADER */
 .profile-header {
     display: flex;
     justify-content: space-between;
@@ -55,7 +40,23 @@ body {
     color: #888;
 }
 
-/* ====== EDIT BUTTON ====== */
+/* actions */
+.actions{
+    display: flex;
+    gap: 10px;
+}
+
+
+.exclude-btn {
+    background-color: #ff4444;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
 .edit-btn {
     background-color: #2E7D6B;
     border: none;
@@ -71,7 +72,11 @@ body {
     background-color: #256B59;
 }
 
-/* ====== FORM ====== */
+.exclude-btn:hover {
+    background-color: #c53434;
+}
+
+/*  FORM */
 .info-form {
     display: flex;
     flex-direction: column;
@@ -99,13 +104,14 @@ body {
 }
 
 /* CAMPOS DE INPUT */
-input {
+input , select {
     padding: 12px 14px;
     border: 1px solid #E0E0E0;
     border-radius: 8px;
     font-size: 14px;
     background-color: #FAFAFA;
     color: #555;
+    pointer-events: none;
 }
 
 input[readonly] {
@@ -114,7 +120,7 @@ input[readonly] {
     cursor: default;
 }
 
-/* ====== RESPONSIVIDADE ====== */
+/* RESPONSIVIDADE  */
 @media (max-width: 900px) {
     .form-row {
         flex-direction: column;

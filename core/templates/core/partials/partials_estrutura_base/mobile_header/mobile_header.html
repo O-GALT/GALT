@@ -1,44 +1,163 @@
 {% load static %}
 
-<header class="mobile-header">
+{% url 'predios' as url_predios %}
+{% url 'predios_setores' as url_predios_setores %}
+{% url 'predios_salas' as url_predios_salas %}
+{% url 'predios_equipamentos' as url_predios_equipamentos %}
+
+{% url 'criar_recursos' as url_criar_recursos %}
+{% url 'auditoria_index' as url_auditoria_index %}
+{% url 'agendas_index' as url_agendas_index %}
+{% url 'contas_eu' as url_contas_eu %}
+
+
+<header class="mobile-header" id="mobile-header">
     <div class="mobile-header-top">
         <div class="header-brand">
-            <strong>GALT</strong><br>
+            <strong>GALT</strong>
             <span>Gerenciamento de manutenções</span>
         </div>
 
-        <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menu">
+        <button
+                id="menu-toggle"
+                class="menu-toggle"
+                aria-label="Abrir menu"
+                aria-expanded="false"
+        >
             <i class="fa-solid fa-bars"></i>
         </button>
-    </div>
 
-    <nav id="mobile-menu" class="mobile-menu">
-        <ul>
+        <button
+                id="menu-close"
+                class="menu-close hidden"
+                aria-label="Fechar menu"
+        >
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+</header>
+
+<nav id="mobile-menu" class="mobile-menu" aria-hidden="true">
+
+
+    <div class="menu-conteudo">
+
+        <!-- Links para todas as páginas da aplicação -->
+        <ul class="menu-links">
+
+            <!-- Nome da seção, aparece quando acessamos páginas que precisam mover os links para o menu -->
+            <li>
+                <span>Sistema</span>
+            </li>
+
             <li title="Dashboard dos equipamentos do prédio">
-                <a href="{% url 'locais_index' %}">Dashboard dos equipamentos do prédio</a>
+                <a  class="{% if request.path == url_predios %}active{% endif %}" href="{{ url_predios }}">
+                    Prédios
+                </a>
             </li>
 
             <li title="Criar salas e setores">
-                <a href="{% url 'suporte_index' %}">Criar salas e setores</a>
+                <a  class="{% if request.path == url_criar_recursos %}active{% endif %}" href="{{ url_criar_recursos }}">
+                    Criar salas e setores
+                </a>
             </li>
 
             <li title="Auditoria de registros">
-                <a href="{% url 'auditoria_index' %}">Auditoria de registros</a>
+                <a  class="{% if request.path == url_auditoria_index %}active{% endif %}" href="{{ url_auditoria_index }}">
+                    Auditoria de registros
+                </a>
             </li>
 
             <li title="Kanban de manutenções agendadas">
-                <a href="{% url 'ativos_index' %}">Kanban de manutenções agendadas</a>
+                <a  class="{% if request.path == url_agendas_index %}active{% endif %}" href="{{ url_agendas_index }}"
+                >
+                    Kanban de manutenções agendadas
+                </a>
+            </li>
+
+
+            <li>
+                <a  class="{% if request.path == url_contas_eu %}active{% endif %}" href="{{ url_contas_eu }}">
+                    Conta do usuário
+                </a>
             </li>
         </ul>
-    </nav>
-</header>
+
+
+
+        <!-- Links para as seções da página de dashboard -->
+        {% if request.path == url_predios or request.path == url_predios_equipamentos or request.path == url_predios_salas or request.path == url_predios_setores %}
+
+            <ul class="menu-links">
+                <li>
+                    <span>Seções do prédio atual</span>
+                </li>
+
+                <li>
+                    <a href="{{ url_predios }}">
+                        Visão Geral
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_predios_setores }}" class="setores">
+                        Setores
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_predios_salas }}">
+                        Salas/Laboratios
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_predios_equipamentos }}">
+                        Equipamentos
+                    </a>
+                </li>
+            </ul>
+        {% endif %}
+    </div>
+
+
+    <div class="menu-footer">
+        <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+    </div>
+</nav>
 
 <script>
-    const toggleBtn = document.getElementById("menu-toggle");
+    const openBtn = document.getElementById("menu-toggle");
+    const closeBtn = document.getElementById("menu-close");
     const menu = document.getElementById("mobile-menu");
+    const header = document.getElementById("mobile-header")
 
-    toggleBtn.addEventListener("click", () => {
-        menu.classList.toggle("open");
-        toggleBtn.classList.toggle("active");
-    });
+    function openMenu() {
+        menu.classList.add("open");
+        header.style.background = "#2f7d4f"
+        menu.setAttribute("aria-hidden", "false");
+        openBtn.setAttribute("aria-expanded", "true");
+
+        openBtn.classList.add('hidden')
+        closeBtn.classList.remove('hidden')
+    }
+
+    function closeMenu() {
+        menu.classList.remove("open");
+        header.style.background = "linear-gradient(#2f7d4f , #4E8E61 , #639B74)"
+        menu.setAttribute("aria-hidden", "true");
+        openBtn.setAttribute("aria-expanded", "false");
+
+        openBtn.classList.remove('hidden')
+        closeBtn.classList.add('hidden')
+    }
+
+    openBtn.addEventListener("click", openMenu);
+    closeBtn.addEventListener("click", closeMenu);
 </script>
