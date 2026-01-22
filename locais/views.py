@@ -12,10 +12,10 @@ from suporte.models import Reportes
 
 
 # Create your views here.
-def index(request):
+def home(request):
     return HttpResponse(
-        render(request, 'locais/partials/headers/sala/sala_header.html'))
-
+        render(request, 'locais/paginas/predio/equipamento'))
+        # Implementação temporária, essa view irá retornar outro html que está em desenvolvimento.
 
 def organizar_equipamentos_sala(lista_equipamentos):
     lista_equipamentos_organizados = []

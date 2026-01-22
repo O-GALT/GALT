@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>403 | Acesso negado</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'core/css/pages/not_access/not_access.css' %}"/>
+</head>
+<body>
+
+<main class="container">
+    <section class="card">
+
+        <img src="{% static 'core/imagens/403.png' %}" width="450"  alt="Imagem que ilustra o número 404"/>
+
+        <div class="content">
+            <h2>Página com o Acesso restrito</h2>
+
+            <p>
+                O conteúdo solicitado está protegido por regras de segurança do sistema.
+                <br />
+                Caso você acredite que isso seja um erro, verifique suas credenciais ou  <span>entre em contato com o administrador responsável.</span>.
+            </p>
+
+            <div class="actions">
+                <a href="javascript:history.back()" class="btn-primary">Voltar para página anterior</a>
+                <a href="{% url 'home' %}" class="btn-secondary">Ir para página inicial</a>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+</body>
+</html>
+

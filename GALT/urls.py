@@ -17,6 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from core.views import (
+    custom_page_not_found_view,
+    custom_permission_denied_view
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     
@@ -28,3 +33,7 @@ urlpatterns = [
     path('suporte/', include('suporte.urls')),
     path('core/', include('core.urls')),
 ]
+
+
+handler404 = custom_page_not_found_view
+handler403 = custom_permission_denied_view

@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>404 | Página não encontrada</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'core/css/pages/page_not_found/page_not_found.css' %}"/>
+</head>
+<body>
+
+<main class="container">
+    <section class="card">
+
+        <img src="{% static 'core/imagens/404.png' %}" width="450"  alt="Imagem que ilustra o número 404"/>
+
+        <div class="content">
+            <h2>Página não encontrada</h2>
+
+            <p>
+                Não foi possível localizar o recurso solicitado.
+                <br />
+                Verifique o endereço ou retorne ao <span>painel administrativo</span>.
+            </p>
+
+            <div class="actions">
+                <a href="javascript:history.back()" class="btn-primary">Voltar para página anterior</a>
+                <a href="{% url 'home' %}" class="btn-secondary">Página inicial</a>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+</body>
+</html>
+
