@@ -13,8 +13,8 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     transition: transform 0.2s ease-in-out;
     font-size: 15px;
-    background-color: #C7F6EC;
-    color: #50826C;
+    background-color: #ececec;
+    color: #ececec;
 }
 
 .equipamento-card:hover {
@@ -136,4 +136,8 @@
 
 .defeituoso span {
     color: #A26774;
+}
+
+.posicao-vaga  {
+    background-color: #ececec;
 }

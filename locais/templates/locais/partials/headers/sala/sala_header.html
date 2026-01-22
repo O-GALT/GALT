@@ -11,11 +11,11 @@
 {% endblock %}
 
 {% block nome_objeto %}
-    {% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome='Salas A17' %}
+    {% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome=localizacao %}
 {% endblock %}
 
 {% block estado %}
-    {% include 'core/partials/partials_do_headers/estado/estado_header.html' with classe='MANUTENCAO' estado='Em manutenção' %}
+    {% include 'core/partials/partials_do_headers/estado/estado_header.html' with classe=estado_atual_classe estado=estado_atual %}
 {% endblock %}
 
 {% block descricao %}
@@ -23,14 +23,14 @@
 {% endblock %}
 
 {% block quantidade_objeto %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='18' objeto='Computadores' %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='2' objeto='Projetores' %}
-    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade='3' objeto='Ar condicionados' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade=computadores objeto='Computadores' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade=projetores objeto='Projetores' %}
+    {% include 'core/partials/partials_do_headers/quantidade_e_objeto/quantidade_e_objeto_header.html' with ref='#setores' quantidade=ar_condicionados objeto='Ar condicionados' %}
 {% endblock %}
 
 {% block responsavel %}
    <div class="responsavel">
-    {% static 'locais/imagens/Avatar.png' as avatar_url %}
-    {% include 'locais/partials/headers/partials_do_header/responsavel/responsavel.html' with foto=avatar_url nome='juliano' info_extra='juliano@escolar.edu.br.com'%}
+    -{% static 'locais/imagens/Avatar.png' as avatar_url %}
+    {% include 'locais/partials/headers/partials_do_header/responsavel/responsavel.html' with foto=avatar_url info_extra=responsavel_manutencao%}
    </div>
 {% endblock %}

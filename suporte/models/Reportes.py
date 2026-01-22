@@ -30,5 +30,9 @@ class Reportes(models.Model):
             reportes=Count('reporte_id')).order_by('dia', 'tipo_equipamento')
 
     @staticmethod
+    def carregar_reportes_durante_a_semana_do_setor(setor_id):
+        return Reportes.objects.filter(equipamento__sala__setor__setor_id=setor_id).annotate(dia=ExtractWeekDay('data')).values(tipo_equipamento=F('equipamento__tipo'), dia=F('dia')).annotate(reportes=Count('reporte_id')).order_by('dia', 'tipo_equipamento')
+
+    @staticmethod
     def listar_reportes_equipamento(equipamento_id):
         return Reportes.objects.filter(equipamento__equipamento_id=equipamento_id, estado_atual='ABERTO')

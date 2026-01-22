@@ -43,13 +43,14 @@ class SalaForm(forms.ModelForm):
 class EquipamentoForm(forms.ModelForm):
     class Meta:
         model = Equipamentos
-        fields = ['sala', 'posicao', 'tipo', 'serial', 'estado_atual', 'fabricante', 'data_aquisicao']
+        fields = ['sala', 'posicao', 'tipo', 'serial', 'estado_atual', 'fabricante', 'data_aquisicao', 'fileira']
         widgets = {
             'tipo': forms.Select(attrs={'class': ''}),
             'serial': forms.TextInput(attrs={'class': '', 'placeholder': 'SNX-8745-DF92'}),
             'posicao': forms.NumberInput(attrs={'class': '', 'placeholder': '0'}),
             'estado_atual': forms.Select(attrs={'class': ''}),
             'sala': forms.Select(attrs={'class': ''}),
+            'fileira': forms.Select(attrs={'class': ''}),
             'fabricante': forms.TextInput(attrs={'class': '', 'placeholder': 'Fabricante'}),
             'data_aquisicao': forms.DateInput(attrs={'class': '', 'type': 'date'})
         }

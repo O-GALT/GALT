@@ -22,6 +22,10 @@ class Salas(models.Model):
         return Salas.objects.filter(equipamentos__sala__setor__predio__predio_id=predio_id, equipamentos__estado_atual='DEFEITUOSO').values('sala_id', 'localizacao').annotate(equipamentos_defeituosos=Count('equipamentos'), necessidade_interditacao=(Count('equipamentos') * 100)/10).order_by('-equipamentos_defeituosos')
 
     @staticmethod
+    def listar_salas_com_equipamentos_mais_defeituoso_setor(setor_id):
+        return Salas.objects.filter(equipamentos__sala__setor__setor_id=setor_id,equipamentos__estado_atual='DEFEITUOSO').values('sala_id', 'localizacao').annotate(equipamentos_defeituosos=Count('equipamentos'),necessidade_interditacao=(Count('equipamentos') * 100) / 10).order_by('-equipamentos_defeituosos')
+
+    @staticmethod
     def listar_salas_predio(predio_id):
         return Salas.objects.filter(setor__predio__predio_id=predio_id)
 
