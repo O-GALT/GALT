@@ -25,20 +25,10 @@
     <div class="form-row">
         <label>
             Prédio
-            {% if form.predio.field.required %}
-            <span>*</span>
-            {% endif %}
         </label>
 
-        <div class="field-wrapper">
-            {{ form.predio }}
+        {{ form.predio }}
 
-            {% if form.predio.errors %}
-            <div class="field-error">
-                {{ form.predio.errors.0 }}
-            </div>
-            {% endif %}
-        </div>
     </div>
 
     <hr>
