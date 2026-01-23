@@ -443,16 +443,15 @@ class SQLNativo:
 
         return resultados
 
-
-    @staticmethod
-    def carregar_indicadores_setor(setor_id):
+@staticmethod
+def carregar_indicadores_setor(setor_id):
         with connection.cursor() as cursor:
             cursor.execute('''
                                 WITH
                     
                     setores AS (
                         SELECT s.setor FROM locais_setores s
-                        WHERE s.setor_id = 1
+                        WHERE s.setor_id = %s
                     ),
                     
                     manutencoes AS (
@@ -475,7 +474,7 @@ class SQLNativo:
                         FROM agendas_agendamentos a
                         INNER JOIN locais_salas s USING(sala_id)
                         INNER JOIN locais_setores se USING(setor_id)
-                        WHERE se.setor_id = 1
+                        WHERE se.setor_id = %s
                     ),
                     
                     equipamentos AS (
@@ -489,19 +488,19 @@ class SQLNativo:
                         FROM ativos_equipamentos e
                         INNER JOIN locais_salas s USING(sala_id)
                         INNER JOIN locais_setores se USING(setor_id)
-                        WHERE se.setor_id = 1
+                        WHERE se.setor_id = %s
                     ),
                     
                     salas AS (
                         SELECT
-                        COUNT(*) FILTER (WHERE s.estado_atual = 'FUNCIONANDO') AS salas_funcionando,
+                        COUNT(*) FILTER (WHERE s.estado_atual = 'LIBERADA') AS salas_funcionando,
                         COUNT(*) FILTER (WHERE s.estado_atual = 'MANUTENCAO') AS salas_manutencao,
                         COUNT(*) FILTER (WHERE s.estado_atual = 'INAPTA') AS salas_inaptas,
                         COUNT(*) AS salas_total
                     
                         FROM locais_salas s
                         INNER JOIN locais_setores se USING(setor_id)
-                        WHERE se.setor_id = 1
+                        WHERE se.setor_id = %s
                     ),
                     
                     reportes AS (
@@ -510,7 +509,7 @@ class SQLNativo:
                         INNER JOIN ativos_equipamentos e USING(equipamento_id)
                         INNER JOIN locais_salas s USING(sala_id)
                         INNER JOIN locais_setores se USING(setor_id)
-                        WHERE se.setor_id = 1
+                        WHERE se.setor_id = %s
                     )
                     
                     SELECT 
@@ -544,7 +543,7 @@ class SQLNativo:
                         INNER JOIN equipamentos ON TRUE 
                         INNER JOIN salas ON TRUE
                         INNER JOIN reportes ON TRUE;
-            ''')
+            ''', [setor_id, setor_id, setor_id, setor_id, setor_id])
 
             colunas = [col[0] for col in cursor.description]
             resultados = [
