@@ -47,7 +47,7 @@ def concluido_modal(request):
 def exclusao_modal(request):
     return render(request, 'core/pages/modais/modal-exclusao.html')
 
-def equipamento_visao_usuario(request): 
+def equipamento_visao_usuario(request, equipamento_id):
     return render(request, 'core/pages/visao-do-usuario/equipamento-visao-usuario.html')
 
 @login_required
