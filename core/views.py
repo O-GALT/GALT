@@ -2,6 +2,7 @@ import qrcode
 import socket
 from io import BytesIO
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
 from core.essenciais import TipoUsuario
 
@@ -15,26 +16,34 @@ from locais.forms import UsuarioForm, PredioForm, SetorForm, SalaForm, Equipamen
 from core.emails.GerenciadorEmails import GerenciadorEmails
 from django.contrib.auth import authenticate, login
 from core.auditorias.GerenciadorAuditoria import GerenciadorAuditoria
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
 
 
 def pagina_login(request):
     if request.method == 'POST':
-        user = authenticate(
-           request,
-           username=request.POST.get('email_escolar'),
-           password=request.POST.get('senha')
-        )
+        username = request.POST.get('email_escolar')
+        password = request.POST.get('senha')
 
+        user = authenticate(request, username=username, password=password)
 
-        if user:
+        if user is not None:
             login(request, user)
-            next_url = request.POST.get("next")
-            if next_url:
-                return redirect(next_url)
-            else:
-               return redirect('locais_predio_detail', 1)
+
+            # limpa o email salvo temporariamente
+            request.session.pop('email_temp', None)
+
+            return redirect('/locais/predios/1/')  # ajuste para sua rota correta
         else:
-            return render(request, 'core/pages/login.html')
+            # salva email temporariamente para reaparecer no input
+            request.session['email_temp'] = username
+
+            # cria a mensagem de erro
+            messages.error(request, 'Email ou senha incorretos.')
+
+            # redirect é obrigatório para o messages funcionar bem
+            return redirect('core_login')
+
     return render(request, 'core/pages/login.html')
 
 @login_required

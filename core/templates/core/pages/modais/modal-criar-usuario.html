@@ -55,42 +55,42 @@
     {% csrf_token %}
 
     <div class="form-row">
-        <label>Email pessoal </label>
+        <label>Email pessoal <span>*</span></label>
         {{ form.email }}
     </div>
 
     <hr>
 
     <div class="form-row">
-        <label>Email escolar </label>
+        <label>Email escolar <span>*</span></label>
         {{ form.email_escolar }}
     </div>
 
     <hr>
 
     <div class="form-row">
-        <label>CPF</label>
+        <label>CPF <span>*</span></label>
         {{ form.cpf }}
     </div>
 
     <hr>
 
     <div class="form-row">
-        <label>Telefone</label>
+        <label>Telefone <span>*</span> </label>
         {{ form.numero }}
     </div>
 
     <hr>
 
     <div class="form-row">
-        <label>Senha</label>
+        <label>Senha <span>*</span></label>
         {{ form.password }}
     </div>
 
     <hr>
 
     <div class="form-row">
-        <label>Nível de acesso</label>
+        <label>Nível de acesso <span>*</span></label>
         {{ form.groups }}
     </div>
 

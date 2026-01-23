@@ -12,7 +12,13 @@ class PredioForm(forms.ModelForm):
             'predio': 'Nome do Prédio',
         }
         widgets = {
-            'predio': forms.TextInput(attrs={'class': '', 'placeholder': 'Prédio A'}),
+            'predio': forms.TextInput(attrs={
+                'required': 'required',
+                'oninvalid': "this.setCustomValidity('Nome do prédio é obrigatório.')",
+                'oninput': "this.setCustomValidity('')",
+                'placeholder': 'Prédio A',
+                'maxlength': '30',
+            }),
         }
 
 class SetorForm(forms.ModelForm):
@@ -25,9 +31,24 @@ class SetorForm(forms.ModelForm):
             'localizacao': 'Localização do Setor',
         }
         widgets = {
-            'setor': forms.TextInput(attrs={'class': '', 'placeholder': 'Setor A'}),
-            'localizacao': forms.TextInput(attrs={'class': '', 'placeholder': 'Primeiro andar'}),
-            'predio': forms.Select(attrs={'class': ''}),
+            'setor': forms.TextInput(attrs={
+                'required': 'required',
+                'oninvalid': "this.setCustomValidity('Nome do setor é obrigatório.')",
+                'oninput': "this.setCustomValidity('')",
+                'placeholder': 'Setor A',
+                'maxlength': '30',
+            }),
+            'localizacao': forms.TextInput(attrs={
+                'placeholder': 'Primeiro andar',
+                'oninvalid': "this.setCustomValidity('Localização do setor é obrigatória.')",
+                'oninput': "this.setCustomValidity('')",
+                'placeholder': 'Primeiro andar',
+                'maxlength': '50',
+            }),
+            'predio': forms.Select(attrs={
+                'oninvalid': "this.setCustomValidity('Prédio a qual pertence é obrigatório.')",
+                'oninput': "this.setCustomValidity('')",
+            }),
         }
 
 class SalaForm(forms.ModelForm):
@@ -35,9 +56,20 @@ class SalaForm(forms.ModelForm):
         model = Salas
         fields = ['estado_atual', 'localizacao', 'setor']
         widgets = {
-            'estado_atual': forms.Select(attrs={'class': ''}),
-            'localizacao': forms.TextInput(attrs={'class': '', 'placeholder': 'A17'}),
-            'setor': forms.Select(attrs={'class': ''})
+            'estado_atual': forms.Select(attrs={
+                'oninvalid': "this.setCustomValidity('Estado atual é obrigatório.')",
+                'oninput': "this.setCustomValidity('')",
+            }),
+            'localizacao': forms.TextInput(attrs={
+                'placeholder': 'A17',
+                'oninvalid': "this.setCustomValidity('Localização é obrigatória.')",
+                'oninput': "this.setCustomValidity('')",
+                'maxlength': '50',
+            }),
+            'setor': forms.Select(attrs={
+                'oninvalid': "this.setCustomValidity('Setor a qual pertence é obrigatório.')",
+                'oninput': "this.setCustomValidity('')",
+            })
         }
 
 class EquipamentoForm(forms.ModelForm):
@@ -45,14 +77,44 @@ class EquipamentoForm(forms.ModelForm):
         model = Equipamentos
         fields = ['sala', 'posicao', 'tipo', 'serial', 'estado_atual', 'fabricante', 'data_aquisicao', 'fileira']
         widgets = {
-            'tipo': forms.Select(attrs={'class': ''}),
-            'serial': forms.TextInput(attrs={'class': '', 'placeholder': 'SNX-8745-DF92'}),
-            'posicao': forms.NumberInput(attrs={'class': '', 'placeholder': '0'}),
-            'estado_atual': forms.Select(attrs={'class': ''}),
-            'sala': forms.Select(attrs={'class': ''}),
-            'fileira': forms.Select(attrs={'class': ''}),
-            'fabricante': forms.TextInput(attrs={'class': '', 'placeholder': 'Fabricante'}),
-            'data_aquisicao': forms.DateInput(attrs={'class': '', 'type': 'date'})
+            'tipo': forms.Select(attrs={
+                'oninvalid': "this.setCustomValidity('Tipo de equipamento é obrigatório.')",
+                'oninput': "this.setCustomValidity('')",
+            }),
+            'serial': forms.TextInput(attrs={
+                'placeholder': 'SNX-8745-DF92',
+                'oninvalid': "this.setCustomValidity('Serial do equipamento é obrigatório.')",
+                'oninput': "this.setCustomValidity('')",
+                'maxlength': '50',
+            }),
+            'posicao': forms.NumberInput(attrs={
+                'placeholder': '0',
+                'oninvalid': "this.setCustomValidity('Posição do equipamento é obrigatória.')",
+                'oninput': "this.setCustomValidity('')",
+                'min': '0',
+                'step': '1',
+            }),
+            'estado_atual': forms.Select(attrs={
+                'oninvalid': "this.setCustomValidity('Estado atual do equipamento é obrigatório.')",
+                'oninput': "this.setCustomValidity('')",
+            }),
+            'sala': forms.Select(attrs={
+                'oninvalid': "this.setCustomValidity('Sala onde o equipamento está localizado é obrigatória.')",
+                'oninput': "this.setCustomValidity('')",
+            }),
+            'fileira': forms.Select(attrs={
+                'oninvalid': "this.setCustomValidity('Fileira onde o equipamento está localizado é obrigatória.')",
+                'oninput': "this.setCustomValidity('')",
+            }),
+            'fabricante': forms.TextInput(attrs={
+                'placeholder': 'Fabricante',
+                'maxlength': '50',
+                }),
+            'data_aquisicao': forms.DateInput(attrs={
+                'type': 'date',
+                'oninvalid': "this.setCustomValidity('Data de aquisição é obrigatória.')",
+                'oninput': "this.setCustomValidity('')",
+            })
         }
 
 class UsuarioForm(forms.ModelForm):
@@ -64,10 +126,43 @@ class UsuarioForm(forms.ModelForm):
         }
 
         widgets = {
-            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder':'exemplo@gmail.com'}),
-            'email_escolar': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'email@escolar.com'}),
-            'numero': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '(00) 00000-0000'}),
-            'cpf': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '000.000.000-00'}),
-            'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Digite a senha'}),
-            'groups': forms.CheckboxSelectMultiple(attrs={'class': ''}),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'oninvalid': "this.setCustomValidity('Email é obrigatório.')",
+                'oninput': "this.setCustomValidity('')",
+                'placeholder':'exemplo@gmail.com',
+                'maxlength':'100',
+            }),
+            'email_escolar': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'email@escolar.com',
+                'oninvalid': "this.setCustomValidity('Email escolar é obrigatório.')",
+                'oninput': "this.setCustomValidity('')",
+                'maxlength':'100',
+            }),
+            'numero': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '(00) 00000-0000',
+                'oninvalid': "this.setCustomValidity('Número de telefone é obrigatório.')",
+                'oninput': "this.setCustomValidity('')",
+                'maxlength':'11',
+            }),
+            'cpf': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '000.000.000-00',
+                'oninvalid': "this.setCustomValidity('CPF é obrigatório.')",
+                'oninput': "this.setCustomValidity('')",
+                'maxlength':'11',   
+            }),
+            'password': forms.PasswordInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Digite a senha',
+                'oninvalid': "this.setCustomValidity('Senha é obrigatória.')",
+                'oninput': "this.setCustomValidity('')",
+                'maxlength':'30',
+            }),
+            'groups': forms.CheckboxSelectMultiple(attrs={
+                'oninvalid': "this.setCustomValidity('Nivel de acesso é obrigatório.')",
+                'oninput': "this.setCustomValidity('')",
+            }),
         }
