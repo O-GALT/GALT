@@ -53,35 +53,35 @@
     {% csrf_token %}
 
     <div class="form-row">
-        <label>Tipo do equipamento </label>
+        <label>Tipo do equipamento <span>*</span></label>
         {{ form.tipo }}
     </div>
 
     <hr>
 
     <div class="form-row">
-        <label>Serial </label>
+        <label>Serial <span>*</span></label>
         {{ form.serial }}
     </div>
 
     <hr>
 
     <div class="form-row">
-        <label>Estado atual </label>
+        <label>Estado atual <span>*</span></label>
         {{ form.estado_atual }}
     </div>
 
     <hr>
 
     <div class="form-row">
-        <label>Posição </label>
+        <label>Posição <span>*</span></label>
         {{ form.posicao }}
     </div>
 
     <hr>
 
     <div class="form-row">
-        <label>Sala </label>
+        <label>Sala <span>*</span></label>
         {{ form.sala }}
     </div>
 
@@ -102,7 +102,7 @@
     <hr>
 
     <div class="form-row">
-        <label>Data de aquisição </label>
+        <label>Data de aquisição <span>*</span></label>
         {{ form.data_aquisicao }}
     </div>
     <hr>

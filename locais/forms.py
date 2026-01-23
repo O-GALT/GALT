@@ -11,6 +11,11 @@ class PredioForm(forms.ModelForm):
         labels = {
             'predio': 'Nome do Prédio',
         }
+        error_messages = {
+            'predio': {
+                'required': 'O nome do prédio é obrigatório.',
+            }
+        }
         widgets = {
             'predio': forms.TextInput(attrs={'class': '', 'placeholder': 'Prédio A'}),
         }
