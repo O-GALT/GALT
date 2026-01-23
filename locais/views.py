@@ -1,8 +1,12 @@
+from urllib.request import HTTPRedirectHandler
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.http.response import HttpResponseRedirect
+from django.shortcuts import render, redirect
 
 from ativos.models import Equipamentos
+from contas.models import TecnicosTI
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
 from core.essenciais import TipoUsuario, TipoEquipamento, EstadoEquipamento, EstadoSala, Fileira
 from core.graficos.GeradorGraficos import GeradorGraficos
@@ -66,8 +70,11 @@ def salas(request, sala_id):
     equipamentos_direita_mapeado = organizar_equipamentos_sala(equipamentos_direita)
     equipamentos_fundo_mapeado = organizar_equipamentos_sala(equipamentos_fundo)
 
+    salas_do_sistema = Salas.listar_salas()
+
     indicadores_sala = SQLNativo.carregar_indicadores_sala(sala_id)[0]
     context = {
+        'sala_id': sala_id,
         'qr_code_url': 'locais_sala_detail,' + str(sala_id),
         'localizacao': indicadores_sala['localizacao'],
         'estado_atual_classe': EstadoSala(indicadores_sala['estado_atual']).name,
@@ -76,40 +83,53 @@ def salas(request, sala_id):
         'computadores': indicadores_sala['computadores'],
         'projetores': indicadores_sala['projetores'],
         'ar_condicionados': indicadores_sala['ar_condicionados'],
+        'salas': salas_do_sistema,
+        'fileiras_sala': list(Fileira),
+        'next': request.path,
+        'equipamentos': equipamentos,
+        'tecnicos_responsaveis': TecnicosTI.listar_tecnicos(),
         'equipamentos_esquerda': equipamentos_esquerda_mapeado,
         'equipamentos_direita': equipamentos_direita_mapeado,
         'equipamentos_auxiliares': equipamentos_fundo_mapeado
     }
     return render(request, 'locais/paginas/sala/sala.html', context)
 
+def trocar_equipamento_sala(request):
+    next_url = request.POST['next_url']
+    equipamento_id = request.POST['equipamento']
+    sala_destino_id = request.POST['sala']
+    fileira = request.POST['fileira']
+    posicao = request.POST['posicao']
+
+    if not equipamento_id or not sala_destino_id or not fileira or not posicao:
+        return HttpResponseRedirect(next_url)
+
+    sala_destino = Salas.carregar(sala_destino_id)
+    equipamento: Equipamentos = Equipamentos.carregar(equipamento_id)
+
+    equipamento.sala = sala_destino
+    equipamento.posicao = posicao
+    equipamento.fileira = fileira
+    equipamento.save()
+    return HttpResponseRedirect(next_url)
+
+
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def setores(request, setor_id):
     indicadores_setor = SQLNativo.carregar_indicadores_setor(setor_id)[0]
     context = {}
-    context['grafico_saude_predio'] = GeradorGraficos.gerar_grafico_saude_local('setor', 100)
-    context['salas'] = [{'sala_id': 1, 'localizacao': 'A13', 'necessidade_interditacao': '80', 'equipamentos_defeituosos': '10','equipamentos': '20'}]
-    context['grafico_estado_equipamentos'] = GeradorGraficos.gerar_grafico_estado_equipamentos(261, 170, 69)
-    context['grafico_estado_salas'] = GeradorGraficos.gerar_grafico_estado_salas(200, 160, 30)
-    context['grafico_reporte_tipo_equipamento'] = GeradorGraficos.gerar_grafico_reports_por_tipo(None)
-    context['objetos'] = [
-        {'equipamento_id': '1', 'nome': 'Thunder V12', 'tipo': 'Projetor', 'serial': '19238419213',
-         'quantidade_manutencoes': '150', 'sala': 'A34'},
-        {'equipamento_id': '2', 'nome': 'Philips A12', 'tipo': 'Projetor', 'serial': '12301126732',
-         'quantidade_manutencoes': '100', 'sala': 'B1'},
-        {'equipamento_id': '3', 'nome': 'Joon FK1', 'tipo': 'Computador', 'serial': '744723419211',
-         'quantidade_manutencoes': '99', 'sala': '124'},
-        {'equipamento_id': '4', 'nome': 'Thunder V12', 'tipo': 'Projetor', 'serial': '19238419213',
-         'quantidade_manutencoes': '150', 'sala': 'A34'},
-        {'equipamento_id': '5', 'nome': 'Thunder V12', 'tipo': 'Projetor', 'serial': '19238419213',
-         'quantidade_manutencoes': '150', 'sala': 'A34'},
-        {'equipamento_id': '6', 'nome': 'Thunder V12', 'tipo': 'Projetor', 'serial': '19238419213',
-         'quantidade_manutencoes': '150', 'sala': 'A34'},
-        {'equipamento_id': '7', 'nome': 'Thunder V12', 'tipo': 'Projetor', 'serial': '19238419213',
-         'quantidade_manutencoes': '150', 'sala': 'A34'},
-        {'equipamento_id': '8', 'nome': 'Thunder V12', 'tipo': 'Projetor', 'serial': '19238419213',
-         'quantidade_manutencoes': '150', 'sala': 'A34'},
-    ]
+    context['nome_setor'] = indicadores_setor['setor']
+    context['salas_total'] = indicadores_setor['salas_total']
+    context['equipamentos_total'] = indicadores_setor['equipamentos_total']
+    context['reportes_total'] = indicadores_setor['reportes_total']
+    context['salas'] = [{'sala_id': sala['sala_id'], 'localizacao': sala['localizacao'], 'necessidade_interditacao': sala['necessidade_interditacao'], 'equipamentos_defeituosos': sala['equipamentos_defeituosos'], 'equipamentos': '20'} for sala in Salas.listar_salas_com_equipamentos_mais_defeituoso_setor(setor_id)]
+    context['grafico_saude_predio'] = GeradorGraficos.gerar_grafico_saude_local('setor', indicadores_setor['nivel_de_saude_setor'])
+    context['grafico_estado_equipamentos'] = GeradorGraficos.gerar_grafico_estado_equipamentos(indicadores_setor['equipamentos_funcionando'], indicadores_setor['equipamentos_manutencao'], indicadores_setor['equipamentos_defeituosos'])
+    context['grafico_estado_salas'] = GeradorGraficos.gerar_grafico_estado_salas(indicadores_setor['salas_funcionando'], indicadores_setor['salas_manutencao'], indicadores_setor['salas_inaptas'])
+    context['grafico_reporte_tipo_equipamento'] = GeradorGraficos.gerar_grafico_reports_por_tipo(Reportes.carregar_reportes_durante_a_semana_do_setor(setor_id))
+    context['produtividade_setor'] = indicadores_setor['produtividade_setor']
+    context['objetos'] = [{'equipamento_id': equipamento['equipamento_id'], 'nome': equipamento['serial'], 'tipo': equipamento['tipo'], 'serial': '19238419213','quantidade_manutencoes': equipamento['manutencoes'], 'sala': equipamento['sala_localizacao']} for equipamento in Equipamentos.listar_equipamentos_mais_reincidencia_de_falhas_setor(setor_id)]
     return HttpResponse(render(request, 'locais/paginas/setor/setor.html', context))
 
 

@@ -92,8 +92,8 @@
 
 {% block modais %}
     {% include 'core/partials/qr_modal/qr_modal.html' with modal_id='qr_modal' title='Thunder v12'  descricao='Escaneie o Qrcode para ter acesso as informações do equipamentos Thunder v12' button_text='Link para download' qr_code_url=qr_code_url identificador=localizacao onclick="closeModal('qr_modal')" %}
-    {% include 'core/partials/alterar_localizacao_do_equipamento_modal/alterar_localizacao_do_equipamento_modal.html' with modal_id='modalFormulario' onclick="closeModal('modalFormulario')" %}
-    {% include 'locais/partials/agendar_manutencao_modal/agendar_manutencao_modal.html' with modal_id='modal-manutencao' onclick="closeModal('modal-manutencao')" %}
+    {% include 'core/partials/alterar_localizacao_do_equipamento_modal/alterar_localizacao_do_equipamento_modal.html' with modal_id='modalFormulario' onclick="closeModal('modalFormulario')" sala_id=sala_id equipamentos=equipamentos salas=salas fileiras_sala=fileiras_sala next=next %}
+    {% include 'locais/partials/agendar_manutencao_modal/agendar_manutencao_modal.html' with modal_id='modal-manutencao' onclick="closeModal('modal-manutencao')" sala_id=sala_id salas=salas tecnicos_responsaveis=tecnicos_responsaveis next=next %}
 {% endblock %}
 
 {% block script %}

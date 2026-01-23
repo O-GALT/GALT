@@ -40,3 +40,11 @@ class Salas(models.Model):
     @staticmethod
     def listar_por_estado(estado:EstadoSala):
         return Salas.objects.filter(estado_atual=estado)
+
+    @staticmethod
+    def listar_salas():
+        return Salas.objects.all()
+
+    @staticmethod
+    def carregar(sala_destino_id):
+        return Salas.objects.get(sala_id=sala_destino_id)

@@ -13,16 +13,16 @@
             Para agendar a manutenção em uma sala é preciso preencher o formulário abaixo :
         </p>
 
-        <form class="manutencao-form" id="manutencaoForm">
-
+        <form class="manutencao-form" id="manutencaoForm" method="post" action="{% url 'agendar_manutencao' %}">
+            {% csrf_token %}
             <!-- Sala -->
             <div class="form-group">
                 <label>Sala que passará por manutenções <span>*</span></label>
                 <div class="select-box">
-                    <select name="room">
-                        <option>Sala A17</option>
-                        <option>Sala B02</option>
-                        <option>Sala C15</option>
+                    <select name="sala">
+                        {% for sala in salas %}
+                            <option value="{{ sala.sala_id }}"{% if sala.sala_id == sala_id %} selected{% endif %}>Sala {{ sala.localizacao }}</option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
@@ -34,42 +34,48 @@
                 <div class="select-box">
                     <select id="technicianSelect">
                         <option value="">Selecione um técnico</option>
-                        <option value="eu">@Eu</option>
-                        <option value="maria">@Maria</option>
-                        <option value="carlos">@Carlos</option>
+                        {% for tecnico in tecnicos_responsaveis %}
+                            {% if tecnico.usuario.id == request.user.id %}
+                                <option value="{{ tecnico.usuario.id }}">@Eu</option>
+                            {% else %}
+                                <option value="{{ tecnico.usuario.id }}">{{ tecnico.usuario.email_escolar }}</option>
+                            {% endif%}
+                        {% endfor %}
                     </select>
                 </div>
 
                 <div id="techniciansList" class="technicians-list"></div>
 
                 <!-- Hidden input para envio ao Django -->
-                <input type="hidden" name="technicians" id="techniciansInput">
+                <input type="hidden" name="tecnicos" id="techniciansInput">
             </div>
 
             <!-- Datas -->
             <div class="form-group">
                 <label>Data da manutenção <span>*</span></label>
-                    <input type="date" name="date"/>
+                    <input type="date" name="data_manutencao"/>
             </div>
 
             <div class="form-group">
                 <label>Horário de inícío da manutenção <span>*</span></label>
-                    <input type="time" name="start_hour"/>
+                    <input type="time" name="horario_inicio"/>
             </div>
 
             <div class="form-group">
                 <label>Horário de término da manutenção <span>*</span></label>
-                    <input type="time" name="end_hour"/>
+                    <input type="time" name="horario_final"/>
             </div>
 
             <!-- Descrição -->
             <div class="form-group">
                 <label>Descrição <span>*</span></label>
                 <textarea
-                        name="description"
+                        name="descricao"
                         placeholder="Descreva um breve motivo pelo qual você estará realizando essa manutenção.">
                 </textarea>
             </div>
+
+            <input type="hidden" name="next_url" value="{{ next }}">
 
             <!-- Ações -->
             <div class="form-actions">
@@ -141,9 +147,11 @@
     }
 
 
-    form.addEventListener('submit', () => {
-        techniciansInput.value = JSON.stringify(
-            selectedTechnicians.map(t => t.value)
-        );
+    form.addEventListener('submit', (event) => {
+        const ids = selectedTechnicians.map(t => t.value);
+
+        console.log('IDS ENVIADOS:', ids); // DEBUG
+
+        techniciansInput.value = JSON.stringify(ids);
     });
 </script>

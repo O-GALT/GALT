@@ -15,7 +15,8 @@
             Para poder trocar a localização de um equipamento é preciso preencher o formulário abaixo:
         </p>
 
-        <div class="form-modal-body">
+        <form class="form-modal-body" method="post" action="{% url 'locais_trocar_equipamento_sala' %}">
+            {% csrf_token %}
 
             {% if equipment_name %}
                 <input
@@ -25,36 +26,44 @@
                         readonly
                 >
             {% else %}
-                <select class="form-modal-input">
-                    <option selected disabled>Selecione o equipamento</option>
-                    <option>Thunder V12</option>
-                    <option>Thunder V14</option>
-                    <option>Thunder V17</option>
+                <select class="form-modal-input" name="equipamento">
+                    <option selected value="">Selecione o equipamento</option>
+                    {% for equipamento in  equipamentos %}
+                        <option value="{{ equipamento.equipamento_id }}">{{ equipamento.serial }}</option>
+                    {% endfor %}
                 </select>
             {% endif %}
 
             <label class="form-modal-label">Sala de destino*</label>
-            <select class="form-modal-input">
-                <option selected>Selecione a sala de destino desse equipamento</option>
-                <option>Sala A17 — Prédio principal</option>
-                <option>Sala A34 — Prédio secundário</option>
-                <option>Sala B27 — Anexo</option>
+            <select class="form-modal-input" name="sala">
+                {% for sala in salas %}
+                    {% if sala.sala_id != sala_id %}
+                        <option value="{{ sala.sala_id }}">Sala {{ sala.localizacao }} — {{ sala.setor.predio.predio }}</option>
+                    {% else %}
+                        <option selected value="{{ sala.sala_id }}">Sala {{ sala.localizacao }} — {{ sala.setor.predio.predio }}</option>
+                    {% endif %}
+                {% endfor %}
             </select>
 
-            <label class="form-modal-label">Posição referência*</label>
-            <select class="form-modal-input">
-                <option selected>Selecione a posição referência do equipamento na sala de aula</option>
-                <option>Frente esquerda</option>
-                <option>Frente direita</option>
-                <option>Centro</option>
-                <option>Fundo</option>
+            <label class="form-modal-label">Fileira de referência*</label>
+            <select class="form-modal-input" name="fileira">
+                <option selected value="">Selecione a fileira referência do equipamento na sala de aula</option>
+                {% for fileira in fileiras_sala  %}
+                    <option value="{{ fileira.name }}">{{ fileira.label }}</option>
+                {% endfor %}
             </select>
-        </div>
+
+            <label class="form-modal-label">Posição dentro da sala*</label>
+            <input class="form-modal-input" type="number" name="posicao">
+
+            <input type="hidden" name="next_url" value="{{ next }}">
 
         <div class="form-modal-footer">
             <button class="form-btn-cancel" {% if onclick %} onclick="{{ onclick }}" {% endif %}>Cancelar</button>
-            <button class="form-btn-confirm" {% if onclick %} onclick="{{ onclick }}" {% endif %}>Confirmar</button>
+            <button class="form-btn-confirm" {% if onclick %} onclick="{{ onclick }}" {% endif %} type="submit">Confirmar</button>
         </div>
+
+        </form>
 
     </div>
 </div>

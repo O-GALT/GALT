@@ -10,7 +10,7 @@
 
         <div class="qr-modal-body">
             <h2 class="qr-title">{{ title }}</h2>
-            <p class="qr-description">{{ descricao }}</p>
+            <p class="qr-description">{{ descricao }} {{ identificador }}</p>
 
             <a href="{% url 'baixar_qr_code' qr_code_url identificador %}">
                 <button class="qr-button"  {% if onclick %} onclick="{{ onclick }}" {% endif %}>

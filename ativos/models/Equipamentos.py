@@ -70,3 +70,11 @@ class Equipamentos(models.Model):
     @staticmethod
     def listar_equipamentos_da_sala(sala_id):
         return Equipamentos.objects.filter(sala__sala_id=sala_id).order_by('posicao')
+
+    @staticmethod
+    def carregar(equipamento_id):
+        return Equipamentos.objects.get(equipamento_id=equipamento_id)
+
+    @staticmethod
+    def listar_equipamentos():
+        return Equipamentos.objects.all()
