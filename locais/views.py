@@ -1,5 +1,3 @@
-from urllib.request import HTTPRedirectHandler
-
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.http.response import HttpResponseRedirect
@@ -118,6 +116,7 @@ def trocar_equipamento_sala(request):
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def setores(request, setor_id):
     indicadores_setor = SQLNativo.carregar_indicadores_setor(setor_id)[0]
+
     context = {}
     context['nome_setor'] = indicadores_setor['setor']
     context['salas_total'] = indicadores_setor['salas_total']
@@ -130,6 +129,8 @@ def setores(request, setor_id):
     context['grafico_reporte_tipo_equipamento'] = GeradorGraficos.gerar_grafico_reports_por_tipo(Reportes.carregar_reportes_durante_a_semana_do_setor(setor_id))
     context['produtividade_setor'] = indicadores_setor['produtividade_setor']
     context['objetos'] = [{'equipamento_id': equipamento['equipamento_id'], 'nome': equipamento['serial'], 'tipo': equipamento['tipo'], 'serial': '19238419213','quantidade_manutencoes': equipamento['manutencoes'], 'sala': equipamento['sala_localizacao']} for equipamento in Equipamentos.listar_equipamentos_mais_reincidencia_de_falhas_setor(setor_id)]
+    context['manutencoes_hoje'] = indicadores_setor['manutencoes_hoje']
+    context['manutencoes_agendadas'] = indicadores_setor['manutencoes_agendadas']
     return HttpResponse(render(request, 'locais/paginas/setor/setor.html', context))
 
 

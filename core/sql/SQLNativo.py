@@ -444,9 +444,8 @@ class SQLNativo:
 
         return resultados
 
-
-    @staticmethod
-    def carregar_indicadores_setor(setor_id):
+@staticmethod
+def carregar_indicadores_setor(setor_id):
         with connection.cursor() as cursor:
             cursor.execute('''
                                 WITH
