@@ -47,7 +47,7 @@ h1 {
     line-height: 1.4;
 }
 
-.subtitle{
+.subtitle {
     color: rgba(102, 102, 102, 0.8);
     font-weight: 500;
     font-size: 1rem;
@@ -105,7 +105,13 @@ h1 {
     text-decoration: underline;
 }
 
-
+.error-message {
+    background: #ffe2e2;
+    color: #8a1f1f;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
 
 @media (max-width: 900px) {
     .login-container {
