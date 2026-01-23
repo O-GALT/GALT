@@ -24,8 +24,8 @@
     <div class="container-setor">
             <div class="info-cards">
 {#                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='vermelho' titulo_card='Reportes abertos' quantidade_card='20' %}#}
-                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='amarelo' titulo_card='Manutenções agendadas para hoje' quantidade_card='4' %}
-                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='vermelho' titulo_card='Manutenções agendadas' quantidade_card='20' %}
+                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='amarelo' titulo_card='Manutenções agendadas para hoje' quantidade_card=manutencoes_hoje %}
+                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='vermelho' titulo_card='Manutenções agendadas' quantidade_card=manutencoes_agendadas %}
 {#                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='amarelo' titulo_card='Predios associados' quantidade_card='3' %}#}
 {#                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='amarelo' titulo_card='Total de equipamentos' quantidade_card='600' %}#}
 {#                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='ciano' titulo_card='Total de salas' quantidade_card='300' %}#}
