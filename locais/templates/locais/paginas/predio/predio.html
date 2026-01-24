@@ -14,10 +14,11 @@
     <link rel="stylesheet" href="{% static 'locais/css/partials/tabela_metricas/tabela_metricas.css' %}">
     <link rel="stylesheet" href="{% static  'locais/css/partials/headers/predio/predio_header.css' %}">
     <link rel="stylesheet" href="{% static 'locais/css/paginas/predio/predio.css' %}">
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
 {% endblock %}
 
  {% block header %}
-     {% include 'locais/partials/headers/predio/predio_header.html' with predio_id=predio_id nome_predio=nome_predio total_setores=total_setores total_salas=total_salas total_equipamentos=total_equipamentos %}
+     {% include 'locais/partials/headers/predio/predio_header.html' with predio_id=objeto_id nome_predio=nome_predio total_setores=total_setores total_salas=total_salas total_equipamentos=total_equipamentos %}
  {% endblock %}
 
 {% block content %}
@@ -30,20 +31,20 @@
             </section>
 
             <section class="estado-sala-equipamento">
-                {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_estado_equipamentos/grafico_estado_equipamentos.html' with grafico_estado_equipamentos=grafico_estado_equipamentos%}
-                {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_estado_salas/grafico_estado_salas.html' with grafico_estado_salas=grafico_estado_salas %}
+                {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_estado_equipamentos/grafico_estado_equipamentos.html' %}
+                {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_estado_salas/grafico_estado_salas.html' %}
             </section>
 
             <section class="saude-predio">
-                {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_saude_predio/grafico_saude_predio.html' with grafico_saude_predio=grafico_saude_predio %}
+                {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_saude_predio/grafico_saude_predio.html' %}
             </section>
 
             <section class="reportes-tipo-equipamento">
-                {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_reporte_tipo_equipamento/grafico_reporte_tipo_equipamento.html' with grafico_reporte_tipo_equipamento=grafico_reporte_tipo_equipamento %}
+                {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_reporte_tipo_equipamento/grafico_reporte_tipo_equipamento.html' %}
             </section>
 
             <section class="indice-manutencoes-equipamentos">
-                {% include 'locais/partials/predio/partials_do_predio/graficos/garafico_indice_manutencoes/grafico_indice_manutencoes.html' with grafico_indice_manutencoes=grafico_indice_manutencoes %}
+                {% include 'locais/partials/predio/partials_do_predio/graficos/garafico_indice_manutencoes/grafico_indice_manutencoes.html' %}
             </section>
 
             <section class="tecnicos-mais-manutencoes">
@@ -53,10 +54,9 @@
                         <h3>Técnicos que mais fizeram manutenções nesse mês</h3>
                     </div>
 
-                    {% for i in quantidade_tecnicos %}
+                    {% for tecnico in tecnicos %}
                         {% static 'locais/imagens/Avatar.png' as avatar %}
-                        {% include 'locais/partials/dado_tecnico/dado_tecnico.html' with foto=avatar nome='Marcos dos Santos' info_extra='30 manutenções'%}
-                        <hr>
+                        {% include 'locais/partials/dado_tecnico/dado_tecnico.html' with foto=avatar nome=tecnico.email_escolar info_extra=tecnico.manutencoes %}
                     {% endfor %}
 
                 </div>
@@ -73,13 +73,46 @@
 {% endblock %}
 
 {% block script %}
-    {{ block.super }}
-    document.addEventListener('DOMContentLoaded', () => {
-    // espera o Plotly criar os divs; 50ms costuma bastar, mas você pode usar a alternativa do MutationObserver abaixo
-    setTimeout(() => {
-        document.querySelectorAll('.plotly-graph-div').forEach(gd => {
-          try { Plotly.Plots.resize(gd); } catch(e) { /* fallback */ }
-        });
-        }, 10);
-    });
+{{ block.super }}
+document.addEventListener('DOMContentLoaded', () => {
+
+    const plotContainers = []
+
+    document.querySelectorAll('[data-url]').forEach(container => {
+        const url = container.dataset.url
+
+        fetch(url)
+            .then(r => r.json())
+            .then(fig => {
+                Plotly.newPlot(
+                    container,
+                    fig.data,
+                    fig.layout,
+                    { responsive: true }
+                )
+
+                plotContainers.push(container)
+
+                // 🔹 Recalcula logo após renderizar
+                setTimeout(() => {
+                    try {
+                        Plotly.Plots.resize(container)
+                    } catch (e) {}
+                }, 50)
+            })
+            .catch(err => {
+                console.error('Erro ao carregar gráfico:', err)
+            })
+    })
+
+    // 🔹 Recalcula todos os gráficos ao redimensionar a tela
+    window.addEventListener('resize', () => {
+        plotContainers.forEach(container => {
+            try {
+                Plotly.Plots.resize(container)
+            } catch (e) {}
+        })
+    })
+})
+
 {% endblock %}

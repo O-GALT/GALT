@@ -65,6 +65,13 @@
     font-size: 0.8rem;
 }
 
+.container-info-tecnico {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    height: 1rem;
+}
+
 hr {
     width: 100%;
     color: #fcfcfc;

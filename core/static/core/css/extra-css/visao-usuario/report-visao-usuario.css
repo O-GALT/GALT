@@ -79,7 +79,7 @@ textarea {
 }
 
 .btn-create {
-    background: #2a7a5b;
+    background: #707070;
     color: #fff;
 }
 
@@ -88,5 +88,5 @@ textarea {
 }
 
 .btn-create:hover {
-    background: #236348;
+    background: #555555;
 }

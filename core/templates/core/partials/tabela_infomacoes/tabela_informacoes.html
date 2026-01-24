@@ -6,7 +6,7 @@
                 <div class="cabecalho-1"><h3>Identificador</h3></div>
                 <div class="cabecalho-2"><h3>Equipamento</h3></div>
                 <div class="cabecalho-3"><h3>Tipo</h3></div>
-                <div class="cabecalho-4"><h3>Serial</h3></div>
+                <div class="cabecalho-4"><h3>Estado</h3></div>
                 <div class="cabecalho-5"><h3>Manutenções</h3></div>
                 <div class="cabecalho-6"><h3>Sala</h3></div>
             {% elif tipo_objeto == 'auditoria' %}
@@ -37,7 +37,7 @@
                     </div>
 
                     <div class="registros-4">
-                        <p>{{ ob.serial }}</p>
+                        <p>{{ ob.estado_atual }}</p>
                     </div>
 
                     <div class="registros-5">

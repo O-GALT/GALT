@@ -1,5 +1,7 @@
 from django.db import models
-from core.essenciais import EstadoEquipamento, TipoEquipamento
+
+from contas.models import Usuarios
+from core.essenciais import EstadoEquipamento, TipoEquipamento, TipoUsuario
 from core.essenciais.Fileira import Fileira
 from locais.models.Salas import Salas
 
@@ -33,7 +35,7 @@ class Equipamentos(models.Model):
 
     @staticmethod
     def listar_equipamentos_mais_reincidencia_de_falhas_setor(setor_id):
-        return Equipamentos.objects.filter(sala__setor__setor_id=setor_id, historico_manutencoes__equipamento__sala__setor__setor_id=setor_id).values('equipamento_id', 'tipo', 'serial', sala_localizacao=F('sala__localizacao')).annotate(manutencoes=Count('historico_manutencoes')).order_by('-manutencoes')
+        return Equipamentos.objects.filter(historico_manutencoes__equipamento__sala__setor__setor_id=setor_id).values('equipamento_id', 'tipo', 'serial', 'estado_atual', sala_localizacao=F('sala__localizacao')).annotate(manutencoes=Count('historico_manutencoes')).order_by('-manutencoes')
 
     @staticmethod
     def listar_equipamentos_do_predio(predio_id):
@@ -78,3 +80,21 @@ class Equipamentos(models.Model):
     @staticmethod
     def listar_equipamentos():
         return Equipamentos.objects.all()
+
+    def verificar_e_atualizar_estado_apos_reporte(self, usuario: Usuarios):
+        if usuario.groups.filter(name__in=[TipoUsuario.ADMINISTRADOR.name, TipoUsuario.ADMINISTRADOR.name, TipoUsuario.SERVIDOR.name]):
+            self.__alterar_e_salvar_estado_equipamento(EstadoEquipamento.DEFEITUOSO)
+            self.save()
+            return
+
+        total_reportes = self.reportes.count()
+
+        if total_reportes >= 8:
+            self.__alterar_e_salvar_estado_equipamento(EstadoEquipamento.DEFEITUOSO)
+            return
+        if total_reportes >= 3:
+            self.__alterar_e_salvar_estado_equipamento(EstadoEquipamento.ALERTA)
+
+    def __alterar_e_salvar_estado_equipamento(self, novo_estado_atual: EstadoEquipamento):
+        self.estado_atual = novo_estado_atual
+        self.save()

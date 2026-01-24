@@ -124,7 +124,7 @@ class SQLNativo:
                         COUNT(*) FILTER (WHERE e.estado_atual = 'FUNCIONANDO') AS equipamentos_funcionando,
                         COUNT(*) FILTER (WHERE e.estado_atual = 'MANUTENCAO')   AS equipamentos_manutencao,
                         COUNT(*) FILTER (WHERE e.estado_atual = 'DEFEITUOSO')   AS equipamentos_defeituoso,
-                        COUNT(*)                                              AS total_equipamentos
+                        COUNT(*) AS total_equipamentos
                     FROM ativos_equipamentos e
                     INNER JOIN locais_salas s USING (sala_id)
                     INNER JOIN locais_setores se USING (setor_id)

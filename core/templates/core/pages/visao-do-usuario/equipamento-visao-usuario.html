@@ -11,7 +11,7 @@
             <img src="{% static 'core/icons/equipamento_icone.png'%}" alt="Icone do equipamento">
         </div>
 
-        <h1 class="equip-title">Equipamento Thunder V13</h1>
+        <h1 class="equip-title">Equipamento {{ equipamento.serial }}</h1>
 
         <p class="equip-description">
             Aqui você pode ver o estado atual deste equipamento e reportar qualquer problema que
@@ -20,7 +20,7 @@
 
         <div class="equip-alert">
             <img src="{% static 'core/icons/alerta_balao.png' %}" alt="img">
-            <p><strong>10</strong> reportes enviados</p>
+            <p><strong>{{ reportes_enviados }}</strong> reportes enviados</p>
         </div>
 
         <hr>
@@ -28,25 +28,27 @@
         <div class="equip-section">
             <h3>Informações</h3>
             <ul>
-                <li><strong>Estado:</strong> funcionando</li>
-                <li><strong>Modelo:</strong> Epson X1200</li>
-                <li><strong>Número de série:</strong> SN-443221</li>
-                <li><strong>Patrimônio:</strong> 009832</li>
+                <li><strong>Estado:</strong> {{ estado }}</li>
+                <li><strong>Fabricante:</strong> {{ equipamento.fabricante }}</li>
+                <li><strong>manutenções realizadas:</strong> {{ manutencoes_realizadas }}</li>
+                <li><strong>Data de aquisição:</strong> {{ equipamento.data_aquisicao }}</li>
             </ul>
         </div>
 
         <div class="equip-section">
             <h3>Localização</h3>
             <ul>
-                <li><strong>Sala:</strong> Prédio principal, segundo andar – A24</li>
-                <li><strong>Ordem de referência:</strong> A12</li>
+                <li><strong>Sala:</strong> {{ equipamento.sala.setor.predio.predio }}, {{ equipamento.sala.setor.setor }} –
+                    {{ equipamento.sala.localizacao }}</li>
+                <li><strong>Fileira:</strong> {{ fileira }}</li>
+                <li><strong>Posição:</strong> {{ equipamento.posicao }}</li>
             </ul>
         </div>
 
         <div class="equip-section">
             <h3>Tipo de equipamento</h3>
             <ul>
-                <li>Computador de uso comum para alunos</li>
+                <li>{{ tipo }} de uso comum para alunos</li>
             </ul>
         </div>
 
@@ -57,7 +59,7 @@
             o ambiente de aprendizado funcionando sem interrupções.
         </p>
 
-        <a href="{% url 'report_visao_usuario' %}">
+        <a href="{% url 'report_visao_usuario' equipamento.equipamento_id %}">
             <button class="btn-create">Realizar report</button>
         </a>
 
