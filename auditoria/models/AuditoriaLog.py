@@ -18,6 +18,14 @@ class AuditoriaLog(models.Model):
         return f"{self.acao} - {self.usuario or 'Usuário desconhecido'} - {self.data.strftime('%d/%m/%Y %H:%M')}"
 
     @staticmethod
+    def persistir_auditoria(usuario: Usuarios, acao:Acao, alvo_acao:TipoAlvo):
+        AuditoriaLog.objects.create(
+            usuario=usuario,
+            acao=acao,
+            alvo_acao=alvo_acao
+        )
+
+    @staticmethod
     def listar_auditorias():
         return AuditoriaLog.objects.all()
 
