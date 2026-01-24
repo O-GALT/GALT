@@ -8,6 +8,7 @@ from agendas.models import TecnicosTIAgendamentos, Agendamentos
 from contas.models import TecnicosTI
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
 from core.essenciais import TipoUsuario
+from core.schedule.jobs import Jobs
 from locais.models import Salas
 import json
 
@@ -217,4 +218,5 @@ def agendar_manutencao(request):
         )
         tecnico_agendamento.save()
 
+    Jobs.setar_comportamento_agendamento_inicio_e_fim(agendamento)
     return HttpResponseRedirect(next)

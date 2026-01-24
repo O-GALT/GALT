@@ -18,7 +18,7 @@ services:
     image: redis:8.4.0
     container_name: "galt-redis"
     ports:
-      - "53798:63798"
+      - "6379:6379"
       
   galt-service:
       build: .

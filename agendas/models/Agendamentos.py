@@ -17,3 +17,7 @@ class Agendamentos(models.Model):
 
     def __str__(self):
         return f"{self.data} - {self.sala} ({self.estado_atual})"
+
+    @staticmethod
+    def carregar(agendamento_id):
+        return Agendamentos.objects.get(agendamento_id=agendamento_id)
