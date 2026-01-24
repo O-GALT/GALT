@@ -1,0 +1,60 @@
+{% load static %}
+
+<div class="maintenanceModal-overlay" id="maintenanceModalOverlay" onclick="maintenanceModalClose()">
+    <div class="maintenanceModal-container" onclick="event.stopPropagation()">
+        <div class="maintenanceModal-header">
+            <h2>Selecione os equipamentos que foram consertados</h2>
+            <p>
+                Antes de poder agendar uma nova manutenção em uma sala é preciso
+                finalizar o relatório da última manutenção primeiro.
+            </p>
+
+            <div class="divisor"></div>
+        </div>
+
+        <div class="maintenanceModal-content" id="maintenanceModalContent">
+            <form class="maintenanceModal-grid" id="maintenanceModalGrid"  action="{% url 'criar_equipamento_modal' %}" method="post">
+
+                <div class="maintenanceModal-card">
+                    <div class="maintenanceModal-card-info">
+                        <strong>Thunder V12</strong>
+                        <span>Estado: Em manutenção</span>
+                        <div class="info-content">
+                            <i class="fa-solid fa-building"></i>
+                            <span>1235B55FG</span>
+                        </div>
+                        <div class="info-content">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>1235B55FG</span>
+                        </div>
+                        <div class="info-content">
+                            <i class="fa-solid fa-laptop"></i>
+                            <span>1235B55FG</span>
+                        </div>
+                    </div>
+                    <input type="checkbox" class="maintenanceModal-checkbox" />
+                </div>
+
+            </form>
+
+
+
+        </div>
+
+        <div class="maintenanceModal-footer">
+            <button type="submit" onclick="maintenanceModalClose()">Finalizar manutenção</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function maintenanceModalOpen() {
+        document.getElementById('maintenanceModalOverlay').classList.add('active');
+    }
+
+    function maintenanceModalClose() {
+        document.getElementById('maintenanceModalOverlay').classList.remove('active');
+    }
+</script>
+
