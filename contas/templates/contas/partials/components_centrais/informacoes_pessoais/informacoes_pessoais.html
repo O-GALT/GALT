@@ -74,7 +74,11 @@
     document.addEventListener("DOMContentLoaded", function () {
         const editBtn = document.getElementById("editBtn");
         const form = document.querySelector(".info-form");
-        const inputs = document.querySelectorAll(".info-form input");
+
+        const cpf = document.getElementById('cpf')
+        const email = document.getElementById('email')
+        const email_escolar = document.getElementById('email-escolar')
+        const numero = document.getElementById('telefone')
 
         let editando = false;
 
@@ -82,9 +86,15 @@
             console.log("Clique detectado");
 
             if (!editando) {
-                inputs.forEach(input => {
-                    input.removeAttribute("readonly");
-                });
+                cpf.removeAttribute("readonly")
+                email.removeAttribute("readonly")
+                email_escolar.removeAttribute("readonly")
+                numero.removeAttribute("readonly")
+
+                cpf.style.color = "black"
+                email.style.color = "black"
+                email_escolar.style.color = "black"
+                numero.style.color = "black"
 
                 editBtn.innerText = "Salvar";
                 editando = true;
