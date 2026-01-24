@@ -5,9 +5,10 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
 from agendas.models import TecnicosTIAgendamentos, Agendamentos
+from auditoria.models import AuditoriaLog
 from contas.models import TecnicosTI
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
-from core.essenciais import TipoUsuario
+from core.essenciais import TipoUsuario, Acao, TipoAlvo
 from core.schedule.jobs import Jobs
 from locais.models import Salas
 import json
@@ -211,7 +212,11 @@ def agendar_manutencao(request):
 
     agendamento.save()
 
+    tecnico_agendamento = None
+    tem_responsavel = False
     for tecnico in tecnicos:
+        if request.user.id == tecnico.usuario.id:
+            tem_responsavel = True
         tecnico_agendamento = TecnicosTIAgendamentos(
             tecnico=tecnico,
             agendamento=agendamento,
@@ -219,5 +224,10 @@ def agendar_manutencao(request):
         )
         tecnico_agendamento.save()
 
+    if not tem_responsavel:
+        tecnico_agendamento.responsavel = True
+        tecnico_agendamento.save()
+
+    AuditoriaLog.persistir_auditoria(request.user, Acao.CRIAR_AGENDAMENTO, TipoAlvo.AGENDAMENTO)
     Jobs.setar_comportamento_agendamento_inicio_e_fim(agendamento)
     return HttpResponseRedirect(next)

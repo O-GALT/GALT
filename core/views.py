@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from ativos.models import Equipamentos
+from auditoria.models import AuditoriaLog
 from contas.models import TecnicosTI
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
 from core.essenciais import TipoUsuario, EstadoEquipamento, TipoEquipamento, Fileira
@@ -74,7 +75,7 @@ def equipamento_visao_usuario(request, equipamento_id):
             mensagem=request.POST['problem-description']
         ).save()
         equipamento.verificar_e_atualizar_estado_apos_reporte(request.user)
-
+        AuditoriaLog.persistir_auditoria(request.user, Acao.ABRIR_REPORTE, TipoAlvo(equipamento.tipo))
 
     return render(request, 'core/pages/visao-do-usuario/equipamento-visao-usuario.html', context)
 
