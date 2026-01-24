@@ -1,4 +1,4 @@
-.MANUTENCAO, .LIBERADA, .INAPTA, .DEFEITUOSO, .FUNCIONANDO {
+.MANUTENCAO, .LIBERADA, .INAPTA, .DEFEITUOSO, .FUNCIONANDO, .ALERTA {
     display: flex;
     justify-content: center;
     align-content: center;
@@ -21,4 +21,9 @@
 .INAPTA, .DEFEITUOSO {
     color: rgb(131, 7, 7);
     border: 2px solid rgb(180, 15, 15);
+}
+
+.ALERTA {
+    color: #243542;
+    border: 2px solid rgb(73, 85, 112);
 }

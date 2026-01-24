@@ -1,3 +1,5 @@
-<div class="grafico-saude-predio">
-    {{ grafico_saude_predio | safe }}
+<div    id="grafico-saude-predio"
+        class="grafico-saude-predio"
+        data-url="{% url grafico_saude_object_url objeto_id %}"
+>
 </div>

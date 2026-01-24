@@ -23,7 +23,7 @@ class HistoricoManutencoes(models.Model):
 
     @staticmethod
     def listar_manutencoes_no_predio_durante_o_ano(predio_id):
-        return HistoricoManutencoes.objects.filter(equipamento__sala__setor__predio__predio_id=predio_id).annotate(mes=ExtractMonth('data')).values(mes=F('mes')).annotate(manutencoes=Count('*'))
+        return HistoricoManutencoes.objects.filter(equipamento__sala__setor__predio__predio_id=predio_id).annotate(mes=ExtractMonth('data')).values(mes=F('mes')).annotate(manutencoes=Count('*')).order_by('mes')
 
     @staticmethod
     def listar_historico_equipamento(equipamento_id):
