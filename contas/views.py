@@ -12,7 +12,11 @@ def index(request):
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI, TipoUsuario.ALUNO, TipoUsuario.SERVIDOR]) 
 def eu(request):
-    return render(request, 'contas/partials/components_centrais/informacoes_pessoais/informacoes_pessoais.html')
+    usuario = request.user
+    context = {
+        'usuario': usuario
+    }
+    return render(request, 'contas/partials/components_centrais/informacoes_pessoais/informacoes_pessoais.html', context)
 
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])
