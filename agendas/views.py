@@ -206,6 +206,7 @@ def agendar_manutencao(request):
         inicio=horario_inicio,
         fim=horario_final,
         data=data_manutencao,
+        descricao=descricao
     )
 
     agendamento.save()
