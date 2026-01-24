@@ -1,13 +1,14 @@
 from django.contrib.auth.decorators import login_required
 
-from ativos.models import HistoricoManutencoes
+from ativos.models import HistoricoManutencoes, Equipamentos
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
-from core.essenciais import TipoUsuario, TipoEquipamento, EstadoEquipamento
+from core.essenciais import TipoUsuario, TipoEquipamento, EstadoEquipamento, Fileira
 
 from django.shortcuts import render
 from django.http import HttpResponse
 
 from core.sql.SQLNativo import SQLNativo
+from locais.models import Salas
 from suporte.models import Reportes
 
 
@@ -22,7 +23,7 @@ def index(request):
 def equipamento(request, equipamento_id):
     info_equipamento = SQLNativo.carregar_indicadores_equipamento(equipamento_id)[0]
     dados_do_equipamento = {
-        'qr_code_url': 'equipamento_visao_usuario',
+        'qr_code_url': 'equipamento_visao_usuario,' + str(equipamento_id),
         "modelo": "Dell Optiplex 7090",
         "tipo": TipoEquipamento(info_equipamento['tipo']).label,
         'classe_estado': info_equipamento['estado_atual'],
@@ -35,8 +36,12 @@ def equipamento(request, equipamento_id):
         "data_aquisicao": info_equipamento['data_aquisicao'],
         "data_ultima_manutencao": info_equipamento['data_ultima_manutencao'],
         "status": info_equipamento['estado_atual'],
+        'salas': Salas.listar_salas(),
+        'equipamentos': Equipamentos.listar_equipamentos(),
+        'fileiras_sala': list(Fileira),
         'info_reportes_abertos': [reporte for reporte in Reportes.listar_reportes_equipamento(equipamento_id)],
         'historico_manutencoes': [{"manutencao_id": historico['historico_manutencoes_id'], "titulo":historico['titulo'], "responsavel":historico['responsavel'], "data":historico['data']} for historico in HistoricoManutencoes.listar_historico_equipamento(equipamento_id)],
+        'next': request.path,
         "insights": [
             {
                 "titulo": "Última manuteção",

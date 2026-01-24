@@ -8,6 +8,7 @@ class Agendamentos(models.Model):
     sala = models.ForeignKey(Salas, on_delete=models.CASCADE, null=False, related_name='agendamentos')
     inicio = models.TimeField(null=False)
     fim = models.TimeField(null=False)
+    descricao = models.TextField(null=True, blank=True)
     data = models.DateField(null=False)
     estado_atual = models.CharField(null=False, blank=False, choices=EstadoAgendamento.choices, default=EstadoAgendamento.A_SER_REALIZADO, max_length=100)
 
@@ -17,3 +18,7 @@ class Agendamentos(models.Model):
 
     def __str__(self):
         return f"{self.data} - {self.sala} ({self.estado_atual})"
+
+    @staticmethod
+    def carregar(agendamento_id):
+        return Agendamentos.objects.get(agendamento_id=agendamento_id)

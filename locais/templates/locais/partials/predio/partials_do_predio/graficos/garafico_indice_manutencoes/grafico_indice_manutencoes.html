@@ -1,3 +1,6 @@
-    <div class="grafico-indice-manutencoes">
-        {{ grafico_indice_manutencoes | safe }}
+    <div
+            id="grafico-indice-manutencoes"
+            class="grafico-indice-manutencoes"
+            data-url="{% url grafico_indice_manutencoes_url objeto_id %}"
+    >
     </div>

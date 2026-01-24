@@ -1,9 +1,18 @@
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.http import HttpResponse
 
 from django.contrib.auth.decorators import login_required
+
+from agendas.models import TecnicosTIAgendamentos, Agendamentos
+from auditoria.models import AuditoriaLog
+from contas.models import TecnicosTI
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
-from core.essenciais import TipoUsuario
+from core.essenciais import TipoUsuario, Acao, TipoAlvo
+from core.schedule.jobs import Jobs
+from locais.models import Salas
+import json
+
 
 # Create your views here.
 
@@ -173,3 +182,52 @@ def index(request):
     }
 
     return render(request, 'agendas/pages/kanban/kanban.html', context)
+
+
+def agendar_manutencao(request):
+    next = request.POST['next_url']
+    sala_id = request.POST['sala']
+    tecnicos_id = request.POST['tecnicos']
+    data_manutencao = request.POST['data_manutencao']
+    horario_inicio = request.POST['horario_inicio']
+    horario_final = request.POST['horario_final']
+    descricao = request.POST['descricao']
+
+    if not sala_id or not tecnicos_id or not data_manutencao or not horario_inicio or not horario_final or not descricao:
+        return HttpResponseRedirect(next)
+
+    tecnicos_id = list(map(int, json.loads(tecnicos_id)))
+
+    tecnicos = TecnicosTI.objects.filter(usuario_id__in=tecnicos_id)
+    sala = Salas.carregar(sala_id)
+
+
+    agendamento = Agendamentos(
+        sala=sala,
+        inicio=horario_inicio,
+        fim=horario_final,
+        data=data_manutencao,
+        descricao=descricao
+    )
+
+    agendamento.save()
+
+    tecnico_agendamento = None
+    tem_responsavel = False
+    for tecnico in tecnicos:
+        if request.user.id == tecnico.usuario.id:
+            tem_responsavel = True
+        tecnico_agendamento = TecnicosTIAgendamentos(
+            tecnico=tecnico,
+            agendamento=agendamento,
+            responsavel= True if request.user.id == tecnico.usuario.id else False
+        )
+        tecnico_agendamento.save()
+
+    if not tem_responsavel:
+        tecnico_agendamento.responsavel = True
+        tecnico_agendamento.save()
+
+    AuditoriaLog.persistir_auditoria(request.user, Acao.CRIAR_AGENDAMENTO, TipoAlvo.AGENDAMENTO)
+    Jobs.setar_comportamento_agendamento_inicio_e_fim(agendamento)
+    return HttpResponseRedirect(next)

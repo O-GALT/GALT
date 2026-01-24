@@ -124,7 +124,7 @@ class SQLNativo:
                         COUNT(*) FILTER (WHERE e.estado_atual = 'FUNCIONANDO') AS equipamentos_funcionando,
                         COUNT(*) FILTER (WHERE e.estado_atual = 'MANUTENCAO')   AS equipamentos_manutencao,
                         COUNT(*) FILTER (WHERE e.estado_atual = 'DEFEITUOSO')   AS equipamentos_defeituoso,
-                        COUNT(*)                                              AS total_equipamentos
+                        COUNT(*) AS total_equipamentos
                     FROM ativos_equipamentos e
                     INNER JOIN locais_salas s USING (sala_id)
                     INNER JOIN locais_setores se USING (setor_id)
@@ -254,7 +254,7 @@ class SQLNativo:
             equipamento AS (
                 SELECT
                 
-                e.serial, e.estado_atual, e.tipo, s.localizacao AS sala, e.fabricante, e.data_aquisicao,
+                e.serial, e.estado_atual, e.tipo, s.localizacao AS sala, s.sala_id, e.fabricante, e.data_aquisicao,
                 (
                     SELECT h.data FROM ativos_historicomanutencoes h
                     WHERE h.equipamento_id = e.equipamento_id
@@ -352,6 +352,7 @@ class SQLNativo:
             
             e.serial,
             e.estado_atual,
+            e.sala_id,
             COALESCE(im.manutencoes_realizadas, 0) AS manutencoes_realizadas,
             COALESCE(re.reportes_abertos, 0) AS reportes_abertos,
             e.tipo,
@@ -391,7 +392,7 @@ class SQLNativo:
                 LEFT JOIN reportes_abertos re ON true
                 LEFT JOIN manutencoes_preventivas mp ON true
             
-            GROUP BY ultima_manutencao, manutencoes_nesse_mes, serial, estado_atual, manutencoes_realizadas, reportes_abertos, tipo, sala, fabricante, data_ultima_manutencao, data_aquisicao, manutencoes_preventivas;
+            GROUP BY ultima_manutencao, manutencoes_nesse_mes, serial, estado_atual, manutencoes_realizadas, reportes_abertos, tipo, sala, fabricante, data_ultima_manutencao, data_aquisicao, manutencoes_preventivas, sala_id;
             ''', [equipamento_id, equipamento_id, equipamento_id, equipamento_id, equipamento_id, equipamento_id, equipamento_id])
 
             colunas = [col[0] for col in cursor.description]
@@ -443,7 +444,6 @@ class SQLNativo:
 
         return resultados
 
-
     @staticmethod
     def carregar_indicadores_setor(setor_id):
         with connection.cursor() as cursor:
@@ -452,7 +452,7 @@ class SQLNativo:
                     
                     setores AS (
                         SELECT s.setor FROM locais_setores s
-                        WHERE s.setor_id = 1
+                        WHERE s.setor_id = %s
                     ),
                     
                     manutencoes AS (
@@ -475,7 +475,7 @@ class SQLNativo:
                         FROM agendas_agendamentos a
                         INNER JOIN locais_salas s USING(sala_id)
                         INNER JOIN locais_setores se USING(setor_id)
-                        WHERE se.setor_id = 1
+                        WHERE se.setor_id = %s
                     ),
                     
                     equipamentos AS (
@@ -489,19 +489,19 @@ class SQLNativo:
                         FROM ativos_equipamentos e
                         INNER JOIN locais_salas s USING(sala_id)
                         INNER JOIN locais_setores se USING(setor_id)
-                        WHERE se.setor_id = 1
+                        WHERE se.setor_id = %s
                     ),
                     
                     salas AS (
                         SELECT
-                        COUNT(*) FILTER (WHERE s.estado_atual = 'FUNCIONANDO') AS salas_funcionando,
+                        COUNT(*) FILTER (WHERE s.estado_atual = 'LIBERADA') AS salas_funcionando,
                         COUNT(*) FILTER (WHERE s.estado_atual = 'MANUTENCAO') AS salas_manutencao,
                         COUNT(*) FILTER (WHERE s.estado_atual = 'INAPTA') AS salas_inaptas,
                         COUNT(*) AS salas_total
                     
                         FROM locais_salas s
                         INNER JOIN locais_setores se USING(setor_id)
-                        WHERE se.setor_id = 1
+                        WHERE se.setor_id = %s
                     ),
                     
                     reportes AS (
@@ -510,7 +510,7 @@ class SQLNativo:
                         INNER JOIN ativos_equipamentos e USING(equipamento_id)
                         INNER JOIN locais_salas s USING(sala_id)
                         INNER JOIN locais_setores se USING(setor_id)
-                        WHERE se.setor_id = 1
+                        WHERE se.setor_id = %s
                     )
                     
                     SELECT 
@@ -519,7 +519,10 @@ class SQLNativo:
                         manutencoes.manutencoes_agendadas,
                         reportes.reportes_total,
                     
-                        ROUND(((equipamentos.equipamentos_funcionando * 1.0) + (equipamentos.equipamentos_manutencao * 0.5)) / equipamentos.equipamentos_total * 100.0, 0) AS nivel_de_saude_setor,
+                        CASE 
+                            WHEN equipamentos.equipamentos_total = 0 THEN 100
+                            ELSE ROUND(((equipamentos.equipamentos_funcionando * 1.0) + (equipamentos.equipamentos_manutencao * 0.5)) / equipamentos.equipamentos_total * 100.0, 0)
+                        END AS nivel_de_saude_setor,
                     
                     
                         CASE
@@ -544,7 +547,7 @@ class SQLNativo:
                         INNER JOIN equipamentos ON TRUE 
                         INNER JOIN salas ON TRUE
                         INNER JOIN reportes ON TRUE;
-            ''')
+            ''', [setor_id, setor_id, setor_id, setor_id, setor_id])
 
             colunas = [col[0] for col in cursor.description]
             resultados = [

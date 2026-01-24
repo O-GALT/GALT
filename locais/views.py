@@ -1,8 +1,13 @@
+import json
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
+from plotly.utils import PlotlyJSONEncoder
 
-from ativos.models import Equipamentos
+from ativos.models import Equipamentos, HistoricoManutencoes
+from contas.models import TecnicosTI
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
 from core.essenciais import TipoUsuario, TipoEquipamento, EstadoEquipamento, EstadoSala, Fileira
 from core.graficos.GeradorGraficos import GeradorGraficos
@@ -66,8 +71,11 @@ def salas(request, sala_id):
     equipamentos_direita_mapeado = organizar_equipamentos_sala(equipamentos_direita)
     equipamentos_fundo_mapeado = organizar_equipamentos_sala(equipamentos_fundo)
 
+    salas_do_sistema = Salas.listar_salas()
+
     indicadores_sala = SQLNativo.carregar_indicadores_sala(sala_id)[0]
     context = {
+        'sala_id': sala_id,
         'qr_code_url': 'locais_sala_detail,' + str(sala_id),
         'localizacao': indicadores_sala['localizacao'],
         'estado_atual_classe': EstadoSala(indicadores_sala['estado_atual']).name,
@@ -76,51 +84,149 @@ def salas(request, sala_id):
         'computadores': indicadores_sala['computadores'],
         'projetores': indicadores_sala['projetores'],
         'ar_condicionados': indicadores_sala['ar_condicionados'],
+        'salas': salas_do_sistema,
+        'fileiras_sala': list(Fileira),
+        'next': request.path,
+        'equipamentos': equipamentos,
+        'tecnicos_responsaveis': TecnicosTI.listar_tecnicos(),
         'equipamentos_esquerda': equipamentos_esquerda_mapeado,
         'equipamentos_direita': equipamentos_direita_mapeado,
         'equipamentos_auxiliares': equipamentos_fundo_mapeado
     }
     return render(request, 'locais/paginas/sala/sala.html', context)
 
+def trocar_equipamento_sala(request):
+    next_url = request.POST['next_url']
+    equipamento_id = request.POST['equipamento']
+    sala_destino_id = request.POST['sala']
+    fileira = request.POST['fileira']
+    posicao = request.POST['posicao']
+
+    if not equipamento_id or not sala_destino_id or not fileira or not posicao:
+        return HttpResponseRedirect(next_url)
+
+    sala_destino = Salas.carregar(sala_destino_id)
+    equipamento: Equipamentos = Equipamentos.carregar(equipamento_id)
+
+    equipamento.sala = sala_destino
+    equipamento.posicao = posicao
+    equipamento.fileira = fileira
+    equipamento.save()
+    return HttpResponseRedirect(next_url)
+
+
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def setores(request, setor_id):
     indicadores_setor = SQLNativo.carregar_indicadores_setor(setor_id)[0]
+
     context = {}
-    context['grafico_saude_predio'] = GeradorGraficos.gerar_grafico_saude_local('setor', 100)
-    context['salas'] = [{'sala_id': 1, 'localizacao': 'A13', 'necessidade_interditacao': '80', 'equipamentos_defeituosos': '10','equipamentos': '20'}]
-    context['grafico_estado_equipamentos'] = GeradorGraficos.gerar_grafico_estado_equipamentos(261, 170, 69)
-    context['grafico_estado_salas'] = GeradorGraficos.gerar_grafico_estado_salas(200, 160, 30)
-    context['grafico_reporte_tipo_equipamento'] = GeradorGraficos.gerar_grafico_reports_por_tipo(None)
-    context['objetos'] = [
-        {'equipamento_id': '1', 'nome': 'Thunder V12', 'tipo': 'Projetor', 'serial': '19238419213',
-         'quantidade_manutencoes': '150', 'sala': 'A34'},
-        {'equipamento_id': '2', 'nome': 'Philips A12', 'tipo': 'Projetor', 'serial': '12301126732',
-         'quantidade_manutencoes': '100', 'sala': 'B1'},
-        {'equipamento_id': '3', 'nome': 'Joon FK1', 'tipo': 'Computador', 'serial': '744723419211',
-         'quantidade_manutencoes': '99', 'sala': '124'},
-        {'equipamento_id': '4', 'nome': 'Thunder V12', 'tipo': 'Projetor', 'serial': '19238419213',
-         'quantidade_manutencoes': '150', 'sala': 'A34'},
-        {'equipamento_id': '5', 'nome': 'Thunder V12', 'tipo': 'Projetor', 'serial': '19238419213',
-         'quantidade_manutencoes': '150', 'sala': 'A34'},
-        {'equipamento_id': '6', 'nome': 'Thunder V12', 'tipo': 'Projetor', 'serial': '19238419213',
-         'quantidade_manutencoes': '150', 'sala': 'A34'},
-        {'equipamento_id': '7', 'nome': 'Thunder V12', 'tipo': 'Projetor', 'serial': '19238419213',
-         'quantidade_manutencoes': '150', 'sala': 'A34'},
-        {'equipamento_id': '8', 'nome': 'Thunder V12', 'tipo': 'Projetor', 'serial': '19238419213',
-         'quantidade_manutencoes': '150', 'sala': 'A34'},
-    ]
+    context['nome_setor'] = indicadores_setor['setor']
+    context['salas_total'] = indicadores_setor['salas_total']
+    context['equipamentos_total'] = indicadores_setor['equipamentos_total']
+    context['reportes_total'] = indicadores_setor['reportes_total']
+    context['salas'] = [{'sala_id': sala['sala_id'], 'localizacao': sala['localizacao'], 'necessidade_interditacao': sala['necessidade_interditacao'], 'equipamentos_defeituosos': sala['equipamentos_defeituosos'], 'equipamentos': '20'} for sala in Salas.listar_salas_com_equipamentos_mais_defeituoso_setor(setor_id)]
+
+    context['objeto_id'] = setor_id
+    context['grafico_saude_object_url'] = 'locais_renderizar_saude_setor'
+    context['grafico_estado_equipamentos_url'] = 'locais_renderizar_estado_equipamentos_setor'
+    context['grafico_estado_salas_url'] = 'locais_renderizar_estado_salas_setor'
+    context['grafico_reporte_tipo_equipamento_url'] = 'locais_renderizar_reportes_tipo_equipamento_setor'
+
+    context['produtividade_setor'] = indicadores_setor['produtividade_setor']
+    context['tipo_objeto'] = 'equipamento'
+    context['objetos'] = [{'equipamento_id': equipamento['equipamento_id'], 'nome': equipamento['serial'], 'tipo': equipamento['tipo'], 'estado_atual': equipamento['estado_atual'],'quantidade_manutencoes': equipamento['manutencoes'], 'sala': equipamento['sala_localizacao']} for equipamento in Equipamentos.listar_equipamentos_mais_reincidencia_de_falhas_setor(setor_id)]
+    context['manutencoes_hoje'] = indicadores_setor['manutencoes_hoje']
+    context['manutencoes_agendadas'] = indicadores_setor['manutencoes_agendadas']
     return HttpResponse(render(request, 'locais/paginas/setor/setor.html', context))
 
+def renderizar_grafico_estado_equipamentos_setor(request, setor_id):
+    indicadores_setor = SQLNativo.carregar_indicadores_setor(setor_id)[0]
+    fig = GeradorGraficos.gerar_grafico_estado_equipamentos(indicadores_setor['equipamentos_funcionando'],indicadores_setor['equipamentos_manutencao'],indicadores_setor['equipamentos_defeituosos'])
+    return HttpResponse(
+        json.dumps(fig, cls=PlotlyJSONEncoder),
+        content_type="application/json"
+    )
+
+def renderizar_grafico_estado_salas_setor(request, setor_id):
+    indicadores_setor = SQLNativo.carregar_indicadores_setor(setor_id)[0]
+    fig = GeradorGraficos.gerar_grafico_estado_salas(indicadores_setor['salas_funcionando'], indicadores_setor['salas_manutencao'], indicadores_setor['salas_inaptas'])
+    return HttpResponse(
+        json.dumps(fig, cls=PlotlyJSONEncoder),
+        content_type="application/json"
+    )
+
+def renderizar_grafico_saude_setor(request, setor_id):
+    indicadores_setor = SQLNativo.carregar_indicadores_setor(setor_id)[0]
+    fig = GeradorGraficos.gerar_grafico_saude_local('setor', indicadores_setor['nivel_de_saude_setor'])
+    return HttpResponse(
+        json.dumps(fig, cls=PlotlyJSONEncoder),
+        content_type="application/json"
+    )
+
+
+def renderizar_grafico_reporte_por_tipo_setor(request, setor_id):
+    indicadores_setor = SQLNativo.carregar_indicadores_setor(setor_id)[0]
+    fig = GeradorGraficos.gerar_grafico_reports_por_tipo(Reportes.carregar_reportes_durante_a_semana_do_setor(setor_id))
+    return HttpResponse(
+        json.dumps(fig, cls=PlotlyJSONEncoder),
+        content_type="application/json"
+    )
+
+
+def renderizar_grafico_estado_equipamentos_predio(request, predio_id):
+    indicadores = SQLNativo.carregar_indicadores_predio(predio_id)[0]
+    fig = GeradorGraficos.gerar_grafico_estado_equipamentos(
+        indicadores['equipamentos_funcionando'],
+        indicadores['equipamentos_manutencao'],
+        indicadores['equipamentos_defeituoso'],
+    )
+    return HttpResponse(
+        json.dumps(fig, cls=PlotlyJSONEncoder),
+        content_type="application/json"
+    )
+
+def renderizar_grafico_estado_salas_predio(request, predio_id):
+    indicadores = SQLNativo.carregar_indicadores_predio(predio_id)[0]
+    fig = GeradorGraficos.gerar_grafico_estado_salas(
+        indicadores['salas_liberada'],
+        indicadores['salas_manutencao'],
+        indicadores['salas_inapta'],
+    )
+    return HttpResponse(
+        json.dumps(fig, cls=PlotlyJSONEncoder),
+        content_type="application/json")
+
+def renderizar_grafico_saude_predio(request, predio_id):
+    indicadores = SQLNativo.carregar_indicadores_predio(predio_id)[0]
+    fig = GeradorGraficos.gerar_grafico_saude_local(
+        'predio',
+        indicadores['saude_predio'],
+    )
+    return HttpResponse(
+        json.dumps(fig, cls=PlotlyJSONEncoder),
+        content_type="application/json")
+
+
+def renderizar_reporte_por_tipo_equipamento_predio(request, predio_id):
+    fig = GeradorGraficos.gerar_grafico_reports_por_tipo(Reportes.carregar_reportes_durante_a_semana_do_predio(predio_id))
+    return HttpResponse(
+        json.dumps(fig, cls=PlotlyJSONEncoder),
+        content_type="application/json")
+
+def renderizar_grafico_indice_manutencao(request, predio_id):
+    fig = GeradorGraficos.gerar_grafico_indice_manutencoes(HistoricoManutencoes.listar_manutencoes_no_predio_durante_o_ano(predio_id))
+    return HttpResponse(
+        json.dumps(fig, cls=PlotlyJSONEncoder),
+        content_type="application/json")
 
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def predios(request, predio_id):
     indicadores_predio = SQLNativo.carregar_indicadores_predio(predio_id)[0]
 
-    resultado = SQLNativo.listar_equipamentos_mais_defeituosos_predio(predio_id)
     context = {}
-    context['predio_id'] = indicadores_predio['predio_id']
+    context['objeto_id'] = indicadores_predio['predio_id']
     context['nome_predio'] = indicadores_predio['predio']
     context['total_salas'] = indicadores_predio['total_salas']
     context['total_equipamentos'] = indicadores_predio['total_equipamentos']
@@ -129,15 +235,16 @@ def predios(request, predio_id):
     context['manutencoes_hoje'] = indicadores_predio['manutencoes_hoje']
     context['salas_precisam_cuidados'] = indicadores_predio['salas_inapta']
     context['manutencoes_pendentes'] = indicadores_predio['manutencoes_pendentes']
-    context['grafico_estado_equipamentos'] = GeradorGraficos.gerar_grafico_estado_equipamentos(indicadores_predio['equipamentos_funcionando'], indicadores_predio['equipamentos_manutencao'], indicadores_predio['equipamentos_defeituoso'])
-    context['grafico_estado_salas'] = GeradorGraficos.gerar_grafico_estado_salas(indicadores_predio['salas_liberada'], indicadores_predio['salas_manutencao'], indicadores_predio['salas_inapta'])
-    context['grafico_saude_predio'] = GeradorGraficos.gerar_grafico_saude_local('predio', indicadores_predio['saude_predio'])
-    context['grafico_reporte_tipo_equipamento'] = GeradorGraficos.gerar_grafico_reports_por_tipo(Reportes.carregar_reportes_durante_a_semana_do_predio(predio_id))
-    context['grafico_indice_manutencoes'] = GeradorGraficos.gerar_grafico_indice_manutencoes()
-    context['quantidade_tecnicos'] = range(7)
+
+    context['grafico_estado_equipamentos_url'] = 'locais_renderizar_estado_equipamentos_predio'
+    context['grafico_estado_salas_url'] = 'locais_renderizar_estado_salas_predio'
+    context['grafico_saude_object_url'] = 'locais_renderizar_saude_predio'
+    context['grafico_reporte_tipo_equipamento_url'] = 'locais_renderizar_reportes_tipo_equipamento_predio'
+    context['grafico_indice_manutencoes_url'] = 'renderizar_grafico_indice_manutencoes_predio'
+
+    context['tecnicos'] = [{'email_escolar': tecnico['email_escolar'], 'manutencoes': str(tecnico['manutencoes']) + ' manutenções'} for tecnico in TecnicosTI.listar_tecnicos_mais_manutencoes_mes_predio(predio_id)]
     context['equipamentos'] = [{'equipamento_id':equipamento['equipamento_id'], 'serial': equipamento['serial'], 'manutencoes': equipamento['manutencoes'], 'necessidade_substituicao': equipamento['necessidade_substituicao']} for equipamento in SQLNativo.listar_equipamentos_mais_defeituosos_predio(predio_id)]
     context['salas'] = [{'sala_id':sala['sala_id'], 'localizacao':sala['localizacao'], 'necessidade_interditacao':sala['necessidade_interditacao'], 'equipamentos_defeituosos':sala['equipamentos_defeituosos']} for sala in Salas.listar_salas_com_equipamentos_mais_defeituoso_predio(predio_id)]
-
     return HttpResponse(render(request, 'locais/paginas/predio/predio.html', context))
 
 

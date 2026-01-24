@@ -19,7 +19,7 @@ class GeradorGraficos:
         cores = {
             "Funcionando": "#2FCF6A",
             "Defeituoso": "#F76A6D",
-            "Em manutenção": "#FFEB5A"
+            "Em manutenção": "#FFEB5A",
         }
 
         # 3) figura (pie/donut)
@@ -102,7 +102,7 @@ class GeradorGraficos:
 
         # 8) gerar HTML e retornar
         html_out = fig.to_html(full_html=False, config={'responsive': True})
-        return html_out
+        return fig
 
 
     @staticmethod
@@ -200,7 +200,7 @@ class GeradorGraficos:
 
         # 8) gerar HTML e retornar
         html_out = fig.to_html(full_html=False, config={'responsive': True})
-        return html_out
+        return fig
 
     @staticmethod
     def gerar_grafico_saude_local(local, porcentagem):
@@ -227,26 +227,26 @@ class GeradorGraficos:
             hovertemplate='%{label}<br><b>%{value}%</b><extra></extra>'
         ))
 
-        fig.data[0].domain = {'x': [0.0, 1.0], 'y': [0.0, 1.0]}
+        fig.data[0].domain = {'x': [0.0, 1.0], 'y': [0.0, 0.70]}
 
         # central number as annotation
         fig.update_layout(
             title=dict(
                 x=0.5,
-                y=0.923,
+                y=0.90,
                 text='Nível de saúde do ' + local,
                 font=dict(family="Open Sans", size=15, color="#365C3B", weight="bold"),
             ),
             annotations=[dict(
                 text=f"<span style='font-size:20px; font-weight:700; color:#111'>{porcentagem}%</span>",
-                x=0.5, y=0.6,
+                x=0.5, y=0.45,
                 showarrow=False,
                 xanchor='center',
                 yanchor='middle',
                 xref='paper', yref='paper'
 
             )],
-            margin=dict(t=60, b=40, l=0, r=0),
+            margin=dict(t=0, b=0, l=0, r=0),
 
             height=None,
             width=None,
@@ -254,7 +254,7 @@ class GeradorGraficos:
         )
 
         # Make it responsive when embedded: let the container control the size via CSS
-        return fig.to_html()
+        return fig
 
     @staticmethod
     def gerar_grafico_reports_por_tipo(equipamentos_reportes):
@@ -369,15 +369,23 @@ class GeradorGraficos:
 
         # Retorna HTML pronto para injetar no template Django
         html = fig.to_html(full_html=False, config={'responsive': True})
-        return html
+        return fig
 
 
     @staticmethod
-    def gerar_grafico_indice_manutencoes():
+    def gerar_grafico_indice_manutencoes(manutencoes_em_meses_query):
         # Dados de exemplo — substitua pelos reais
+
+        manutencoes_em_meses_valor = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        for i in range(12):
+            if i < len(manutencoes_em_meses_query):
+                manutencoes_em_meses_valor.insert(i, manutencoes_em_meses_query[i]['manutencoes'])
+            else:
+                break
+
         df = pd.DataFrame({
             "Mês": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dec"],
-            "Índice": [8, 5, 30, 15, 12, 14, 18, 5, 10, 12, 25, 15]
+            "Índice": manutencoes_em_meses_valor
         })
 
         fig = px.line(
@@ -429,4 +437,4 @@ class GeradorGraficos:
 
         # Exporta HTML responsivo
         html = fig.to_html(full_html=False, config={'responsive': True})
-        return html
+        return fig

@@ -8,7 +8,7 @@
 {% block content %}
 
 <body>
-    <form class="equip-page" method="POST">
+    <form class="equip-page" method="POST" action="{% url 'equipamento_visao_usuario' equipamento_id %}">
         {% csrf_token %}
 
         <div class="equip-icon-box">
@@ -24,14 +24,14 @@
 
         <div class="equip-section">
             <h3>Título</h3>
-            <input name="title" type="text" placeholder="O que você deseja reportar">
+            <input name="title" type="text" placeholder="O que você deseja reportar" required>
 
         </div>
 
         <div class="equip-section">
             <h3>Descrição do problema encontrado</h3>
 
-            <textarea name="problem-description" rows="7" cols="50" placeholder="Qual problema encontrado?"></textarea>
+            <textarea required name="problem-description" rows="7" cols="50" placeholder="Qual problema encontrado?"></textarea>
 
         </div>
 
@@ -41,21 +41,61 @@
         </div>
 
         <div class="checkbox-row">
-            <input name="agree-check" type="checkbox">
+            <input name="agree-check" type="checkbox" id="cheackbox_garantia_report">
             <p>Garanto que esse report foi feito com fins de ajudar a melhorar a qualidade dos equipamentos da
                 instituição e não é falso.</p>
         </div>
 
         <div class="checkbox-row">
-            <input name="acknowledge-check" type="checkbox">
+            <input name="acknowledge-check" type="checkbox" id="cheackbox_ciencia_ao_fazer_report">
             <p>Confirmo estar ciente que ao fazer reportes falsos ou de má fé irei ser responsabilizado.</p>
         </div>
 
         <div class="modal-actions">
-            <button class="btn-cancel">Cancelar</button>
-            <button class="btn-create" type="submit">Confirmar</button>
+            <button class="btn-cancel" type="button" id="botao-cancelar">Cancelar</button>
+            <button class="btn-create" type="submit" id="botao-confirmar">Confirmar</button>
         </div>
 
     </form>
 
+    {% block script %}
+<script>
+
+    console.log('SCRIPT CARREGADO')
+
+    const garantiaCheckbox = document.getElementById('cheackbox_garantia_report')
+    const cienciaCheckbox = document.getElementById('cheackbox_ciencia_ao_fazer_report')
+    const botao_cancelar = document.getElementById('botao-cancelar')
+    const botao_confirmar = document.getElementById('botao-confirmar')
+
+    botao_confirmar.type = 'button'
+
+    botao_cancelar.addEventListener('click', () => {
+        window.location.href = "{% url 'equipamento_visao_usuario' equipamento_id %}"
+    })
+
+    garantiaCheckbox.addEventListener('change', () => {
+        console.log('GARANTIA REPORT:', garantiaCheckbox.checked)
+        verificarCheckboxes()
+    })
+
+    cienciaCheckbox.addEventListener('change', () => {
+        console.log('CIÊNCIA AO FAZER REPORTE:', cienciaCheckbox.checked)
+        verificarCheckboxes()
+    })
+
+    function verificarCheckboxes() {
+        if (cienciaCheckbox.checked && garantiaCheckbox.checked) {
+            botao_confirmar.type = 'submit'
+            botao_confirmar.style.backgroundColor = '#2a7a5b'
+            return
+        }
+        botao_confirmar.type = 'button'
+        botao_confirmar.style.backgroundColor = '#707070'
+    }
+
+</script>
+
     {% endblock %}
+
+{% endblock %}

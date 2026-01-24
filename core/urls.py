@@ -14,8 +14,8 @@ urlpatterns = [
     path('criar-setor-modal', views.criar_setor_modal, name='criar_setor_modal'),
     path('exclusao-modal', views.exclusao_modal, name='exclusao_modal'),
 
-    path('equipamento-visao-usuario', views.equipamento_visao_usuario, name='equipamento_visao_usuario'),
-    path('report-visao-usuario', views.report_visao_usuario, name='report_visao_usuario'),
+    path('equipamento-visao-usuario/<int:equipamento_id>/', views.equipamento_visao_usuario, name='equipamento_visao_usuario'),
+    path('report-visao-usuario/<int:equipamento_id>/', views.report_visao_usuario, name='report_visao_usuario'),
 
     path('qr_code/<path:url>/', views.exibir_qr_code, name='gerar_qr_code'),
 

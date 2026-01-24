@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{% static 'core/css/partials/tabela_informacoes/tabela_informacoes.css' %}">
     <link rel="stylesheet" href="{% static 'locais/css/paginas/setor/setor.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
 {% endblock %}
 
 {% block header %}
@@ -23,12 +24,8 @@
 {% block content %}
     <div class="container-setor">
             <div class="info-cards">
-{#                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='vermelho' titulo_card='Reportes abertos' quantidade_card='20' %}#}
-                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='amarelo' titulo_card='Manutenções agendadas para hoje' quantidade_card='4' %}
-                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='vermelho' titulo_card='Manutenções agendadas' quantidade_card='20' %}
-{#                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='amarelo' titulo_card='Predios associados' quantidade_card='3' %}#}
-{#                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='amarelo' titulo_card='Total de equipamentos' quantidade_card='600' %}#}
-{#                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='ciano' titulo_card='Total de salas' quantidade_card='300' %}#}
+                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='amarelo' titulo_card='Manutenções agendadas para hoje' quantidade_card=manutencoes_hoje %}
+                {% include 'core/partials/card_metrica_setor_equipamento/card_metrica_setor_equipamento.html' with cor_card='vermelho' titulo_card='Manutenções agendadas' quantidade_card=manutencoes_agendadas %}
             </div>
 
 
@@ -60,31 +57,64 @@
 
             <div class="estado-salas-equipamentos">
                 <div class="estado-salas">
-                    {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_estado_salas/grafico_estado_salas.html' with grafico_estado_salas=grafico_estado_salas %}
+                    {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_estado_salas/grafico_estado_salas.html' %}
                 </div>
 
                 <div class="estado-equipamentos">
-                    {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_estado_equipamentos/grafico_estado_equipamentos.html' with grafico_estado_equipamentos=grafico_estado_equipamentos%}
+                    {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_estado_equipamentos/grafico_estado_equipamentos.html' %}
                 </div>
             </div>
 
 
             <div class="reportes-tipo-equipamento">
-                {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_reporte_tipo_equipamento/grafico_reporte_tipo_equipamento.html' with grafico_reporte_tipo_equipamento=grafico_reporte_tipo_equipamento %}
+                {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_reporte_tipo_equipamento/grafico_reporte_tipo_equipamento.html' %}
             </div>
 
-            {% include 'core/partials/tabela_infomacoes/tabela_informacoes.html' with objetos=objetos tipo_objeto='equipamento' %}
+            {% include 'core/partials/tabela_infomacoes/tabela_informacoes.html' with objetos=objetos %}
         </div>
 {% endblock %}
 
 {% block script %}
-    {{ block.super }}
-    document.addEventListener('DOMContentLoaded', () => {
-    // espera o Plotly criar os divs; 50ms costuma bastar, mas você pode usar a alternativa do MutationObserver abaixo
-    setTimeout(() => {
-        document.querySelectorAll('.plotly-graph-div').forEach(gd => {
-          try { Plotly.Plots.resize(gd); } catch(e) { /* fallback */ }
-        });
-        }, 60);
-    });
+{{ block.super }}
+document.addEventListener('DOMContentLoaded', () => {
+
+    const plotContainers = []
+
+    document.querySelectorAll('[data-url]').forEach(container => {
+        const url = container.dataset.url
+
+        fetch(url)
+            .then(r => r.json())
+            .then(fig => {
+                Plotly.newPlot(
+                    container,
+                    fig.data,
+                    fig.layout,
+                    { responsive: true }
+                )
+
+                plotContainers.push(container)
+
+                // 🔹 Recalcula logo após renderizar
+                setTimeout(() => {
+                    try {
+                        Plotly.Plots.resize(container)
+                    } catch (e) {}
+                }, 50)
+            })
+            .catch(err => {
+                console.error('Erro ao carregar gráfico:', err)
+            })
+    })
+
+    // 🔹 Recalcula todos os gráficos ao redimensionar a tela
+    window.addEventListener('resize', () => {
+        plotContainers.forEach(container => {
+            try {
+                Plotly.Plots.resize(container)
+            } catch (e) {}
+        })
+    })
+})
+
 {% endblock %}

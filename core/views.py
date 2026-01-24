@@ -3,8 +3,12 @@ import socket
 from io import BytesIO
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+
+from ativos.models import Equipamentos
+from auditoria.models import AuditoriaLog
+from contas.models import TecnicosTI
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
-from core.essenciais import TipoUsuario
+from core.essenciais import TipoUsuario, EstadoEquipamento, TipoEquipamento, Fileira
 
 from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse, FileResponse
@@ -12,6 +16,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from core.essenciais import Acao, TipoAlvo
+from core.essenciais.EstadoReporte import EstadoReporte
 from locais.forms import UsuarioForm, PredioForm, SetorForm, SalaForm, EquipamentoForm
 from core.emails.GerenciadorEmails import GerenciadorEmails
 from django.contrib.auth import authenticate, login
@@ -19,30 +24,25 @@ from core.auditorias.GerenciadorAuditoria import GerenciadorAuditoria
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 
+from suporte.models import Reportes
+
 
 def pagina_login(request):
     if request.method == 'POST':
-        username = request.POST.get('email_escolar')
-        password = request.POST.get('senha')
+        user = authenticate(
+            request,
+            username=request.POST.get('email_escolar'),
+            password=request.POST.get('senha')
+        )
 
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
+        if user:
             login(request, user)
-
-            # limpa o email salvo temporariamente
-            request.session.pop('email_temp', None)
-
-            return redirect('/locais/predios/1/')  # ajuste para sua rota correta
-        else:
-            # salva email temporariamente para reaparecer no input
-            request.session['email_temp'] = username
-
-            # cria a mensagem de erro
-            messages.error(request, 'Email ou senha incorretos.')
-
-            # redirect é obrigatório para o messages funcionar bem
-            return redirect('core_login')
+            next_url = request.POST.get("next")
+            if next_url:
+                return redirect(next_url)
+            else:
+                return redirect('locais_predio_detail', 1)
+        return render(request, 'core/pages/login.html')
 
     return render(request, 'core/pages/login.html')
 
@@ -56,12 +56,35 @@ def concluido_modal(request):
 def exclusao_modal(request):
     return render(request, 'core/pages/modais/modal-exclusao.html')
 
-def equipamento_visao_usuario(request): 
-    return render(request, 'core/pages/visao-do-usuario/equipamento-visao-usuario.html')
+def equipamento_visao_usuario(request, equipamento_id):
+    equipamento: Equipamentos = Equipamentos.carregar(equipamento_id)
+    context = {
+        'equipamento': equipamento,
+        'reportes_enviados': equipamento.reportes.filter(estado_atual=EstadoReporte.ABERTO.name).count(),
+        'estado': EstadoEquipamento(equipamento.estado_atual).label,
+        'tipo': TipoEquipamento(equipamento.tipo).label,
+        'fileira': Fileira(equipamento.fileira).label,
+        'manutencoes_realizadas': equipamento.historico_manutencoes.count()
+    }
+
+    if request.POST:
+        Reportes(
+            equipamento=equipamento,
+            usuario=request.user,
+            titulo=request.POST['title'],
+            mensagem=request.POST['problem-description']
+        ).save()
+        equipamento.verificar_e_atualizar_estado_apos_reporte(request.user)
+        AuditoriaLog.persistir_auditoria(request.user, Acao.ABRIR_REPORTE, TipoAlvo(equipamento.tipo))
+
+    return render(request, 'core/pages/visao-do-usuario/equipamento-visao-usuario.html', context)
 
 @login_required
-def report_visao_usuario(request): 
-    return render(request, 'core/pages/visao-do-usuario/report-equipamento-usuario.html')
+def report_visao_usuario(request, equipamento_id):
+    context = {
+        'equipamento_id': equipamento_id
+    }
+    return render(request, 'core/pages/visao-do-usuario/report-equipamento-usuario.html', context)
 
 
 @login_required
@@ -79,6 +102,13 @@ def criar_usuario_modal(request):
             user.set_password(form.cleaned_data['password'])
             user.save()
             form.save_m2m()
+
+            if user.groups.get(name=TipoUsuario.TECNICO_TI):
+                tecnico = TecnicosTI(
+                    usuario=user,
+                    cargo='Profisional técnico'
+                )
+                tecnico.save()
             GerenciadorEmails.enviar_email(user.email, user.email_escolar, password, user.groups)
             GerenciadorAuditoria.persistir_auditoria(admin, Acao.CRIAR_USUARIO, list(user.groups.all())[0])
             return HttpResponseRedirect(reverse('criar_recursos'))
