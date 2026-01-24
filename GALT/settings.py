@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_beat',
     'agendas',
     'ativos',
     'auditoria',
@@ -98,6 +99,13 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+
+# CONFIGURAÇÃO DO CELERY
+CELERY_BROKER_URL='redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 
 # Password validation

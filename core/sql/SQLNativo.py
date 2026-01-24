@@ -254,7 +254,7 @@ class SQLNativo:
             equipamento AS (
                 SELECT
                 
-                e.serial, e.estado_atual, e.tipo, s.localizacao AS sala, e.fabricante, e.data_aquisicao,
+                e.serial, e.estado_atual, e.tipo, s.localizacao AS sala, s.sala_id, e.fabricante, e.data_aquisicao,
                 (
                     SELECT h.data FROM ativos_historicomanutencoes h
                     WHERE h.equipamento_id = e.equipamento_id
@@ -352,6 +352,7 @@ class SQLNativo:
             
             e.serial,
             e.estado_atual,
+            e.sala_id,
             COALESCE(im.manutencoes_realizadas, 0) AS manutencoes_realizadas,
             COALESCE(re.reportes_abertos, 0) AS reportes_abertos,
             e.tipo,
@@ -391,7 +392,7 @@ class SQLNativo:
                 LEFT JOIN reportes_abertos re ON true
                 LEFT JOIN manutencoes_preventivas mp ON true
             
-            GROUP BY ultima_manutencao, manutencoes_nesse_mes, serial, estado_atual, manutencoes_realizadas, reportes_abertos, tipo, sala, fabricante, data_ultima_manutencao, data_aquisicao, manutencoes_preventivas;
+            GROUP BY ultima_manutencao, manutencoes_nesse_mes, serial, estado_atual, manutencoes_realizadas, reportes_abertos, tipo, sala, fabricante, data_ultima_manutencao, data_aquisicao, manutencoes_preventivas, sala_id;
             ''', [equipamento_id, equipamento_id, equipamento_id, equipamento_id, equipamento_id, equipamento_id, equipamento_id])
 
             colunas = [col[0] for col in cursor.description]
@@ -443,8 +444,8 @@ class SQLNativo:
 
         return resultados
 
-@staticmethod
-def carregar_indicadores_setor(setor_id):
+    @staticmethod
+    def carregar_indicadores_setor(setor_id):
         with connection.cursor() as cursor:
             cursor.execute('''
                                 WITH
@@ -518,7 +519,10 @@ def carregar_indicadores_setor(setor_id):
                         manutencoes.manutencoes_agendadas,
                         reportes.reportes_total,
                     
-                        ROUND(((equipamentos.equipamentos_funcionando * 1.0) + (equipamentos.equipamentos_manutencao * 0.5)) / equipamentos.equipamentos_total * 100.0, 0) AS nivel_de_saude_setor,
+                        CASE 
+                            WHEN equipamentos.equipamentos_total = 0 THEN 100
+                            ELSE ROUND(((equipamentos.equipamentos_funcionando * 1.0) + (equipamentos.equipamentos_manutencao * 0.5)) / equipamentos.equipamentos_total * 100.0, 0)
+                        END AS nivel_de_saude_setor,
                     
                     
                         CASE

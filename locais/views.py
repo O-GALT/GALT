@@ -1,8 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.http.response import HttpResponseRedirect
+from django.shortcuts import render, redirect
 
 from ativos.models import Equipamentos
+from contas.models import TecnicosTI
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
 from core.essenciais import TipoUsuario, TipoEquipamento, EstadoEquipamento, EstadoSala, Fileira
 from core.graficos.GeradorGraficos import GeradorGraficos
@@ -66,8 +68,11 @@ def salas(request, sala_id):
     equipamentos_direita_mapeado = organizar_equipamentos_sala(equipamentos_direita)
     equipamentos_fundo_mapeado = organizar_equipamentos_sala(equipamentos_fundo)
 
+    salas_do_sistema = Salas.listar_salas()
+
     indicadores_sala = SQLNativo.carregar_indicadores_sala(sala_id)[0]
     context = {
+        'sala_id': sala_id,
         'qr_code_url': 'locais_sala_detail,' + str(sala_id),
         'localizacao': indicadores_sala['localizacao'],
         'estado_atual_classe': EstadoSala(indicadores_sala['estado_atual']).name,
@@ -76,11 +81,36 @@ def salas(request, sala_id):
         'computadores': indicadores_sala['computadores'],
         'projetores': indicadores_sala['projetores'],
         'ar_condicionados': indicadores_sala['ar_condicionados'],
+        'salas': salas_do_sistema,
+        'fileiras_sala': list(Fileira),
+        'next': request.path,
+        'equipamentos': equipamentos,
+        'tecnicos_responsaveis': TecnicosTI.listar_tecnicos(),
         'equipamentos_esquerda': equipamentos_esquerda_mapeado,
         'equipamentos_direita': equipamentos_direita_mapeado,
         'equipamentos_auxiliares': equipamentos_fundo_mapeado
     }
     return render(request, 'locais/paginas/sala/sala.html', context)
+
+def trocar_equipamento_sala(request):
+    next_url = request.POST['next_url']
+    equipamento_id = request.POST['equipamento']
+    sala_destino_id = request.POST['sala']
+    fileira = request.POST['fileira']
+    posicao = request.POST['posicao']
+
+    if not equipamento_id or not sala_destino_id or not fileira or not posicao:
+        return HttpResponseRedirect(next_url)
+
+    sala_destino = Salas.carregar(sala_destino_id)
+    equipamento: Equipamentos = Equipamentos.carregar(equipamento_id)
+
+    equipamento.sala = sala_destino
+    equipamento.posicao = posicao
+    equipamento.fileira = fileira
+    equipamento.save()
+    return HttpResponseRedirect(next_url)
+
 
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
@@ -101,7 +131,6 @@ def setores(request, setor_id):
     context['objetos'] = [{'equipamento_id': equipamento['equipamento_id'], 'nome': equipamento['serial'], 'tipo': equipamento['tipo'], 'serial': '19238419213','quantidade_manutencoes': equipamento['manutencoes'], 'sala': equipamento['sala_localizacao']} for equipamento in Equipamentos.listar_equipamentos_mais_reincidencia_de_falhas_setor(setor_id)]
     context['manutencoes_hoje'] = indicadores_setor['manutencoes_hoje']
     context['manutencoes_agendadas'] = indicadores_setor['manutencoes_agendadas']
-
     return HttpResponse(render(request, 'locais/paginas/setor/setor.html', context))
 
 

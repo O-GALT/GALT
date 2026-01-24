@@ -14,6 +14,12 @@ services:
       volumes:
         - "galtDatabase:/var/lib/postgresql/data"
 
+  galt-redis:
+    image: redis:8.4.0
+    container_name: "galt-redis"
+    ports:
+      - "6379:6379"
+      
   galt-service:
       build: .
       container_name: "galt-service"

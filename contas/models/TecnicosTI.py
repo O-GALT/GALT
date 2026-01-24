@@ -16,3 +16,7 @@ class TecnicosTI(models.Model):
     @staticmethod
     def listar_tecnicos_mais_manutencoes_mes_predio(predio_id):
         return Usuarios.objects.filter(tecnico__agendamentos_tecnicos__agendamento__sala__setor__predio__predio_id=predio_id).values('email_escolar').annotate(manutencoes=Count('*')).order_by('-manutencoes')
+
+    @staticmethod
+    def listar_tecnicos():
+        return TecnicosTI.objects.all()

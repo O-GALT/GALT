@@ -3,6 +3,8 @@ import socket
 from io import BytesIO
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+
+from contas.models import TecnicosTI
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
 from core.essenciais import TipoUsuario
 
@@ -56,7 +58,7 @@ def concluido_modal(request):
 def exclusao_modal(request):
     return render(request, 'core/pages/modais/modal-exclusao.html')
 
-def equipamento_visao_usuario(request): 
+def equipamento_visao_usuario(request, equipamento_id):
     return render(request, 'core/pages/visao-do-usuario/equipamento-visao-usuario.html')
 
 @login_required
@@ -79,6 +81,13 @@ def criar_usuario_modal(request):
             user.set_password(form.cleaned_data['password'])
             user.save()
             form.save_m2m()
+
+            if user.groups.get(name=TipoUsuario.TECNICO_TI):
+                tecnico = TecnicosTI(
+                    usuario=user,
+                    cargo='Profisional técnico'
+                )
+                tecnico.save()
             GerenciadorEmails.enviar_email(user.email, user.email_escolar, password, user.groups)
             GerenciadorAuditoria.persistir_auditoria(admin, Acao.CRIAR_USUARIO, list(user.groups.all())[0])
             return HttpResponseRedirect(reverse('criar_recursos'))
