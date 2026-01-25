@@ -19,21 +19,59 @@ services:
     container_name: "galt-redis"
     ports:
       - "6379:6379"
-      
+
+  galt-nginx:
+    image: thaua1/galt-nginx:latest
+    container_name: galt-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - staticfiles:/staticfiles
+    depends_on:
+      - galt-service
+
   galt-service:
-      build: .
-      container_name: "galt-service"
-      env_file:
-        ./env/galtService.env
-      depends_on:
-        galt-database:
-          condition: service_healthy
-      entrypoint: [ "/bin/sh", "-c" ]
-      command: >
-          "python manage.py migrate --noinput &&
-           python manage.py createsuperuser --noinput || true &&
-           python manage.py runserver 0.0.0.0:8000"
-      ports:
-        - "8000:8000"
+    image: thaua1/galt-service:latest
+    container_name: "galt-service"
+    env_file:
+      ./env/galtService.env
+    depends_on:
+      galt-database:
+        condition: service_healthy
+
+    expose:
+      - "8000"
+    volumes:
+      - staticfiles:/app/staticfiles
+
+  celery-worker:
+    image: thaua1/galt-service:latest
+    container_name: "galt-celery-worker"
+    command: celery -A GALT worker -l info
+    entrypoint: /app/scripts/entrypoint_celery_worker.sh
+    depends_on:
+      galt-database:
+        condition: service_healthy
+      galt-redis:
+        condition: service_started
+      galt-service:
+        condition: service_started
+
+  celery-beat:
+    image: thaua1/galt-service:latest
+    container_name: "galt-celery-beat"
+    command: celery -A GALT beat -l info
+    entrypoint: /app/scripts/entrypoint_celery_beat.sh
+
+    depends_on:
+      galt-database:
+        condition: service_healthy
+      galt-redis:
+        condition: service_started
+      galt-service:
+        condition: service_started
+
+
 volumes:
   galtDatabase:
+  staticfiles:

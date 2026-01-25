@@ -1,0 +1,12 @@
+.filtro-container {
+    display: flex;
+    gap: 1.5vw;
+}
+
+
+
+@media screen and (max-width: 450px){
+    .conteudo-esquerda .actions {
+        display: none;
+    }
+}

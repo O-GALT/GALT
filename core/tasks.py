@@ -1,6 +1,6 @@
 from agendas.models import Agendamentos
 from ativos.models import Equipamentos
-from core.essenciais import EstadoAgendamento, EstadoEquipamento
+from core.essenciais import EstadoAgendamento, EstadoEquipamento, EstadoSala
 from celery import shared_task
 
 @shared_task
