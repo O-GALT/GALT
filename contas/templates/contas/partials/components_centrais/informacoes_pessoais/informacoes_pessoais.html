@@ -28,9 +28,13 @@
 
             <div class="actions">
                 <button class="edit-btn" title="Editar informações" type="button" id="editBtn">Editar</button>
-                <button class="exclude-btn" title="Excluir conta">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
+                <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="exclude-btn" title="Encerrar sessão">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </form>
+
             </div>
 
         </div>

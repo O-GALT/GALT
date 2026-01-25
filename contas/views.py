@@ -1,8 +1,9 @@
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
 from core.essenciais import TipoUsuario
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 # Create your views here.
@@ -22,6 +23,10 @@ def eu(request):
         usuario.save()
 
     return render(request, 'contas/partials/components_centrais/informacoes_pessoais/informacoes_pessoais.html', {'usuario': usuario})
+
+def logout_view(request):
+    logout(request)
+    return redirect('core_login')
 
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])

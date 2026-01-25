@@ -5,4 +5,5 @@ urlpatterns = [
     path('', views.index, name='contas_index'),
     path('@eu/', views.eu, name='contas_eu'),
     path('criar-recursos/', views.criar_recursos, name='criar_recursos'),
+    path('logout/', views.logout_view, name='logout'),
 ]
