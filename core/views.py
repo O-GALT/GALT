@@ -52,7 +52,6 @@ def concluido_modal(request):
     return render(request, 'core/pages/modais/modal-concluido.html')
 
 @login_required
-@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])
 def exclusao_modal(request):
     return render(request, 'core/pages/modais/modal-exclusao.html')
 
