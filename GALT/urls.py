@@ -24,7 +24,9 @@ from core.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
+
+    path('', include('core.urls')),
+
     path('agendas/', include('agendas.urls')),
     path('ativos/', include('ativos.urls')),
     path('auditoria/', include('auditoria.urls')),
