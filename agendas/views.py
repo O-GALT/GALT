@@ -1,187 +1,82 @@
+from django.db import transaction
 from django.http.response import HttpResponseRedirect
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 
+from agendas.essenciais.format_agendamentos import formatar_agendamento
+from agendas.essenciais.formatar_lista_de_equipamentos_concertados import formatar_lista_de_equipamentos_concertados
 from agendas.models import TecnicosTIAgendamentos, Agendamentos
+from ativos.models import Equipamentos
 from auditoria.models import AuditoriaLog
 from contas.models import TecnicosTI
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
-from core.essenciais import TipoUsuario, Acao, TipoAlvo
+from core.essenciais import TipoUsuario, Acao, TipoAlvo, EstadoAgendamento, EstadoEquipamento, EstadoSala
 from core.schedule.jobs import Jobs
 from locais.models import Salas
 import json
 
 
-# Create your views here.
-
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def index(request):
     context = {}
+    user = request.user
+    user_id = user.id
+
+
+    lista_agendamentos_feedback_by_user_id = Agendamentos.carregar_by_estado_and_tecnico_id(
+        EstadoAgendamento.ESPERANDO_CONFIRMACAO, request.user.id
+    )
+
+    if lista_agendamentos_feedback_by_user_id.exists():
+        return redirect('reportar_manutencao', user_id=user_id)
+
+    lista_agendamentos_pendentes = Agendamentos.carregar_by_estado(
+        EstadoAgendamento.A_SER_REALIZADO
+    )
+    lista_agendamentos_fazendo = Agendamentos.carregar_by_estado(
+        EstadoAgendamento.FAZENDO
+    )
+    lista_agendamentos_feedback = Agendamentos.carregar_by_estado(
+        EstadoAgendamento.ESPERANDO_CONFIRMACAO
+    )
+    lista_agendamentos_inacabado = Agendamentos.carregar_by_estado(
+        EstadoAgendamento.INACABADO
+    )
+    lista_agendamentos_feito = Agendamentos.carregar_by_estado(
+        EstadoAgendamento.FEITO
+    )
+
+
 
     context['pendentes'] = {
-        "cards": [
-            {
-                "date": "25/01/2026",
-                "nome_sala": "Sala A17",
-                "nome_setor": "Setor de salas de aulas",
-                "nome_predio": "Prédio principal",
-                "hora_inicio": "09:10",
-                "hora_fim": "10:30",
-                "numero_tecnicos": 5,
-                "descricao": "Manutenção preventiva dos equipamentos da sala A17."
-            },
-            {
-                "date": "25/01/2026",
-                "nome_sala": "Sala B12",
-                "nome_setor": "Setor acadêmico",
-                "nome_predio": "Bloco B",
-                "hora_inicio": "10:40",
-                "hora_fim": "12:00",
-                "numero_tecnicos": 3,
-                "descricao": "Ajuste de projetor e verificação de cabeamento."
-            },
-        ],
-        "count": 2
+        "cards": [formatar_agendamento(a) for a in lista_agendamentos_pendentes],
+        "count": len(lista_agendamentos_pendentes),
     }
 
     context['em_andamento'] = {
-        "cards": [
-            {
-                "date": "25/01/2026",
-                "nome_sala": "Sala C03",
-                "nome_setor": "Laboratórios",
-                "nome_predio": "Prédio técnico",
-                "hora_inicio": "08:00",
-                "hora_fim": "09:30",
-                "numero_tecnicos": 4,
-                "descricao": "Atualização de software nos computadores do laboratório."
-            },
-            {
-                "date": "25/01/2026",
-                "nome_sala": "Sala A17",
-                "nome_setor": "Setor de salas de aulas",
-                "nome_predio": "Prédio principal",
-                "hora_inicio": "09:10",
-                "hora_fim": "10:30",
-                "numero_tecnicos": 5,
-                "descricao": "Correção de falhas elétricas identificadas anteriormente."
-            },
-            {
-                "date": "25/01/2026",
-                "nome_sala": "Auditório",
-                "nome_setor": "Eventos",
-                "nome_predio": "Bloco Central",
-                "hora_inicio": "13:00",
-                "hora_fim": "15:00",
-                "numero_tecnicos": 6,
-                "descricao": "Preparação de áudio e vídeo para evento institucional."
-            },
-            {
-                "date": "25/01/2026",
-                "nome_sala": "Sala D08",
-                "nome_setor": "Setor administrativo",
-                "nome_predio": "Bloco D",
-                "hora_inicio": "15:30",
-                "hora_fim": "17:00",
-                "numero_tecnicos": 2,
-                "descricao": "Troca de equipamentos danificados."
-            },
-        ],
-        "count": 4
+        "cards": [formatar_agendamento(a) for a in lista_agendamentos_fazendo],
+        "count": len(lista_agendamentos_fazendo),
     }
 
     context['feedback'] = {
-        "cards": [
-            {
-                "date": "25/01/2026",
-                "nome_sala": "Sala E01",
-                "nome_setor": "Setor pedagógico",
-                "nome_predio": "Anexo",
-                "hora_inicio": "09:00",
-                "hora_fim": "10:00",
-                "numero_tecnicos": 1,
-                "descricao": "Aguardando validação do solicitante após manutenção."
-            },
-            {
-                "date": "25/01/2026",
-                "nome_sala": "Sala F10",
-                "nome_setor": "Biblioteca",
-                "nome_predio": "Bloco F",
-                "hora_inicio": "11:00",
-                "hora_fim": "12:30",
-                "numero_tecnicos": 2,
-                "descricao": "Feedback pendente sobre funcionamento dos computadores."
-            },
-        ],
-        "count": 2
+        "cards": [formatar_agendamento(a) for a in lista_agendamentos_feedback],
+        "count": len(lista_agendamentos_feedback),
     }
 
     context['inacabado'] = {
-        "cards": [
-            {
-                "date": "25/01/2026",
-                "nome_sala": "Sala G05",
-                "nome_setor": "Setor técnico",
-                "nome_predio": "Bloco G",
-                "hora_inicio": "14:00",
-                "hora_fim": "16:00",
-                "numero_tecnicos": 3,
-                "descricao": "Serviço interrompido por falta de material."
-            },
-        ],
-        "count": 1
+        "cards": [formatar_agendamento(a) for a in lista_agendamentos_inacabado],
+        "count": len(lista_agendamentos_inacabado),
     }
 
     context['finalizado'] = {
-        "cards": [
-            {
-                "date": "25/01/2026",
-                "nome_sala": "Sala H02",
-                "nome_setor": "Setor de informática",
-                "nome_predio": "Bloco H",
-                "hora_inicio": "08:30",
-                "hora_fim": "09:30",
-                "numero_tecnicos": 2,
-                "descricao": "Instalação concluída com sucesso."
-            },
-            {
-                "date": "25/01/2026",
-                "nome_sala": "Sala A17",
-                "nome_setor": "Setor de salas de aulas",
-                "nome_predio": "Prédio principal",
-                "hora_inicio": "10:00",
-                "hora_fim": "11:00",
-                "numero_tecnicos": 3,
-                "descricao": "Reparo finalizado e validado."
-            },
-            {
-                "date": "25/01/2026",
-                "nome_sala": "Sala J09",
-                "nome_setor": "Pesquisa",
-                "nome_predio": "Bloco J",
-                "hora_inicio": "13:30",
-                "hora_fim": "14:30",
-                "numero_tecnicos": 1,
-                "descricao": "Configuração de rede concluída."
-            },
-            {
-                "date": "25/01/2026",
-                "nome_sala": "Sala K11",
-                "nome_setor": "Coordenação",
-                "nome_predio": "Bloco K",
-                "hora_inicio": "16:00",
-                "hora_fim": "17:30",
-                "numero_tecnicos": 4,
-                "descricao": "Manutenção corretiva finalizada."
-            },
-        ],
-        "count": 4
+        "cards": [formatar_agendamento(a) for a in lista_agendamentos_feito],
+        "count": len(lista_agendamentos_feito),
     }
 
-    return render(request, 'agendas/pages/kanban/kanban.html', context)
+    return render(request,'agendas/pages/kanban/kanban.html',context)
 
 
 def agendar_manutencao(request):
@@ -231,3 +126,63 @@ def agendar_manutencao(request):
     AuditoriaLog.persistir_auditoria(request.user, Acao.CRIAR_AGENDAMENTO, TipoAlvo.AGENDAMENTO)
     Jobs.setar_comportamento_agendamento_inicio_e_fim(agendamento)
     return HttpResponseRedirect(next)
+
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
+def reportar_manutencao(request, user_id):
+    agendamento = (
+        Agendamentos.objects
+        .filter(
+            estado_atual=EstadoAgendamento.ESPERANDO_CONFIRMACAO,
+            agendamentos_tecnicos__tecnico__usuario_id=user_id
+        )
+        .select_related('sala')
+        .order_by('inicio')
+        .first()
+    )
+
+    if not agendamento:
+        return redirect('agendas_index')
+
+    context = {
+        'equipamentos': formatar_lista_de_equipamentos_concertados(agendamento.sala.sala_id),
+        'agendamento': agendamento,
+        'user_id': user_id
+    }
+
+    return render(request, 'agendas/pages/finalizar_manutencao/finalizar_manutencao.html', context)
+
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
+@require_POST
+def processar_finalizacao_agendamento(request, agendamento_id):
+    agendamento = get_object_or_404(
+        Agendamentos,
+        agendamento_id=agendamento_id
+    )
+
+    equipamentos_ids = request.POST.getlist('equipamentos')
+
+    with (transaction.atomic()):
+
+        if equipamentos_ids:
+            agendamento.estado_atual = EstadoAgendamento.FEITO
+
+            Equipamentos.objects.filter(
+                equipamento_id__in=equipamentos_ids
+            ).update(
+                estado_atual=EstadoEquipamento.FUNCIONANDO
+            )
+
+            Salas.objects.filter(
+                sala_id=agendamento.sala.sala_id
+            ).update(
+                estado_atual=EstadoSala.LIBERADA
+            )
+
+        else:
+            agendamento.estado_atual = EstadoAgendamento.INACABADO
+
+        agendamento.save()
+
+    return redirect('agendas_index')
