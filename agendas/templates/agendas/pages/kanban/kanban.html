@@ -31,7 +31,7 @@
 
             <div class="card-wrapper">
                 {% for card in pendentes.cards %}
-                    {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.nome_sala nome_setor=card.nome_setor nome_predio=card.nome_predio hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos descricao=card.descricao %}
+                    {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.sala.nome nome_setor=card.setor.nome nome_predio=card.predio.nome hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos tecnicos=card.tecnicos_associados descricao=card.descricao %}
                 {% endfor %}
             </div>
 
@@ -45,7 +45,7 @@
 
             <div class="card-wrapper">
                 {% for card in em_andamento.cards %}
-                    {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.nome_sala nome_setor=card.nome_setor nome_predio=card.nome_predio hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos descricao=card.descricao %}
+                    {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.sala.nome nome_setor=card.setor.nome nome_predio=card.predio.nome hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos tecnicos=card.tecnicos_associados descricao=card.descricao %}
                 {% endfor %}
             </div>
 
@@ -59,7 +59,7 @@
 
             <div class="card-wrapper">
                 {% for card in feedback.cards %}
-                    {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.nome_sala nome_setor=card.nome_setor nome_predio=card.nome_predio hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos descricao=card.descricao %}
+                    {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.sala.nome nome_setor=card.setor.nome nome_predio=card.predio.nome hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos tecnicos=card.tecnicos_associados descricao=card.descricao %}
                 {% endfor %}
             </div>
 
@@ -73,7 +73,7 @@
 
             <div class="card-wrapper">
                 {% for card in inacabado.cards %}
-                    {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.nome_sala nome_setor=card.nome_setor nome_predio=card.nome_predio hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos descricao=card.descricao %}
+                    {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.sala.nome nome_setor=card.setor.nome nome_predio=card.predio.nome hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos tecnicos=card.tecnicos_associados descricao=card.descricao %}
                 {% endfor %}
             </div>
 
@@ -87,7 +87,7 @@
 
             <div class="card-wrapper">
                 {% for card in finalizado.cards %}
-                    {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.nome_sala nome_setor=card.nome_setor nome_predio=card.nome_predio hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos descricao=card.descricao %}
+                    {% include 'agendas/partials/kanban_card/kanban_card.html' with date=card.date nome_sala=card.sala.nome nome_setor=card.setor.nome nome_predio=card.predio.nome hora_inicio=card.hora_inicio hora_fim=card.hora_fim numero_tecnicos=card.numero_tecnicos tecnicos=card.tecnicos_associados descricao=card.descricao %}
                 {% endfor %}
             </div>
 
@@ -122,21 +122,23 @@
     overlay.classList.add("active");
     });
 
-    function adicionarTecnicos(numeroTecnicos) {
-    let container = ''
-
-    for (let i = 1; i <= numeroTecnicos; i++) {
-
-    if (i !== 0 && i % 2 === 0) {
-    container += '<img src="https://randomuser.me/api/portraits/men/40.jpg" alt="imagem do técnico">'
-    } else {
-    container += '<img src="https://randomuser.me/api/portraits/women/43.jpg" alt="imagem do técnico">'
+    function parseTecnicos(tecnicosString) {
+    return JSON.parse(
+    tecnicosString.replace(/'/g, '"')
+    );
     }
 
+    function adicionarTecnicos(tecnicos) {
+    const tecnicosArray = parseTecnicos(tecnicos);
+    let buffer = "";
+
+    tecnicosArray.forEach( item => {
+    buffer += `<span><strong>@${item.nome}</strong> - ${item.email}</span>`;
+    });
+
+    return buffer;
     }
 
-    return container
-    }
 
     function preencherModal(data) {
     modal.title.textContent = `Manutenção da ${data.nomeSala}` ;
@@ -147,7 +149,7 @@
     `${data.horaInicio || "--"} - ${data.horaFim || "--"}`;
     modal.descricao.textContent = data.descricao || "Sem descrição";
 
-    modal.tecnicos.innerHTML = adicionarTecnicos(data.numeroTecnicos)
+    modal.tecnicos.innerHTML = adicionarTecnicos(data.tecnicos)
     }
 
     function fecharModal() {

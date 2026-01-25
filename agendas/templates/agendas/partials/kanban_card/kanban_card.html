@@ -8,6 +8,7 @@
      data-hora-inicio="{{ hora_inicio }}"
      data-hora-fim="{{ hora_fim }}"
      data-numero-tecnicos="{{ numero_tecnicos }}"
+     data-tecnicos="{{ tecnicos }}"
      data-descricao="{{ descricao }}"
 >
     <div class="card-top">
@@ -28,10 +29,10 @@
         <div class="avatars">
             <img src="https://randomuser.me/api/portraits/men/40.jpg" alt="imagem do técnico">
 
-            {% if numero_tecnicos > 2 %}
+            {% if numero_tecnicos > 2 and numero_tecnicos|divisibleby:2 %}
                 <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="imagem do técnico">
                 <span class="more">+{{ numero_tecnicos }}</span>
-            {% elif numero_tecnicos < 3 %}
+            {% elif numero_tecnicos > 2 and not numero_tecnicos|divisibleby:2 %}
                 <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="imagem do técnico">
             {% endif %}
         </div>

@@ -22,3 +22,13 @@ class Agendamentos(models.Model):
     @staticmethod
     def carregar(agendamento_id):
         return Agendamentos.objects.get(agendamento_id=agendamento_id)
+
+    @staticmethod
+    def carregar_by_estado(estado):
+        return Agendamentos.objects.filter(estado_atual=estado)
+
+    @staticmethod
+    def carregar_by_estado_and_tecnico_id(estado , tecnico_id) :
+        return Agendamentos.objects.filter(estado_atual=estado , agendamentos_tecnicos=tecnico_id)
+
+
