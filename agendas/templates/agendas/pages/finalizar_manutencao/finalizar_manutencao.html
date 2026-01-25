@@ -1,0 +1,75 @@
+{% extends 'core/paginas/base/estrutura_base/estrutura_base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'agendas/css/pages/finalizar_manutencao/finalizar_manutencao.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <div class="maintenanceModal-overlay active" id="maintenanceModalOverlay">
+        <div class="maintenanceModal-container" onclick="event.stopPropagation()">
+            <div class="maintenanceModal-header">
+                <h2>Selecione os equipamentos que foram consertados</h2>
+                <p>
+                    Antes de poder agendar uma nova manutenção em uma sala ou visualizar a situação de todos os agendamentos existentes é preciso
+                    finalizar o relatório da sua última manutenção primeiro.
+                </p>
+                <p style="margin-top: 16px">
+                    <strong>Sala de referência : </strong>  Sala {{ agendamento.sala.localizacao }}
+                </p>
+                <p>
+                    <strong>Data de referência : </strong>  {{ agendamento.data }}
+                </p>
+            </div>
+
+            <div class="maintenanceModal-content" id="maintenanceModalContent">
+                <form
+                        class="maintenanceModal-grid"
+                        id="maintenanceModalGrid"
+                        action="{% url 'processar_finalizacao_agendamento' agendamento.agendamento_id %}"
+                        method="post"
+                >
+                    {% csrf_token %}
+
+                    {% for equipamento in equipamentos %}
+                        <div class="maintenanceModal-card">
+                            <div class="maintenanceModal-card-info">
+                                <strong>{{ equipamento.serial }}</strong>
+                                <span>Estado: {{ equipamento.estado_atual }}</span>
+
+                                <div class="info-content">
+                                    <i class="fa-solid fa-building"></i>
+                                    <span>Sala {{ equipamento.sala_id }}</span>
+                                </div>
+
+                                <div class="info-content">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <span>Posição {{ equipamento.posicao }}</span>
+                                </div>
+
+                                <div class="info-content">
+                                    <i class="fa-solid fa-laptop"></i>
+                                    <span>{{ equipamento.tipo }}</span>
+                                </div>
+                            </div>
+
+                            <input
+                                    type="checkbox"
+                                    name="equipamentos"
+                                    value="{{ equipamento.equipamento_id }}"
+                                    class="maintenanceModal-checkbox"
+                            />
+                        </div>
+                    {% endfor %}
+
+                    <div class="maintenanceModal-footer">
+                        <button type="submit">
+                            Finalizar manutenção
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

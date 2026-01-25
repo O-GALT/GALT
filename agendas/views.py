@@ -1,15 +1,18 @@
+from django.db import transaction
 from django.http.response import HttpResponseRedirect
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 
 from agendas.essenciais.format_agendamentos import formatar_agendamento
+from agendas.essenciais.formatar_lista_de_equipamentos_concertados import formatar_lista_de_equipamentos_concertados
 from agendas.models import TecnicosTIAgendamentos, Agendamentos
+from ativos.models import Equipamentos
 from auditoria.models import AuditoriaLog
 from contas.models import TecnicosTI
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
-from core.essenciais import TipoUsuario, Acao, TipoAlvo, EstadoAgendamento
+from core.essenciais import TipoUsuario, Acao, TipoAlvo, EstadoAgendamento, EstadoEquipamento, EstadoSala
 from core.schedule.jobs import Jobs
 from locais.models import Salas
 import json
@@ -22,51 +25,29 @@ def index(request):
     user = request.user
     user_id = user.id
 
-    is_admin = user.groups.filter(
-        name=TipoUsuario.ADMINISTRADOR.value
-    ).exists()
 
-    is_tecnico = user.groups.filter(
-        name=TipoUsuario.TECNICO_TI.value
-    ).exists()
+    lista_agendamentos_feedback_by_user_id = Agendamentos.carregar_by_estado_and_tecnico_id(
+        EstadoAgendamento.ESPERANDO_CONFIRMACAO, request.user.id
+    )
 
+    if lista_agendamentos_feedback_by_user_id.exists():
+        return redirect('reportar_manutencao', user_id=user_id)
 
-    if is_admin:
-        lista_agendamentos_pendentes = Agendamentos.carregar_by_estado(
-            EstadoAgendamento.A_SER_REALIZADO
-        )
-        lista_agendamentos_fazendo = Agendamentos.carregar_by_estado(
-            EstadoAgendamento.FAZENDO
-        )
-        lista_agendamentos_feedback = Agendamentos.carregar_by_estado(
-            EstadoAgendamento.ESPERANDO_CONFIRMACAO
-        )
-        lista_agendamentos_inacabado = Agendamentos.carregar_by_estado(
-            EstadoAgendamento.INACABADO
-        )
-        lista_agendamentos_feito = Agendamentos.carregar_by_estado(
-            EstadoAgendamento.FEITO
-        )
-
-    elif is_tecnico:
-        lista_agendamentos_pendentes = Agendamentos.carregar_by_estado_and_tecnico_id(
-            EstadoAgendamento.A_SER_REALIZADO, user_id
-        )
-        lista_agendamentos_fazendo = Agendamentos.carregar_by_estado_and_tecnico_id(
-            EstadoAgendamento.FAZENDO, user_id
-        )
-        lista_agendamentos_feedback = Agendamentos.carregar_by_estado_and_tecnico_id(
-            EstadoAgendamento.ESPERANDO_CONFIRMACAO, user_id
-        )
-        lista_agendamentos_inacabado = Agendamentos.carregar_by_estado_and_tecnico_id(
-            EstadoAgendamento.INACABADO, user_id
-        )
-        lista_agendamentos_feito = Agendamentos.carregar_by_estado_and_tecnico_id(
-            EstadoAgendamento.FEITO, user_id
-        )
-
-    else:
-        return redirect('core_login')
+    lista_agendamentos_pendentes = Agendamentos.carregar_by_estado(
+        EstadoAgendamento.A_SER_REALIZADO
+    )
+    lista_agendamentos_fazendo = Agendamentos.carregar_by_estado(
+        EstadoAgendamento.FAZENDO
+    )
+    lista_agendamentos_feedback = Agendamentos.carregar_by_estado(
+        EstadoAgendamento.ESPERANDO_CONFIRMACAO
+    )
+    lista_agendamentos_inacabado = Agendamentos.carregar_by_estado(
+        EstadoAgendamento.INACABADO
+    )
+    lista_agendamentos_feito = Agendamentos.carregar_by_estado(
+        EstadoAgendamento.FEITO
+    )
 
 
 
@@ -145,3 +126,63 @@ def agendar_manutencao(request):
     AuditoriaLog.persistir_auditoria(request.user, Acao.CRIAR_AGENDAMENTO, TipoAlvo.AGENDAMENTO)
     Jobs.setar_comportamento_agendamento_inicio_e_fim(agendamento)
     return HttpResponseRedirect(next)
+
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
+def reportar_manutencao(request, user_id):
+    agendamento = (
+        Agendamentos.objects
+        .filter(
+            estado_atual=EstadoAgendamento.ESPERANDO_CONFIRMACAO,
+            agendamentos_tecnicos__tecnico__usuario_id=user_id
+        )
+        .select_related('sala')
+        .order_by('inicio')
+        .first()
+    )
+
+    if not agendamento:
+        return redirect('agendas_index')
+
+    context = {
+        'equipamentos': formatar_lista_de_equipamentos_concertados(agendamento.sala.sala_id),
+        'agendamento': agendamento,
+        'user_id': user_id
+    }
+
+    return render(request, 'agendas/pages/finalizar_manutencao/finalizar_manutencao.html', context)
+
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
+@require_POST
+def processar_finalizacao_agendamento(request, agendamento_id):
+    agendamento = get_object_or_404(
+        Agendamentos,
+        agendamento_id=agendamento_id
+    )
+
+    equipamentos_ids = request.POST.getlist('equipamentos')
+
+    with (transaction.atomic()):
+
+        if equipamentos_ids:
+            agendamento.estado_atual = EstadoAgendamento.FEITO
+
+            Equipamentos.objects.filter(
+                equipamento_id__in=equipamentos_ids
+            ).update(
+                estado_atual=EstadoEquipamento.FUNCIONANDO
+            )
+
+            Salas.objects.filter(
+                sala_id=agendamento.sala.sala_id
+            ).update(
+                estado_atual=EstadoSala.LIBERADA
+            )
+
+        else:
+            agendamento.estado_atual = EstadoAgendamento.INACABADO
+
+        agendamento.save()
+
+    return redirect('agendas_index')

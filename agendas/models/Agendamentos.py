@@ -28,7 +28,24 @@ class Agendamentos(models.Model):
         return Agendamentos.objects.filter(estado_atual=estado)
 
     @staticmethod
-    def carregar_by_estado_and_tecnico_id(estado , tecnico_id) :
-        return Agendamentos.objects.filter(estado_atual=estado , agendamentos_tecnicos=tecnico_id)
+    def carregar_by_estado_and_tecnico_id(estado, user_id):
+        return (
+            Agendamentos.objects
+            .filter(
+                estado_atual=estado,
+                agendamentos_tecnicos__tecnico__usuario_id=user_id
+            )
+            .select_related(
+                'sala',
+                'sala__setor',
+                'sala__setor__predio'
+            )
+            .prefetch_related(
+                'agendamentos_tecnicos',
+                'agendamentos_tecnicos__tecnico'
+            )
+            .distinct()
+        )
+
 
 

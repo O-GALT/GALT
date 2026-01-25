@@ -2,10 +2,9 @@
 {% load static %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'agendas/css/partials/kanban/kanban.css' %}">
+    <link rel="stylesheet" href="{% static 'agendas/css/pages/kanban/kanban.css' %}">
     <link rel="stylesheet" href="{% static 'agendas/css/partials/info_kanban_card/info_kanban_card.css' %}">
     <link rel="stylesheet" href="{% static 'agendas/css/partials/kanban_card/kanban_card.css' %}">
-    <link rel="stylesheet" href="{% static 'core/css/partials/modal_finalizar_manutencao/modal_finalizar_manutencao.css' %}">
 {% endblock %}
 
 
@@ -15,8 +14,6 @@
 
 {% block modais %}
     {% include 'agendas/partials/info_kanban_card/info_kanban_card.html' %}
-    {% include 'core/partials/modal_finalizar_manutencao/modal_finalizar_manutencao.html' %}
-    <button onclick="maintenanceModalOpen()">Abrir modal</button>
 {% endblock %}
 
 {% block content %}

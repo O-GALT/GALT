@@ -31,10 +31,16 @@
 
             {% if numero_tecnicos > 2 and numero_tecnicos|divisibleby:2 %}
                 <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="imagem do técnico">
-                <span class="more">+{{ numero_tecnicos }}</span>
             {% elif numero_tecnicos > 2 and not numero_tecnicos|divisibleby:2 %}
                 <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="imagem do técnico">
+            {% elif numero_tecnicos == 2  %}
+                <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="imagem do técnico">
             {% endif %}
+
+            {% if numero_tecnicos > 2 %}
+                <span class="more">+{{ numero_tecnicos }}</span>
+            {% endif %}
+
         </div>
 
         <div class="time">
