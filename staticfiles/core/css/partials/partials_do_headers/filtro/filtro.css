@@ -1,0 +1,18 @@
+.filtro-select {
+    width: 8rem;
+    height: 1.8rem;
+    cursor: pointer;
+    background: none;
+    border: 0.1rem rgb(129, 129, 129) solid;
+    border-radius: 5px;
+    padding-left: 0.5vw;
+    color: rgba(90, 82, 82, 1);
+    font-weight: lighter;
+}
+
+@media (max-width: 651px) {
+    .filtro-select{
+        width: 6rem;
+    }
+}
+

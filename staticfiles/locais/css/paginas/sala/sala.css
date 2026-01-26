@@ -1,0 +1,57 @@
+.equipamentos-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.colunas-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+}
+
+.colunas-grid a {
+    display: block;
+}
+
+.grid-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #50826C;
+    margin-bottom: 1rem;
+}
+
+
+/* Estilos da coluna de equipamento */
+
+
+.grid-coluna {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+/* Estilos da coluna de equipamentos auxiliares */
+
+.grid-auxiliares {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+
+@media (max-width: 1200px) {
+    .colunas-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* estilos dos botões de ações do equipamento */
+
+.botoes{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}

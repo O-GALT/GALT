@@ -1,0 +1,53 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+    text-decoration: none;
+}
+
+.grafico-saude-predio {
+    width: 100%;
+    height: 13rem;
+    background-color: rgba(248, 249, 250, 1);
+    border-radius: 1.5rem;
+}
+
+.grafico-saude-predio .plotly-graph-div, .grafico-saude-predio .js-plotly-plot {
+    width: 100% !important;
+    height: 17rem !important;
+}
+
+.grafico-saude-predio > div {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.grafico-saude-predio .user-select-none {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.grafico-saude-predio .svg-container {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.grafico-saude-predio .main-svg {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.grafico-saude-predio .plot-container, .grafico-saude-predio .plotly {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/*.grafico-saude-predio .plotly-graph-div .grafico-saude-predio .js-plotly-plot {*/
+/*    width: 100% !important;*/
+/*    height: 100% !important;*/
+/*}*/
+
+.grafico-saude-predio .gtitle {
+     font-size: clamp(0.8rem, 1.2vw, 1.3rem) !important;
+}

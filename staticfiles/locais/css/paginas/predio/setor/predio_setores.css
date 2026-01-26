@@ -1,0 +1,32 @@
+.container-setores {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    cursor: pointer;
+}
+
+.container .conteudo-esquerda .actions .setores {
+    color: rgba(10, 83, 36, 1);
+}
+
+.actions .setores-container .setores-selecionado {
+    display: block;
+}
+
+@media (max-width: 1328px)  {
+    .container-setores {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1133px)  {
+    .container-setores {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 608px)  {
+    .container-setores {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,102 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 10px;
+}
+
+.overlay.active {
+    display: flex;
+}
+
+/* modal */
+
+.modal {
+    background: #fff;
+    width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 14px;
+    padding: 24px;
+}
+
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.close-btn {
+    font-size: 22px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+
+/*  blocos de informação  */
+
+.meta-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.meta-item {
+    font-size: 13px;
+}
+
+.meta-item .label, .label {
+    font-size: 14px;
+    display: block;
+    color: #505c75;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.description {
+    margin-top: 24px;
+}
+
+.description h3 {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.description p {
+    font-size: 13px;
+    color: #444;
+    width: 100%;
+    overflow-wrap: break-word;
+    line-height: 1.4;
+}
+
+.avatars {
+    display: flex;
+    align-items: center;
+}
+
+.avatars img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin-left: -8px;
+}
+
+#modalTecnicos{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}

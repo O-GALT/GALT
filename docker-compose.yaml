@@ -20,5 +20,19 @@ services:
     ports:
       - "6379:6379"
 
+  galt-service:
+    build: .
+    container_name: "galt-service"
+    env_file:
+      ./env/galtService.env
+    depends_on:
+      galt-database:
+        condition: service_healthy
+
+    expose:
+      - "8000"
+    volumes:
+      - staticfiles:/app/staticfiles
 volumes:
   galtDatabase:
+  staticfiles:
