@@ -11,7 +11,7 @@ class HistoricoManutencoes(models.Model):
     historico_manutencoes_id = models.AutoField(primary_key=True)
     equipamento = models.ForeignKey(Equipamentos, on_delete=models.CASCADE, null=False, related_name='historico_manutencoes')
     tecnico = models.ForeignKey(TecnicosTI, on_delete=models.CASCADE, null=False, related_name='historico_manutencoes')
-    titulo = models.CharField(null=False, blank=False, max_length=20)
+    titulo = models.TextField(null=False, blank=False, max_length=100)
     data = models.DateField(null=False, auto_now_add=True)
 
     class Meta:

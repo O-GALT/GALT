@@ -1,9 +1,10 @@
 from ativos.models import Equipamentos
+from core.essenciais import EstadoEquipamento
 from locais.models import Salas
 
 
 def formatar_lista_de_equipamentos_concertados(sala_id):
-    equipamentos = Equipamentos.listar_por_sala(sala_id)
+    equipamentos = Equipamentos.listar_por_sala_estado(sala_id, EstadoEquipamento.MANUTENCAO)
     sala_atual = Salas.carregar(sala_id)
 
     equipamentos_formatados = []

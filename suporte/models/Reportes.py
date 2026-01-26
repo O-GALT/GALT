@@ -36,3 +36,7 @@ class Reportes(models.Model):
     @staticmethod
     def listar_reportes_equipamento(equipamento_id):
         return Reportes.objects.filter(equipamento__equipamento_id=equipamento_id, estado_atual='ABERTO')
+
+    @staticmethod
+    def carregar_por_sala(sala_id):
+        return Reportes.objects.filter(sala__sala_id=sala_id)

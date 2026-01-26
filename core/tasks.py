@@ -1,11 +1,15 @@
 from agendas.models import Agendamentos
 from ativos.models import Equipamentos
-from core.essenciais import EstadoAgendamento, EstadoEquipamento
+from core.essenciais import EstadoAgendamento, EstadoEquipamento, EstadoSala
 from celery import shared_task
+
+from locais.models import Salas
+
 
 @shared_task
 def setar_inicio_agendamento(agendamento_id):
     agendamento: Agendamentos = Agendamentos.carregar(agendamento_id)
+    sala = Salas.carregar_por_agendamento(agendamento_id)
 
     if agendamento.estado_atual == EstadoAgendamento.A_SER_REALIZADO.name:
         equipamentos: list[Equipamentos] = Equipamentos.listar_equipamentos_da_sala(agendamento.sala.sala_id)
@@ -15,6 +19,8 @@ def setar_inicio_agendamento(agendamento_id):
                 equipamento.estado_atual = EstadoEquipamento.MANUTENCAO
                 equipamento.save()
 
+        sala.estado_atual = EstadoSala.MANUTENCAO
+        sala.save()
         agendamento.estado_atual = EstadoAgendamento.FAZENDO
         agendamento.save()
 
