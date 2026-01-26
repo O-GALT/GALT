@@ -420,6 +420,9 @@ class SQLNativo:
                     INNER JOIN agendas_agendamentos a USING(agendamento_id)
                     INNER JOIN locais_salas s USING(sala_id)
                     WHERE s.sala_id = %s
+                    AND at.responsavel = TRUE
+                    AND a.estado_atual = 'A_SER_REALIZADO'
+                    OR a.estado_atual = 'FAZENDO'
                     ORDER BY a.data DESC
                     LIMIT 1
                 ), 'Sem agendamentos cadastrados') AS responsavel_manutencao,

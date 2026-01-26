@@ -76,7 +76,7 @@ class GeradorGraficos:
         for i, row in df.iterrows():
             estado = row["Estado"]
             qtd = int(row["Quantidade"])
-            percent = qtd / total * 100
+            percent = 0 if total == 0 else qtd / total * 100
             y_pos = y_start - i * y_step - 0.34
 
             # anotação esquerda: bolinha colorida + texto do estado
@@ -174,7 +174,7 @@ class GeradorGraficos:
         for i, row in df.iterrows():
             estado = row["Estado"]
             qtd = int(row["Quantidade"])
-            percent = qtd / total * 100
+            percent = 0 if total == 0 else qtd / total * 100
             y_pos = y_start - i * y_step - 0.34
 
             # anotação esquerda: bolinha colorida + texto do estado
@@ -376,10 +376,10 @@ class GeradorGraficos:
     def gerar_grafico_indice_manutencoes(manutencoes_em_meses_query):
         # Dados de exemplo — substitua pelos reais
 
-        manutencoes_em_meses_valor = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        manutencoes_em_meses_valor = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         for i in range(12):
             if i < len(manutencoes_em_meses_query):
-                manutencoes_em_meses_valor.insert(i, manutencoes_em_meses_query[i]['manutencoes'])
+                manutencoes_em_meses_valor[i] = manutencoes_em_meses_query[i]['manutencoes']
             else:
                 break
 

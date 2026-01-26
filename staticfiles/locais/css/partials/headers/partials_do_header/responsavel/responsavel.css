@@ -1,0 +1,22 @@
+.container-reponsavel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/*.container-info-responsavel {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    gap: 0.5vw;*/
+/*}*/
+
+.titulo-responsavel h2 {
+    color: rgba(10, 83, 36, 1);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/*.info-responsavel p {*/
+/*    color: rgba(102, 102, 102, 0.8);*/
+/*    font-size: 1rem;*/
+/*}*/

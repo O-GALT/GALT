@@ -1,0 +1,61 @@
+.card-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    height: 6rem;
+    border-radius: 12px;
+    padding: 0.8rem;
+}
+
+.card-titulo {
+    /*grid-area: card-titulo;*/
+    font-size: 0.6rem;
+}
+
+.quantidade-porcentagem {
+    /*grid-area: quantidade-porcentagem;*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.quantidade {
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+.porcentagem {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.porcentagem-numero {
+    font-size: 0.7rem;
+}
+
+.porcentagem-icone {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+}
+
+.porcentagem-numero, .quantidade, .card-titulo {
+    color: rgba(28, 28, 28, 1);;
+}
+
+#reportes-abertos {
+    background-color: rgba(165, 219, 208, 1);
+}
+
+#manutencoes-agendadas {
+    background-color: rgba(203, 218, 239, 1);
+}
+
+#salas-cuidados {
+    background-color: rgba(208, 240, 104, 1);
+}
+
+#salas-inviaveis {
+    background-color: rgba(252, 122, 124, 1);
+}

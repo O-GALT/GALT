@@ -1,0 +1,77 @@
+.tabela-metrica-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 3rem 4rem;
+    background-color: rgba(248, 249, 250, 1);
+    width: 100%;
+    height: 21rem;
+    overflow: auto;
+    scrollbar-width: none;
+    border-radius: 1.5rem;
+    padding: 1rem;
+}
+
+.tabela-metrica-container .cabecalho-metricas {
+    display: grid;
+    grid-template-columns: 1fr;
+    height: 100%;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.tabela-metrica-container .cabecalho, .tabela-metrica-container .metricas {
+    display: grid;
+    grid-template-columns: 8% 12% 33% 15%;
+    gap: 10%;
+
+}
+
+.quantidade-metrica, .cabecalho-numero, .cabecalho-objeto, .cabecalho-necessidade, .cabecalho-quantidade, .metricas .numero-metrica, .metricas .objeto-metrica, .metricas .quantidade-metrica, .metricas .container-substituicao{
+    display: flex;
+    justify-content: center;
+}
+
+.tabela-metrica-container .cabecalho p {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: rgb(118, 129, 145);
+}
+
+.tabela-metrica-container .necessidade-substituicao-metrica {
+    padding-top: 0.5rem;
+    width: 10rem;
+}
+
+.tabela-metrica-container .titulo-metrica h3 {
+    font-size: clamp(0.7rem, 1.8vw, 1.1rem);
+    color: #365C3B;
+}
+
+.tabela-metrica-container .falta-metrica {
+    background-color: rgba(203, 219, 234, 1);
+    height: 0.33rem;
+    border-radius: 1.5rem;
+}
+
+.tabela-metrica-container .concluido-metrica {
+    background-color: rgba(244, 111, 81, 1);
+    border-radius: 1.5rem;
+    height: 100%;
+}
+
+
+@media (max-width: 990px) {
+    .tabela-metrica-container .cabecalho-necessidade {
+        display: none;
+    }
+
+    .tabela-metrica-container .metricas .container-substituicao {
+        display: none;
+    }
+
+    .tabela-metrica-container .cabecalho, .tabela-metrica-container .metricas {
+        grid-template-columns: 8% 20% 19%;
+        gap: 25%;
+    }
+}
+

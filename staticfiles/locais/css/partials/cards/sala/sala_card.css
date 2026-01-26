@@ -1,0 +1,59 @@
+.card-sala {
+  background-color: #C7F6EC;
+  border-radius: 12px;
+  padding: 20px 25px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+  color: #50826C;
+}
+
+.card-sala:hover {
+  transform: translateY(-3px);
+}
+
+.card-sala h2 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #50826C;
+}
+
+.card-sala p {
+  margin: 5px 0;
+  color: #50826C;
+  font-size: 14px;
+}
+
+.card-sala p.estado {
+  color: #50826C;
+}
+
+.card-sala i {
+  margin-right: 6px;
+  color: #50826C;
+}
+
+/* ESTADOS DAS SALAS */
+.manutencao {
+  background-color: #F3E9AB;
+  color: #6C5C3D;
+}
+
+.manutencao p,
+.manutencao i,
+.manutencao h2,
+.manutencao p.estado {
+  color: #6C5C3D;
+}
+
+.inapta {
+  background-color: #FABABB;
+  color: #A26774;
+}
+
+.inapta p,
+.inapta i,
+.inapta h2,
+.inapta p.estado {
+  color: #A26774;
+}

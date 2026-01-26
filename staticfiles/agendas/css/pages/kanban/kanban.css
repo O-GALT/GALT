@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    background: #f7f8f5;
+}
+
+header h1 {
+    font-size: 26px;
+    color: #46785F;
+}
+
+header p {
+    margin-top: 5px;
+    color: #6f726e;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 300px));
+    gap: 8px;
+    padding: 20px 0;
+    align-items: start;
+}
+
+.column {
+    width: 300px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.column-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.column-header h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #444;
+}
+
+.count {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+}
+
+.count.yellow {
+    background: #fff0cc;
+    color: #c58c11;
+}
+
+.count.pink {
+    background: #f7c6ec;
+    color: #c0109a;
+}
+
+.count.purple {
+    background: #e6d8fc;
+    color: #925fe4;
+}
+
+.count.green {
+    background: #a7dcff;
+    color: #184a6c;
+}
+
+.count.blue {
+    background: #9fe3c0;
+    color: #2b5b47;
+}
+
+
+
+
+@media (min-width:  951px ) and (max-width: 1200px) {
+    .board{
+        grid-template-columns: repeat(3 , minmax(250px, 400px));
+        gap: 20px;
+    }
+}
+
+
+
+@media (min-width:  640px ) and (max-width: 950px) {
+    .board{
+        grid-template-columns: repeat(2 , minmax(250px, 450px));
+        gap: 30px;
+    }
+
+    .column{
+        width: 100%;
+    }
+
+    .card{
+        width: 90%;
+        min-width: 285px;
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 640px) {
+    .board{
+        grid-template-columns: repeat(1 , 100%);
+        gap: 50px;
+    }
+
+    .column{
+        width: 100%;
+    }
+
+    .card{
+        width: 90%;
+        min-width: 285px;
+        max-width: 370px;
+    }
+
+    .card-wrapper{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+}

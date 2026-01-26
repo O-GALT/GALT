@@ -1,0 +1,11 @@
+.container {
+    grid-template-columns: 2fr 1.25fr;
+
+    @media screen and (max-width: 1024px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.conteudo-direita {
+    justify-content: start;
+}
