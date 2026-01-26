@@ -48,3 +48,7 @@ class Salas(models.Model):
     @staticmethod
     def carregar(sala_destino_id):
         return Salas.objects.get(sala_id=sala_destino_id)
+
+    @staticmethod
+    def carregar_por_agendamento(agendamento_id):
+        return Salas.objects.get(agendamentos__agendamento_id=agendamento_id)

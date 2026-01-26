@@ -13,3 +13,7 @@ class TecnicosTIAgendamentos(models.Model):
 
     def get(self):
         TecnicosTIAgendamentos.objects.all()
+
+    @staticmethod
+    def carregar_tecnico_responsavel(agendamento_id):
+        return TecnicosTIAgendamentos.objects.get(agendamento__agendamento_id=agendamento_id, responsavel=True)

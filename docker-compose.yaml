@@ -19,21 +19,6 @@ services:
     container_name: "galt-redis"
     ports:
       - "6379:6379"
-      
-  galt-service:
-      build: .
-      container_name: "galt-service"
-      env_file:
-        ./env/galtService.env
-      depends_on:
-        galt-database:
-          condition: service_healthy
-      entrypoint: [ "/bin/sh", "-c" ]
-      command: >
-          "python manage.py migrate --noinput &&
-           python manage.py createsuperuser --noinput || true &&
-           python manage.py runserver 0.0.0.0:8000"
-      ports:
-        - "8000:8000"
+
 volumes:
   galtDatabase:
