@@ -1,0 +1,34 @@
+{% load static %}
+
+
+
+<a href="{% url 'locais_predio_detail' predio_id %}" class="building-card">
+    {% if notification == True %}
+        <div class="building-notification" title="Notificações do prédio">
+            <i class="fa-solid fa-bell"></i>
+        </div>
+    {% endif %}
+
+    <div class="building-header">
+        <div class="building-icon">{{ indice }}</div>
+        <div>
+            <p class="building-title">{{ nome_predio }}</p>
+            <p class="building-subtitle">Administração e salas técnicas</p>
+        </div>
+    </div>
+
+    <div class="building-status">
+        <div class="status-item">
+            <span>Salas</span>
+            <strong>{{ numero_salas }}</strong>
+        </div>
+        <div class="status-item">
+            <span>Equipamentos</span>
+            <strong>{{ numero_equipamentos }}</strong>
+        </div>
+        <div class="status-item">
+            <span>Saúde</span>
+            <strong>{{ saude_predio }}</strong>
+        </div>
+    </div>
+</a>
