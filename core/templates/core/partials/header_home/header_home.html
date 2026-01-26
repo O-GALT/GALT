@@ -1,0 +1,20 @@
+{% extends 'core/paginas/base/headers/header_content_base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/nome_objeto/nome_objeto_header.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/partials/partials_do_headers/descricao/descricao_header.css' %}">
+{% endblock %}
+
+{% block nome_objeto %}
+    {% include 'core/partials/partials_do_headers/nome_objeto/nome_objeto_header.html' with nome='Saguão dos prédios' %}
+{% endblock %}
+
+{% block descricao %}
+    <div style="display: flex ; flex-direction: column; gap: 8px ; margin-bottom: 20px" >
+        {% include 'core/partials/partials_do_headers/descricao/descricao_header.html' with descricao='Selecione um prédio para acompanhar o estado das salas, setores, a disponibilidade dos equipamentos e o andamento das manutenções, com indicadores e análises específicas para cada unidade.' %}
+        {% include 'core/partials/partials_do_headers/descricao/descricao_header.html' with descricao='Utilize este espaço como referência diária para navegar entre os prédios e manter uma visão organizada, clara e atualizada de toda a operação.' %}
+    </div>
+{% endblock %}
+
