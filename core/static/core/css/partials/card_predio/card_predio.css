@@ -1,0 +1,114 @@
+:root {
+    --bg-main: #f8f9f7;
+    --bg-card: #ffffff;
+    --green-primary: #3f7f63;
+    --green-soft: #e6f2ec;
+    --text-title: #2f3e36;
+    --text-body: #5d6473;
+    --border-soft: #e5e7eb;
+}
+
+.building-card {
+    background-color: var(--bg-card);
+    border-radius: 18px;
+    padding: 20px;
+    border: 2px solid var(--border-soft);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    position: relative;
+    color: var(--text-body);
+}
+
+.building-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+.building-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.building-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background-color: var(--green-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: var(--green-primary);
+    font-weight: 600;
+}
+
+.building-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-title);
+}
+
+.building-subtitle {
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+.building-status {
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.status-item {
+    flex: 1;
+    background-color: #fafafa;
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+    border: 2px solid var(--border-soft);
+
+}
+
+.status-item span {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.status-item strong {
+    font-size: 1.1rem;
+    color: var(--green-primary);
+}
+
+
+.building-notification {
+    position: absolute;
+    top: -12px;
+    right: -14px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--green-soft);
+    border: 2px solid var(--border-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--green-primary);
+    font-size: 1rem;
+}
+
+.building-notification::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    background-color: #e5533d;
+    border-radius: 50%;
+}

@@ -1,0 +1,27 @@
+{% extends 'core/paginas/base/estrutura_base/estrutura_base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'core/css/partials/card_predio/card_predio.css' %}" >
+    <link rel="stylesheet" href="{% static 'core/css/pages/home/home.css' %}" >
+{% endblock %}
+
+{% block header %}
+    {% include 'core/partials/header_home/header_home.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="section-separator">
+        <span class="section-title">Prédios</span>
+    </div>
+
+    <section class="buildings-grid">
+        {% for predio in predios %}
+            {% if predio.manutencoes_pendentes > 0 %}
+                {% include 'core/partials/card_predio/card_predio.html' with  predio_id=predio.predio_id  notification=True indice=predio.predio_id nome_predio=predio.predio numero_salas=predio.total_salas  numero_equipamentos=predio.total_equipamentos  saude_predio=predio.saude_predio %}
+            {% else %}
+                {% include 'core/partials/card_predio/card_predio.html' with predio_id=predio.predio_id notification=False indice=predio.predio_id nome_predio=predio.predio numero_salas=predio.total_salas  numero_equipamentos=predio.total_equipamentos  saude_predio=predio.saude_predio %}
+            {% endif %}
+        {% endfor %}
+    </section>
+{% endblock %}

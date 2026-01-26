@@ -12,15 +12,24 @@ from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
 from core.essenciais import TipoUsuario, TipoEquipamento, EstadoEquipamento, EstadoSala, Fileira
 from core.graficos.GeradorGraficos import GeradorGraficos
 from core.sql.SQLNativo import SQLNativo
-from locais.models import Salas, Setores
+from locais.models import Salas, Setores, Predios
 from suporte.models import Reportes
 
 
-# Create your views here.
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def home(request):
-    return HttpResponse(
-        render(request, 'locais/paginas/predio/equipamento'))
-        # Implementação temporária, essa view irá retornar outro html que está em desenvolvimento.
+    predios = Predios.objects.all()
+    buffer = []
+
+    for predio in predios:
+        buffer.append(SQLNativo.carregar_indicadores_predio(predio.predio_id)[0])
+
+    context = {
+        "predios": buffer,
+    }
+
+    return render(request, 'core/pages/home/home.html', context)
 
 def organizar_equipamentos_sala(lista_equipamentos):
     lista_equipamentos_organizados = []
