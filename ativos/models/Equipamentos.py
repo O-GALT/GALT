@@ -92,7 +92,7 @@ class Equipamentos(models.Model):
         if total_reportes >= 8:
             self.__alterar_e_salvar_estado_equipamento(EstadoEquipamento.DEFEITUOSO)
             return
-        if total_reportes >= 3:
+        if total_reportes >= 1:
             self.__alterar_e_salvar_estado_equipamento(EstadoEquipamento.ALERTA)
 
     def __alterar_e_salvar_estado_equipamento(self, novo_estado_atual: EstadoEquipamento):

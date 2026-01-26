@@ -1,5 +1,6 @@
 from django.db import models
 
+from contas.models import TecnicosTI
 from core.essenciais import EstadoAgendamento
 from locais.models.Salas import Salas
 

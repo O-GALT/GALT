@@ -8,14 +8,17 @@ from django.views.decorators.http import require_POST
 from agendas.essenciais.format_agendamentos import formatar_agendamento
 from agendas.essenciais.formatar_lista_de_equipamentos_concertados import formatar_lista_de_equipamentos_concertados
 from agendas.models import TecnicosTIAgendamentos, Agendamentos
-from ativos.models import Equipamentos
+from ativos.models import Equipamentos, HistoricoManutencoes
 from auditoria.models import AuditoriaLog
 from contas.models import TecnicosTI
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
 from core.essenciais import TipoUsuario, Acao, TipoAlvo, EstadoAgendamento, EstadoEquipamento, EstadoSala
+from core.essenciais.EstadoReporte import EstadoReporte
 from core.schedule.jobs import Jobs
 from locais.models import Salas
 import json
+
+from suporte.models import Reportes
 
 
 @login_required
@@ -154,7 +157,7 @@ def reportar_manutencao(request, user_id):
 
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
-@require_POST
+# @require_POST
 def processar_finalizacao_agendamento(request, agendamento_id):
     agendamento = get_object_or_404(
         Agendamentos,
@@ -168,12 +171,20 @@ def processar_finalizacao_agendamento(request, agendamento_id):
         if equipamentos_ids:
             agendamento.estado_atual = EstadoAgendamento.FEITO
 
-            Equipamentos.objects.filter(
-                equipamento_id__in=equipamentos_ids
-            ).update(
-                estado_atual=EstadoEquipamento.FUNCIONANDO
-            )
+            for eq in Equipamentos.objects.filter(equipamento_id__in=equipamentos_ids):
+                eq.estado_atual = EstadoEquipamento.FUNCIONANDO
+                eq.save()
+                HistoricoManutencoes(
+                    equipamento=eq,
+                    tecnico=TecnicosTIAgendamentos.carregar_tecnico_responsavel(agendamento_id).tecnico,
+                    titulo=agendamento.descricao,
+                ).save()
 
+                Reportes.objects.filter(
+                    equipamento__equipamento_id=eq.equipamento_id
+                ).update(
+                    estado_atual=EstadoReporte.FECHADO
+                )
             Salas.objects.filter(
                 sala_id=agendamento.sala.sala_id
             ).update(
@@ -182,6 +193,11 @@ def processar_finalizacao_agendamento(request, agendamento_id):
 
         else:
             agendamento.estado_atual = EstadoAgendamento.INACABADO
+            Salas.objects.filter(
+                sala_id=agendamento.sala.sala_id
+            ).update(
+                estado_atual=EstadoSala.LIBERADA
+            )
 
         agendamento.save()
 
