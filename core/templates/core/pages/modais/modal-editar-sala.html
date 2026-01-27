@@ -1,0 +1,51 @@
+{% extends "core/pages/base/modal/modal_base.html" %}
+
+{% load static %}
+
+{% block modal_content %}
+<div class="modal-header">
+    <div class="header-left">
+        <img src="{% static './core/icons/header_icon.png' %}" alt="header icon">
+        <div>
+            <h2>Adicionar sala</h2>
+            <p>Acompanhe o estado, posição e histórico de manutenções de cada item.</p>
+        </div>
+    </div>
+    <button class="close-btn" onclick="closeModal()">×</button>
+</div>
+
+<hr>
+
+<form class="modal-form" action="{% url 'editar_sala_modal' request.resolver_match.kwargs.sala_id %}" method="post">
+    {% csrf_token %}
+
+    <hr>
+
+    <div class="form-row">
+        <label>Estado atual <span>*</span></label>
+        {{ form.estado_atual }}
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Localização <span>*</span></label>
+        {{ form.localizacao }}
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Setor <span>*</span></label>
+        {{ form.setor }}
+    </div>
+
+    <hr>
+
+    <div class="modal-actions">
+        <a onclick="closeModal('modal')"><button type="button" class="btn-cancel">Cancelar</button></a>
+        <button type="submit" class="btn-create">Editar</button>
+    </div>
+
+</form>
+{% endblock %}

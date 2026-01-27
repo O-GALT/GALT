@@ -26,7 +26,8 @@ from django.contrib.auth import authenticate, login
 
 from suporte.models import Reportes
 
-from locais.models import Predios
+from locais.models import Predios, Salas, Setores
+from ativos.models import Equipamentos
 
 
 def pagina_login(request):
@@ -163,6 +164,88 @@ def criar_equipamento_modal(request):
         GerenciadorAuditoria.persistir_auditoria(admin, Acao.CRIAR_EQUIPAMENTO, TipoAlvo(form.cleaned_data['tipo']))
         return HttpResponseRedirect(reverse('criar_recursos'))
     return render(request, 'core/pages/modais/modal-criar-equipamento.html', {'form': form})
+
+def editar_equipamento_modal(request, equipamento_id):
+    equipamento = get_object_or_404(Equipamentos, pk=equipamento_id)
+    form = EquipamentoForm(request.POST or None, instance=equipamento)
+    if form.is_valid():
+        admin = request.user
+        form.save()
+        return HttpResponseRedirect(reverse('criar_recursos'))
+    return render(request, 'core/pages/modais/modal-editar-equipamento.html', {'form': form, 'equipamento': equipamento})
+
+def editar_sala_modal(request, sala_id):
+    sala = get_object_or_404(Salas, pk=sala_id)
+    form = SalaForm(request.POST or None, instance=sala)
+    if form.is_valid():
+        admin = request.user
+        form.save()
+        return HttpResponseRedirect(reverse('criar_recursos'))
+    return render(request, 'core/pages/modais/modal-editar-sala.html', {'form': form, 'sala': sala})
+
+def editar_predio_modal(request, predio_id):
+    predio = get_object_or_404(Predios, pk=predio_id)
+    form = PredioForm(request.POST or None, instance=predio)
+    if form.is_valid():
+        admin = request.user
+        form.save()
+        return HttpResponseRedirect(reverse('criar_recursos'))
+    return render(request, 'core/pages/modais/modal-editar-predio.html', {'form': form, 'predio': predio})
+
+def editar_setor_modal(request, setor_id):
+    setor = get_object_or_404(Setores, pk=setor_id)
+    form = SetorForm(request.POST or None, instance=setor)
+    if form.is_valid():
+        admin = request.user
+        form.save()
+        return HttpResponseRedirect(reverse('criar_recursos'))
+    return render(request, 'core/pages/modais/modal-editar-setor.html', {'form': form, 'setor': setor})
+
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])
+def excluir_predio(request, predio_id):
+    predio = get_object_or_404(Predios, predio_id=predio_id)
+
+    if request.method == "POST":
+        predio.delete()
+        return redirect("home")
+
+    return render(request, 'core/pages/modais/modal-exclusao-predio.html', {
+        'predio': predio
+    })
+
+def excluir_setor(request, setor_id):
+    setor = get_object_or_404(Setores, setor_id=setor_id)
+
+    if request.method == "POST":
+            setor.delete()
+            return redirect("home")
+
+    return render(request, 'core/pages/modais/modal-exclusao-setor.html', {
+        'setor': setor
+    })
+
+def excluir_sala(request, sala_id):
+    sala = get_object_or_404(Salas, sala_id=sala_id)
+
+    if request.method == "POST":
+            sala.delete()
+            return redirect("home")
+
+    return render(request, 'core/pages/modais/modal-exclusao-sala.html', {
+        'sala': sala
+    })
+
+def excluir_equipamento(request, equipamento_id):
+    equipamento = get_object_or_404(Equipamentos, equipamento_id=equipamento_id)
+
+    if request.method == "POST":
+            equipamento.delete()
+            return redirect("home")
+
+    return render(request, 'core/pages/modais/modal-exclusao-equipamento.html', {
+        'objeto': equipamento
+    })
 
 def gerar_qr_code(request, url):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

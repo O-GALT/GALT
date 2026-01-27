@@ -1,0 +1,50 @@
+{% extends 'core/pages/base/modal/modal_base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/extra-css/modais/modal-criar-predio.css' %}">
+{% endblock %}
+
+{% block modal_content %}
+<div class="modal-header">
+    <div class="header-left">
+        <img src="{% static 'core/icons/header_icon.png' %}" alt="header icon">
+        <div>
+            <h2>Adicionar prédio</h2>
+            <p>Facilite o controle estrutural e o monitoramento de ambientes físicos.</p>
+        </div>
+    </div>
+    <button class="close-btn" onclick="closeModal()">×</button>
+</div>
+
+<hr>
+
+<form class="modal-form" action="{% url 'editar_predio_modal' request.resolver_match.kwargs.predio_id %}" method="post">
+    {% csrf_token %}
+
+    <div class="form-row">
+        <label>
+            Prédio
+        </label>
+
+        {{ form.predio }}
+
+    </div>
+
+    <hr>
+
+    <div class="modal-actions">
+        <a onclick="closeModal('modal')"><button type="button" class="btn-cancel">Cancelar</button></a>
+        <button type="submit" class="btn-create">Editar</button>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            document.getElementById('dropdown').classList.toggle('open');
+        }
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+    </script>
+</form>
+{% endblock %}

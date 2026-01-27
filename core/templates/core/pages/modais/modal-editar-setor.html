@@ -1,0 +1,76 @@
+{% extends "core/pages/base/modal/modal_base.html" %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criação de Setor</title>
+    <link rel="stylesheet" href="{% static 'core/css/modal-criar-equipamento.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            {% block modal_content %}
+            <div class="modal-header">
+                <div class="header-left">
+                    <img src="{% static 'core/icons/header_icon.png' %}" alt="Estado Liberada">
+                    <div>
+                        <h2>Adicionar setor</h2>
+                        <p>Monitore equipamentos, estado e histórico de manutenções de cada ambiente.</p>
+                    </div>
+                </div>
+                <button class="close-btn" onclick="closeModal()">×</button>
+            </div>
+
+            <hr>
+
+            <form class="modal-form" action="{% url 'editar_setor_modal' request.resolver_match.kwargs.setor_id %}" method="post">
+                {% csrf_token %}
+
+                <div class="form-row">
+                    <label>Setor <span>*</span></label>
+                    {{ form.setor }}
+                </div>
+
+                <hr>
+
+                <div class="form-row">
+                    <label>Localização <span>*</span></label>
+                    {{ form.localizacao }}
+                </div>
+
+                <hr>
+
+                <div class="form-row">
+                    <label>Predio <span>*</span></label>
+                    {{ form.predio }}
+                </div>
+
+                <hr>
+
+                <div class="modal-actions">
+
+                    <a onclick="closeModal('modal')"><button type="button" class="btn-cancel">Cancelar</button></a>
+                    <button type="submit" class="btn-create">Editar</button>
+                </div>
+
+            </form>
+            {% endblock %}
+        </div>
+    </div>
+
+    <script>
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+    </script>
+
+</body>
+
+</html>

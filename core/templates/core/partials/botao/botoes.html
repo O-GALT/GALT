@@ -1,6 +1,7 @@
 {% load static %}
-<div style="display: flex;">
-<button class="open-modal botao botao-verde" style="display: flex;" data-modal-url="{% url acao_editar %} {{ id }}">
+
+<div style="display: flex; gap: 4px;">
+<button class="open-modal botao botao-verde" style="display: flex;" data-modal-url="{% url acao_editar id %}">
 
     <div class="botao-imagem">
         <img src="{% static 'core/imagens/editar.svg' %}" width="20px" height="20px">
@@ -11,7 +12,7 @@
     </div>
 </button>
 
-<button class="botao botao-vermelho" style="display: flex;" data-modal-url="{% url 'exclusao_modal' %}">
+<button class="open-modal botao botao-vermelho" style="display: flex;" data-modal-url="{% url acao_excluir id %}">
 
     <div class="botao-imagem">
         <img src="{% static 'core/imagens/lixeira.svg' %}" width="20px" height="20px">

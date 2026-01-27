@@ -1,0 +1,119 @@
+{% extends 'core/pages/base/modal/modal_base.html' %}
+
+{% block extra_css %}
+<style>
+    .modal-overlay {
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 20px !important;
+    }
+
+    .modal-content {
+        flex-direction: column !important;
+        max-height: 90vh !important;
+        width: 100% !important;
+        max-width: 600px !important;
+        background: white !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+    }
+
+    .modal-form {
+        flex: 1 !important;
+        overflow-y: auto !important;
+        padding: 20px !important;
+        display: block !important;
+    }
+
+    .modal-actions {
+        padding-top: 20px !important;
+        margin-top: 10px !important;
+    }
+</style>
+{% endblock %}
+
+{% load static %}
+{% block modal_content %}
+<div class="modal-header">
+    <div class="header-left">
+        <img src="{% static 'core/icons/header_icon.png' %}" alt="header icon">
+        <div>
+            <h2>Adicionar equipamento</h2>
+            <p>Monitore equipamentos, estado e histórico de manutenções de cada ambiente.</p>
+        </div>
+    </div>
+    <button class="close-btn" onclick="closeModal()">×</button>
+</div>
+
+<hr>
+
+<form class="modal-form" action="{% url 'editar_equipamento_modal' request.resolver_match.kwargs.equipamento_id %}" method="post">
+    {% csrf_token %}
+
+    <div class="form-row">
+        <label>Tipo do equipamento <span>*</span></label>
+        {{ form.tipo }}
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Serial <span>*</span></label>
+        {{ form.serial }}
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Estado atual <span>*</span></label>
+        {{ form.estado_atual }}
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Posição <span>*</span></label>
+        {{ form.posicao }}
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Sala <span>*</span></label>
+        {{ form.sala }}
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Fileira <span>*</span></label>
+        {{ form.fileira }}
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Fabricante </label>
+        {{ form.fabricante }}
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+        <label>Data de aquisição <span>*</span></label>
+        {{ form.data_aquisicao }}
+    </div>
+    <hr>
+
+    <div class="modal-actions">
+        <a onclick="closeModal('modal')"><button type="button" class="btn-cancel">Cancelar</button></a>
+        <button type="submit" class="btn-create">Editar</button>
+    </div>
+
+</form>
+<script>
+    function closeModal() {
+        document.getElementById("modal").style.display = "none";
+    }
+</script>
+{% endblock %}
