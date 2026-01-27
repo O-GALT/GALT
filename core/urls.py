@@ -21,5 +21,6 @@ urlpatterns = [
 
     path('qr_code/<path:url>/', views.exibir_qr_code, name='gerar_qr_code'),
 
-    path('qr-code/download/<path:url>/<str:identificador>', views.baixar_qr_code, name='baixar_qr_code')
-]
+    path('qr-code/download/<path:url>/<str:identificador>', views.baixar_qr_code, name='baixar_qr_code'),
+
+]   

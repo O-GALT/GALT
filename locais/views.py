@@ -232,6 +232,7 @@ def renderizar_grafico_indice_manutencao(request, predio_id):
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR, TipoUsuario.TECNICO_TI])
 def predios(request, predio_id):
+
     indicadores_predio = SQLNativo.carregar_indicadores_predio(predio_id)[0]
 
     context = {}

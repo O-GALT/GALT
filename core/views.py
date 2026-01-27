@@ -12,7 +12,7 @@ from core.essenciais import TipoUsuario, EstadoEquipamento, TipoEquipamento, Fil
 
 from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse, FileResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 from core.essenciais import Acao, TipoAlvo
@@ -25,6 +25,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 
 from suporte.models import Reportes
+
+from locais.models import Predios
 
 
 def pagina_login(request):
@@ -212,3 +214,5 @@ def custom_page_not_found_view(request, exception):
 
 def custom_permission_denied_view(request, exception):
     return render(request, 'core/pages/not_access/not_access.html', status=403)
+
+

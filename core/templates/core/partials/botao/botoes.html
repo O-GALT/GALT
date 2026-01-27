@@ -1,0 +1,25 @@
+{% load static %}
+<div style="display: flex;">
+<button class="open-modal botao botao-verde" style="display: flex;" data-modal-url="{% url acao_editar %} {{ id }}">
+
+    <div class="botao-imagem">
+        <img src="{% static 'core/imagens/editar.svg' %}" width="20px" height="20px">
+    </div>
+
+    <div class="botao-texto texto-verde">
+        <p>Editar</p>
+    </div>
+</button>
+
+<button class="botao botao-vermelho" style="display: flex;" data-modal-url="{% url 'exclusao_modal' %}">
+
+    <div class="botao-imagem">
+        <img src="{% static 'core/imagens/lixeira.svg' %}" width="20px" height="20px">
+    </div>
+
+    <div class="botao-texto texto-vermelho">
+        <p>Excluir</p>
+    </div>
+</button>
+
+</div>
