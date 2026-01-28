@@ -19,102 +19,114 @@
     <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
 {% endblock %}
 
- {% block header %}
-     {% include 'locais/partials/headers/predio/predio_header.html' with predio_id=objeto_id nome_predio=nome_predio total_setores=total_setores total_salas=total_salas total_equipamentos=total_equipamentos %}
- {% endblock %}
+{% block header %}
+    {% include 'locais/partials/headers/predio/predio_header.html' with predio_id=objeto_id nome_predio=nome_predio total_setores=total_setores total_salas=total_salas total_equipamentos=total_equipamentos %}
+{% endblock %}
 
 {% block content %}
     <div class="container-conteudo-predio">
-            <section class="cards-container">
-                {% include 'locais/partials/cards_metricas_predio/card_metricas_predio.html' with titulo='Reportes abertos' quantidade=reportes_abertos porcentagem='+15.03%' tipo_card='reportes-abertos' %}
-                {% include 'locais/partials/cards_metricas_predio/card_metricas_predio.html' with titulo='Manutenções agendadas para hoje' quantidade=manutencoes_hoje porcentagem='+6.08%' tipo_card='manutencoes-agendadas' %}
-                {% include 'locais/partials/cards_metricas_predio/card_metricas_predio.html' with titulo='Salas que precisam de cuidados' quantidade=salas_precisam_cuidados porcentagem='+11.01%' tipo_card='salas-cuidados' %}
-                {% include 'locais/partials/cards_metricas_predio/card_metricas_predio.html' with titulo='Manutenções pendentes' quantidade=manutencoes_pendentes porcentagem='-0.03%' tipo_card='salas-inviaveis' %}
-            </section>
+        <section class="cards-container">
+            {% include 'locais/partials/cards_metricas_predio/card_metricas_predio.html' with titulo='Reportes abertos' quantidade=reportes_abertos porcentagem='+15.03%' tipo_card='reportes-abertos' %}
+            {% include 'locais/partials/cards_metricas_predio/card_metricas_predio.html' with titulo='Manutenções agendadas para hoje' quantidade=manutencoes_hoje porcentagem='+6.08%' tipo_card='manutencoes-agendadas' %}
+            {% include 'locais/partials/cards_metricas_predio/card_metricas_predio.html' with titulo='Salas que precisam de cuidados' quantidade=salas_precisam_cuidados porcentagem='+11.01%' tipo_card='salas-cuidados' %}
+            {% include 'locais/partials/cards_metricas_predio/card_metricas_predio.html' with titulo='Manutenções pendentes' quantidade=manutencoes_pendentes porcentagem='-0.03%' tipo_card='salas-inviaveis' %}
+        </section>
 
-            <section class="estado-sala-equipamento">
-                {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_estado_equipamentos/grafico_estado_equipamentos.html' %}
-                {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_estado_salas/grafico_estado_salas.html' %}
-            </section>
+        <section class="estado-sala-equipamento">
+            {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_estado_equipamentos/grafico_estado_equipamentos.html' %}
+            {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_estado_salas/grafico_estado_salas.html' %}
+        </section>
 
-            <section class="saude-predio">
-                {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_saude_predio/grafico_saude_predio.html' %}
-            </section>
+        <section class="saude-predio">
+            {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_saude_predio/grafico_saude_predio.html' %}
+        </section>
 
-            <section class="reportes-tipo-equipamento">
-                {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_reporte_tipo_equipamento/grafico_reporte_tipo_equipamento.html' %}
-            </section>
+        <section class="reportes-tipo-equipamento">
+            {% include 'locais/partials/predio/partials_do_predio/graficos/grafico_reporte_tipo_equipamento/grafico_reporte_tipo_equipamento.html' %}
+        </section>
 
-            <section class="indice-manutencoes-equipamentos">
-                {% include 'locais/partials/predio/partials_do_predio/graficos/garafico_indice_manutencoes/grafico_indice_manutencoes.html' %}
-            </section>
+        <section class="indice-manutencoes-equipamentos">
+            {% include 'locais/partials/predio/partials_do_predio/graficos/garafico_indice_manutencoes/grafico_indice_manutencoes.html' %}
+        </section>
 
-            <section class="tecnicos-mais-manutencoes">
+        <section class="tecnicos-mais-manutencoes">
 
-                <div class="tecnicos-mais-manutencoes-t">
-                    <div class="titulo">
-                        <h3>Técnicos que mais fizeram manutenções nesse mês</h3>
-                    </div>
+            <div class="tecnicos-mais-manutencoes-t">
+                <div class="titulo">
+                    <h3>Técnicos que mais fizeram manutenções nesse mês</h3>
+                </div>
 
+                {% if tecnicos %}
                     {% for tecnico in tecnicos %}
                         {% static 'locais/imagens/Avatar.png' as avatar %}
                         {% include 'locais/partials/dado_tecnico/dado_tecnico.html' with foto=avatar nome=tecnico.email_escolar info_extra=tecnico.manutencoes %}
                     {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <div class="empty-state__icon">
+                            <i class="fa-solid fa-user-slash"></i>
+                        </div>
 
-                </div>
-            </section>
+                        <p class="empty-state__text">
+                            Nenhum técnico cadastrado no momento.
+                        </p>
+                    </div>
+                {% endif %}
 
-            <section class="equipamentos-mais-defeituosos">
-                {% include 'locais/partials/tabela_metricas/tabela_metricas.html' with titulo_metrica='Equipamentos mais defeituosos do prédio'   cabecalho_objeto='Serial' cabecalho_necessidade='Necessidade de substituição' cabecalho_quantidade='Manutenções' objetos=equipamentos tipo_metrica='equipamento'%}
-            </section>
+            </div>
+        </section>
 
-            <section class="salas-com-mais-equipamentos-defeituosos">
-                {% include 'locais/partials/tabela_metricas/tabela_metricas.html' with titulo_metrica='Salas com mais equipamentos defeituosos do prédio'   cabecalho_objeto='Salas' cabecalho_necessidade='Necessidade de interditação' cabecalho_quantidade='Equipamentos' objetos=salas tipo_metrica='sala'%}
-            </section>
-        </div>
+        <section class="equipamentos-mais-defeituosos">
+            {% include 'locais/partials/tabela_metricas/tabela_metricas.html' with titulo_metrica='Equipamentos mais defeituosos do prédio'   cabecalho_objeto='Serial' cabecalho_necessidade='Necessidade de substituição' cabecalho_quantidade='Manutenções' objetos=equipamentos tipo_metrica='equipamento'%}
+        </section>
+
+        <section class="salas-com-mais-equipamentos-defeituosos">
+            {% include 'locais/partials/tabela_metricas/tabela_metricas.html' with titulo_metrica='Salas com mais equipamentos defeituosos do prédio'   cabecalho_objeto='Salas' cabecalho_necessidade='Necessidade de interditação' cabecalho_quantidade='Equipamentos' objetos=salas tipo_metrica='sala'%}
+        </section>
+    </div>
 {% endblock %}
 
 {% block script %}
-{{ block.super }}
-document.addEventListener('DOMContentLoaded', () => {
+    {{ block.super }}
+    document.addEventListener('DOMContentLoaded', () => {
 
     const plotContainers = []
 
     document.querySelectorAll('[data-url]').forEach(container => {
-        const url = container.dataset.url
+    const url = container.dataset.url
 
-        fetch(url)
-            .then(r => r.json())
-            .then(fig => {
-                Plotly.newPlot(
-                    container,
-                    fig.data,
-                    fig.layout,
-                    { responsive: true }
-                )
+    fetch(url)
+    .then(r => r.json())
+    .then(fig => {
+    Plotly.newPlot(
+    container,
+    fig.data,
+    fig.layout,
+    { responsive: true }
+    )
 
-                plotContainers.push(container)
+    plotContainers.push(container)
 
-                // 🔹 Recalcula logo após renderizar
-                setTimeout(() => {
-                    try {
-                        Plotly.Plots.resize(container)
-                    } catch (e) {}
-                }, 50)
-            })
-            .catch(err => {
-                console.error('Erro ao carregar gráfico:', err)
-            })
+    // 🔹 Recalcula logo após renderizar
+    setTimeout(() => {
+    try {
+    Plotly.Plots.resize(container)
+    } catch (e) {}
+    }, 50)
+    })
+    .catch(err => {
+    console.error('Erro ao carregar gráfico:', err)
+    })
     })
 
     // 🔹 Recalcula todos os gráficos ao redimensionar a tela
     window.addEventListener('resize', () => {
-        plotContainers.forEach(container => {
-            try {
-                Plotly.Plots.resize(container)
-            } catch (e) {}
-        })
+    plotContainers.forEach(container => {
+    try {
+    Plotly.Plots.resize(container)
+    } catch (e) {}
     })
-})
+    })
+    })
 
 {% endblock %}
