@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^)c05a71ly^)a5^=$i5c#wjjnvnpb)$6(mfrp82m(s)=8ocqzv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -95,14 +95,14 @@ DATABASES = {
         'NAME': 'galt_db',
         'USER': 'galt',
         'PASSWORD': 'segredo',
-        'HOST': 'localhost',
+        'HOST': 'galt-database',
         'PORT': '5432',
     }
 }
 
 
 # CONFIGURAÇÃO DO CELERY
-CELERY_BROKER_URL='redis://localhost:6379/0'
+CELERY_BROKER_URL='redis://galt-redis:6379/0'
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"

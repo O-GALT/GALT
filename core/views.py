@@ -8,7 +8,7 @@ from ativos.models import Equipamentos
 from auditoria.models import AuditoriaLog
 from contas.models import TecnicosTI
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
-from core.essenciais import TipoUsuario, EstadoEquipamento, TipoEquipamento, Fileira
+from core.essenciais import TipoUsuario, EstadoEquipamento, TipoEquipamento, Fileira, EstadoSala
 
 from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse, FileResponse
@@ -76,7 +76,22 @@ def equipamento_visao_usuario(request, equipamento_id):
             titulo=request.POST['title'],
             mensagem=request.POST['problem-description']
         ).save()
+
+
         equipamento.verificar_e_atualizar_estado_apos_reporte(request.user)
+
+        total_equipamentos = equipamento.sala.equipamentos.count()
+        equipamento_alerta = equipamento.sala.equipamentos.filter(
+            estado_atual=EstadoEquipamento.DEFEITUOSO.name).count()
+        equipamento_defeituoso = equipamento.sala.equipamentos.filter(
+            estado_atual=EstadoEquipamento.DEFEITUOSO.name).count()
+
+        if total_equipamentos > 0:
+            if ((equipamento_defeituoso + equipamento_alerta) * 100) / total_equipamentos >= 70:
+                sala = equipamento.sala
+                sala.estado_atual = EstadoSala.INAPTA
+                sala.save()
+
         AuditoriaLog.persistir_auditoria(request.user, Acao.ABRIR_REPORTE, TipoAlvo(equipamento.tipo))
 
     return render(request, 'core/pages/visao-do-usuario/equipamento-visao-usuario.html', context)
@@ -264,16 +279,21 @@ def excluir_equipamento(request, equipamento_id):
     })
 
 def gerar_qr_code(request, url):
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))  # não envia nada
-    ip = s.getsockname()[0]
-    s.close()
-
     if ',' in url:
-        url_splited = url.split(',')
-        url = request.scheme + '://o-galt.com' + reverse(url_splited[0], args=url_splited[1])
+        view_name, raw_args = url.split(',')
+        args = (raw_args,)
+
+        url = (
+                request.scheme
+                + '://o-galt.com'
+                + reverse(view_name, args=args)
+        )
     else:
-        url = request.scheme + '://o-galt.com' + reverse(url)
+        url = (
+                request.scheme
+                + '://o-galt.com'
+                + reverse(url)
+        )
 
     qr_code = qrcode.QRCode(
         version=None,
