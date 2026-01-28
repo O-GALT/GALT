@@ -1,22 +1,21 @@
-<div class="metricas">
-        <div class="numero-metrica">
-            <p>{{ numero }}</p>
-        </div>
+<a class="metricas"  {% if tipo_metrica == 'sala' %} href="{% url 'locais_sala_detail' numero%}" {% else %} href="{% url 'ativos_equipamento_detail' numero%}" {% endif %}>
+    <div class="numero-metrica">
+        <p>{{ numero }}</p>
+    </div>
 
-        <div class="objeto-metrica">
-            <p>{{ objeto_metrica }}</p>
-        </div>
+    <div class="objeto-metrica">
+        <p>{{ objeto_metrica }}</p>
+    </div>
 
-        <div class="container-substituicao">
-            <div class="necessidade-substituicao-metrica">
+    <div class="container-substituicao">
+        <div class="necessidade-substituicao-metrica">
             <div class="falta-metrica">
                 <div class="concluido-metrica" style="width: {{ porcentagem }}%"></div>
             </div>
         </div>
-        </div>
+    </div>
 
-        <div class="quantidade-metrica">
-            <p>{{ quantidade_metrica }}</p>
-        </div>
-
-</div>
+    <div class="quantidade-metrica">
+        <p>{{ quantidade_metrica }}</p>
+    </div>
+</a>

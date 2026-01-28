@@ -22,13 +22,27 @@
             </div>
         </div>
 
-        {% for objeto in objetos %}
-            {% if tipo_metrica == 'equipamento' %}
-                {% include 'locais/partials/tabela_metricas/partials_tabela_metricas/metrica_detalhada/metrica_detalhada.html' with numero=objeto.equipamento_id objeto_metrica=objeto.serial porcentagem=objeto.necessidade_substituicao quantidade_metrica=objeto.manutencoes%}
 
-            {% elif tipo_metrica == 'sala' %}
-                {% include 'locais/partials/tabela_metricas/partials_tabela_metricas/metrica_detalhada/metrica_detalhada.html' with numero=objeto.sala_id objeto_metrica='Salas '|add:objeto.localizacao porcentagem=objeto.necessidade_interditacao quantidade_metrica=objeto.equipamentos_defeituosos %}
-            {% endif %}
-        {% endfor %}
+        {% if objetos and tipo_metrica %}
+            {% for objeto in objetos %}
+                {% if tipo_metrica == 'equipamento' %}
+                    {% include 'locais/partials/tabela_metricas/partials_tabela_metricas/metrica_detalhada/metrica_detalhada.html' with tipo_metrica=tipo_metrica numero=objeto.equipamento_id objeto_metrica=objeto.serial porcentagem=objeto.necessidade_substituicao quantidade_metrica=objeto.manutencoes%}
+
+                {% elif tipo_metrica == 'sala' %}
+                    {% include 'locais/partials/tabela_metricas/partials_tabela_metricas/metrica_detalhada/metrica_detalhada.html' with tipo_metrica=tipo_metrica numero=objeto.sala_id objeto_metrica='Salas '|add:objeto.localizacao porcentagem=objeto.necessidade_interditacao quantidade_metrica=objeto.equipamentos_defeituosos %}
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-state__icon">
+                    <i class="fa-solid fa-door-closed"></i>
+                </div>
+
+                <p class="empty-state__text">
+                    Nenhuma registro  cadastrada no momento.
+                </p>
+            </div>
+        {% endif %}
+
     </div>
 </div>
