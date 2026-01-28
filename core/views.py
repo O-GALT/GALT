@@ -28,7 +28,7 @@ from suporte.models import Reportes
 
 from locais.models import Predios, Salas, Setores
 from ativos.models import Equipamentos
-
+import threading
 
 def pagina_login(request):
     if request.method == 'POST':
@@ -105,13 +105,18 @@ def criar_usuario_modal(request):
             user.save()
             form.save_m2m()
 
-            if user.groups.get(name=TipoUsuario.TECNICO_TI):
+            if user.groups.filter(name=TipoUsuario.TECNICO_TI):
                 tecnico = TecnicosTI(
                     usuario=user,
                     cargo='Profisional técnico'
                 )
                 tecnico.save()
-            GerenciadorEmails.enviar_email(user.email, user.email_escolar, password, user.groups)
+
+            groups = list(user.groups.values_list('name', flat=True))
+            threading.Thread(
+               target=GerenciadorEmails.enviar_email,
+                args=(user.email, user.email_escolar, password, groups)
+            ).start()
             GerenciadorAuditoria.persistir_auditoria(admin, Acao.CRIAR_USUARIO, list(user.groups.all())[0])
             return HttpResponseRedirect(reverse('criar_recursos'))
         else:
@@ -171,6 +176,7 @@ def editar_equipamento_modal(request, equipamento_id):
     if form.is_valid():
         admin = request.user
         form.save()
+        AuditoriaLog.persistir_auditoria(request.user, Acao.ATUALIZAR_EQUIPAMENTO, equipamento.tipo)
         return HttpResponseRedirect(reverse('ativos_equipamento_detail', args=[equipamento_id]))
     return render(request, 'core/pages/modais/modal-editar-equipamento.html', {'form': form, 'equipamento': equipamento})
 
@@ -180,6 +186,7 @@ def editar_sala_modal(request, sala_id):
     if form.is_valid():
         admin = request.user
         form.save()
+        AuditoriaLog.persistir_auditoria(request.user, Acao.ATUALIZAR_SALA, TipoAlvo.SALA)
         return HttpResponseRedirect(reverse('locais_sala_detail', args=[sala_id]))
     return render(request, 'core/pages/modais/modal-editar-sala.html', {'form': form, 'sala': sala})
 
@@ -189,6 +196,7 @@ def editar_predio_modal(request, predio_id):
     if form.is_valid():
         admin = request.user
         form.save()
+        AuditoriaLog.persistir_auditoria(request.user, Acao.ATUALIZAR_PREDIO, TipoAlvo.PREDIO)
         return HttpResponseRedirect(reverse('locais_predio_detail', args=[predio_id]))
     return render(request, 'core/pages/modais/modal-editar-predio.html', {'form': form, 'predio': predio})
 
@@ -198,6 +206,7 @@ def editar_setor_modal(request, setor_id):
     if form.is_valid():
         admin = request.user
         form.save()
+        AuditoriaLog.persistir_auditoria(request.user, Acao.ATUALIZAR_SETOR, TipoAlvo.SETOR)
         return HttpResponseRedirect(reverse('locais_setor_detail', args=[setor_id]))
     return render(request, 'core/pages/modais/modal-editar-setor.html', {'form': form, 'setor': setor})
 
@@ -208,6 +217,7 @@ def excluir_predio(request, predio_id):
 
     if request.method == "POST":
         predio.delete()
+        AuditoriaLog.persistir_auditoria(request.user, Acao.DELETAR_PREDIO, TipoAlvo.PREDIO)
         return redirect("home")
 
     return render(request, 'core/pages/modais/modal-exclusao-predio.html', {
@@ -220,6 +230,7 @@ def excluir_setor(request, setor_id):
     if request.method == "POST":
         predio_id = setor.predio.predio_id
         setor.delete()
+        AuditoriaLog.persistir_auditoria(request.user, Acao.DELETAR_SETOR, TipoAlvo.SETOR)
         return redirect("locais_predio_setores", predio_id=predio_id)
 
     return render(request, 'core/pages/modais/modal-exclusao-setor.html', {
@@ -232,6 +243,7 @@ def excluir_sala(request, sala_id):
     if request.method == "POST":
         predio_id = sala.setor.predio.predio_id
         sala.delete()
+        AuditoriaLog.persistir_auditoria(request.user, Acao.DELETAR_SALA, TipoAlvo.SALA)
         return redirect("locais_predio_salas", predio_id=predio_id)
 
     return render(request, 'core/pages/modais/modal-exclusao-sala.html', {
@@ -244,6 +256,7 @@ def excluir_equipamento(request, equipamento_id):
     if request.method == "POST":
         sala_id = equipamento.sala.sala_id
         equipamento.delete()
+        AuditoriaLog.persistir_auditoria(request.user, Acao.DELETAR_EQUIPAMENTO, equipamento.tipo)
         return redirect("locais_sala_detail", sala_id=sala_id)
 
     return render(request, 'core/pages/modais/modal-exclusao-equipamento.html', {
@@ -258,9 +271,9 @@ def gerar_qr_code(request, url):
 
     if ',' in url:
         url_splited = url.split(',')
-        url = request.scheme + '://' + ip + ':8000' + reverse(url_splited[0], args=url_splited[1])
+        url = request.scheme + '://o-galt.com' + reverse(url_splited[0], args=url_splited[1])
     else:
-        url = request.scheme + '://' + ip + ':8000' + reverse(url)
+        url = request.scheme + '://o-galt.com' + reverse(url)
 
     qr_code = qrcode.QRCode(
         version=None,

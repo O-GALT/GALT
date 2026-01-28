@@ -97,5 +97,6 @@ def index(request):
     context['alvo_acao'] = [{'input': alvo.name, 'output': alvo.label} for alvo in [tipo_alvo for tipo_alvo in TipoAlvo]]
     context['page_obj'] = page_obj
     context['objetos'] = [{'auditoria_id': pagina.auditoria_id, 'tipo_autor': pagina.usuario.groups.all()[0], 'autor': pagina.usuario.email_escolar, 'acao': pagina.acao, 'alvo_acao': pagina.alvo_acao, 'data': pagina.data} for pagina in page_obj]
+    context['is_admin'] = request.user.groups.filter(name=TipoUsuario.ADMINISTRADOR.name).exists()
 
     return HttpResponse(render(request, 'auditoria/paginas/auditoria.html', context))

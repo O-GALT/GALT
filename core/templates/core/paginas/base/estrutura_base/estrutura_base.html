@@ -54,18 +54,21 @@
                     </a>
                 </li>
 
-                <li title="Criar salas e setores">
-                    <a href="{{ url_criar_recursos }}">
-                        <i class="fa-solid fa-folder-plus {% if request.path == url_criar_recursos %}active{% endif %}"></i>
-                    </a>
-                </li>
+            {% if is_admin %}
 
-                <li title="Auditoria de registros">
-                    <a href="{{ url_auditoria_index }}"
-                       class="">
-                        <i class="fa-solid fa-boxes-packing {% if request.path == url_auditoria_index %}active{% endif %}"></i>
-                    </a>
-                </li>
+                    <li title="Criar salas e setores">
+                        <a href="{{ url_criar_recursos }}">
+                            <i class="fa-solid fa-folder-plus {% if request.path == url_criar_recursos %}active{% endif %}"></i>
+                        </a>
+                    </li>
+
+                    <li title="Auditoria de registros">
+                        <a href="{{ url_auditoria_index }}"
+                           class="">
+                            <i class="fa-solid fa-boxes-packing {% if request.path == url_auditoria_index %}active{% endif %}"></i>
+                        </a>
+                    </li>
+            {% endif %}
 
                 <li title="Kanban de manutenções agendadas">
                     <a href="{{ url_agendas_index }}"
