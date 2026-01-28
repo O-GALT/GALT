@@ -23,7 +23,7 @@
         </div>
 
 
-        {% if objeto and tipo_metrica %}
+        {% if objetos and tipo_metrica %}
             {% for objeto in objetos %}
                 {% if tipo_metrica == 'equipamento' %}
                     {% include 'locais/partials/tabela_metricas/partials_tabela_metricas/metrica_detalhada/metrica_detalhada.html' with tipo_metrica=tipo_metrica numero=objeto.equipamento_id objeto_metrica=objeto.serial porcentagem=objeto.necessidade_substituicao quantidade_metrica=objeto.manutencoes%}
