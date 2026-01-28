@@ -1,7 +1,8 @@
 .container-info-tecnico {
     display: flex;
     align-items: center;
-    gap: 0.5vw;
+    height: 50px;
+    gap : 8px;
 }
 
 .info-tecnico p {

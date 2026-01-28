@@ -56,22 +56,26 @@
                     <h3>Técnicos que mais fizeram manutenções nesse mês</h3>
                 </div>
 
-                {% if tecnicos %}
-                    {% for tecnico in tecnicos %}
-                        {% static 'locais/imagens/Avatar.png' as avatar %}
-                        {% include 'locais/partials/dado_tecnico/dado_tecnico.html' with foto=avatar nome=tecnico.email_escolar info_extra=tecnico.manutencoes %}
-                    {% endfor %}
-                {% else %}
-                    <div class="empty-state">
-                        <div class="empty-state__icon">
-                            <i class="fa-solid fa-user-slash"></i>
-                        </div>
 
-                        <p class="empty-state__text">
-                            Nenhum técnico cadastrado no momento.
-                        </p>
-                    </div>
-                {% endif %}
+                <div style="display: flex; flex-direction: column ; gap: 10px ;overflow-y: hidden ">
+                    {% if tecnicos %}
+                        {% for tecnico in tecnicos %}
+
+                            {% static 'locais/imagens/Avatar.png' as avatar %}
+                            {% include 'locais/partials/dado_tecnico/dado_tecnico.html' with foto=avatar nome=tecnico.email_escolar info_extra=tecnico.manutencoes %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <div class="empty-state__icon">
+                                <i class="fa-solid fa-user-slash"></i>
+                            </div>
+
+                            <p class="empty-state__text">
+                                Nenhum técnico cadastrado no momento.
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
 
             </div>
         </section>
