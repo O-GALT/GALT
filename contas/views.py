@@ -20,9 +20,10 @@ def eu(request):
         usuario.email = request.POST.get("email")
         usuario.numero = request.POST.get("numero")
         usuario.email_escolar = request.POST.get("email_escolar")
+        usuario.username = usuario.email_escolar
         usuario.save()
 
-    return render(request, 'contas/partials/components_centrais/informacoes_pessoais/informacoes_pessoais.html', {'usuario': usuario})
+    return render(request, 'contas/partials/components_centrais/informacoes_pessoais/informacoes_pessoais.html', {'usuario': usuario, 'is_admin':request.user.groups.filter(name=TipoUsuario.ADMINISTRADOR.name).exists()})
 
 def logout_view(request):
     logout(request)
@@ -31,4 +32,4 @@ def logout_view(request):
 @login_required
 @nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])
 def criar_recursos(request):
-    return render(request,'contas/partials/components_centrais/recursos/recursos.html')
+    return render(request,'contas/partials/components_centrais/recursos/recursos.html', {'is_admin': request.user.groups.filter(name=TipoUsuario.ADMINISTRADOR.name).exists()})

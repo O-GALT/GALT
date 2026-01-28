@@ -43,6 +43,8 @@ def equipamento(request, equipamento_id):
         'info_reportes_abertos': [reporte for reporte in Reportes.listar_reportes_equipamento(equipamento_id)],
         'historico_manutencoes': [{"manutencao_id": historico['historico_manutencoes_id'], "titulo":historico['titulo'], "responsavel":historico['responsavel'], "data":historico['data']} for historico in HistoricoManutencoes.listar_historico_equipamento(equipamento_id)],
         'next': request.path,
+        'is_admin': request.user.groups.filter(name=TipoUsuario.ADMINISTRADOR.name).exists(),
+
         "insights": [
             {
                 "titulo": "Última manuteção",

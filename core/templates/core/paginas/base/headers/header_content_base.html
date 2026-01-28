@@ -26,19 +26,19 @@
                 {% block quantidade_objeto %}{% endblock %}
             </nav>
 
-            {% if request.resolver_match.url_name in 'locais_predio_detail' %}
+            {% if request.resolver_match.url_name in 'locais_predio_detail' and is_admin %}
             {% include 'core/partials/botao/botoes.html' with acao_editar="editar_predio_modal" acao_excluir="excluir_predio" id=predio_id %}
             {% endif %}
             
-            {% if request.resolver_match.url_name in 'locais_setor_detail' %}
+            {% if request.resolver_match.url_name in 'locais_setor_detail' and is_admin %}
             {% include 'core/partials/botao/botoes.html' with acao_editar="editar_setor_modal" acao_excluir="excluir_setor" id=objeto_id %}
             {% endif %}
 
-            {% if request.resolver_match.url_name in 'locais_sala_detail' %}
+            {% if request.resolver_match.url_name in 'locais_sala_detail' and is_admin %}
             {% include 'core/partials/botao/botoes.html' with acao_editar="editar_sala_modal" acao_excluir="excluir_sala" id=sala_id %}
             {% endif %}
 
-            {% if request.resolver_match.url_name in 'ativos_equipamento_detail' %}
+            {% if request.resolver_match.url_name in 'ativos_equipamento_detail' and is_admin %}
             {% include 'core/partials/botao/botoes.html' with acao_editar="editar_equipamento_modal" acao_excluir="excluir_equipamento" id=equipamento_id %}
             {% endif %}
 

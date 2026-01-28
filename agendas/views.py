@@ -1,3 +1,5 @@
+import threading
+
 from django.db import transaction
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -12,6 +14,7 @@ from ativos.models import Equipamentos, HistoricoManutencoes
 from auditoria.models import AuditoriaLog
 from contas.models import TecnicosTI
 from core.autorizacao.filtroAutorizacao import nivel_acesso_permitido
+from core.emails.GerenciadorEmails import GerenciadorEmails
 from core.essenciais import TipoUsuario, Acao, TipoAlvo, EstadoAgendamento, EstadoEquipamento, EstadoSala
 from core.essenciais.EstadoReporte import EstadoReporte
 from core.schedule.jobs import Jobs
@@ -52,7 +55,7 @@ def index(request):
         EstadoAgendamento.FEITO
     )
 
-
+    context['is_admin'] = request.user.groups.filter(name=TipoUsuario.ADMINISTRADOR.name).exists()
 
     context['pendentes'] = {
         "cards": [formatar_agendamento(a) for a in lista_agendamentos_pendentes],
@@ -180,11 +183,15 @@ def processar_finalizacao_agendamento(request, agendamento_id):
                     titulo=agendamento.descricao,
                 ).save()
 
-                Reportes.objects.filter(
-                    equipamento__equipamento_id=eq.equipamento_id
-                ).update(
-                    estado_atual=EstadoReporte.FECHADO
-                )
+                reportes = Reportes.objects.filter(equipamento__equipamento_id=eq.equipamento_id)
+
+                for reporte in reportes:
+                    reporte.estado_atual = EstadoReporte.FECHADO
+                    reporte.save()
+                    threading.Thread(
+                        target=GerenciadorEmails.enviar_email_fechamento_report,
+                        args=(reporte.usuario.email, reporte.usuario.email_escolar)
+                    ).start()
             Salas.objects.filter(
                 sala_id=agendamento.sala.sala_id
             ).update(

@@ -27,6 +27,7 @@ def home(request):
 
     context = {
         "predios": buffer,
+        'is_admin': request.user.groups.filter(name=TipoUsuario.ADMINISTRADOR.name).exists()
     }
 
     return render(request, 'core/pages/home/home.html', context)
@@ -100,7 +101,8 @@ def salas(request, sala_id):
         'tecnicos_responsaveis': TecnicosTI.listar_tecnicos(),
         'equipamentos_esquerda': equipamentos_esquerda_mapeado,
         'equipamentos_direita': equipamentos_direita_mapeado,
-        'equipamentos_auxiliares': equipamentos_fundo_mapeado
+        'equipamentos_auxiliares': equipamentos_fundo_mapeado,
+        'is_admin': request.user.groups.filter(name=TipoUsuario.ADMINISTRADOR.name).exists()
     }
     return render(request, 'locais/paginas/sala/sala.html', context)
 
@@ -147,6 +149,8 @@ def setores(request, setor_id):
     context['objetos'] = [{'equipamento_id': equipamento['equipamento_id'], 'nome': equipamento['serial'], 'tipo': equipamento['tipo'], 'estado_atual': equipamento['estado_atual'],'quantidade_manutencoes': equipamento['manutencoes'], 'sala': equipamento['sala_localizacao']} for equipamento in Equipamentos.listar_equipamentos_mais_reincidencia_de_falhas_setor(setor_id)]
     context['manutencoes_hoje'] = indicadores_setor['manutencoes_hoje']
     context['manutencoes_agendadas'] = indicadores_setor['manutencoes_agendadas']
+
+    context['is_admin'] = request.user.groups.filter(name=TipoUsuario.ADMINISTRADOR.name).exists()
     return HttpResponse(render(request, 'locais/paginas/setor/setor.html', context))
 
 def renderizar_grafico_estado_equipamentos_setor(request, setor_id):
@@ -255,6 +259,9 @@ def predios(request, predio_id):
     context['tecnicos'] = [{'email_escolar': tecnico['email_escolar'], 'manutencoes': str(tecnico['manutencoes']) + ' manutenções'} for tecnico in TecnicosTI.listar_tecnicos_mais_manutencoes_mes_predio(predio_id)]
     context['equipamentos'] = [{'equipamento_id':equipamento['equipamento_id'], 'serial': equipamento['serial'], 'manutencoes': equipamento['manutencoes'], 'necessidade_substituicao': equipamento['necessidade_substituicao']} for equipamento in SQLNativo.listar_equipamentos_mais_defeituosos_predio(predio_id)]
     context['salas'] = [{'sala_id':sala['sala_id'], 'localizacao':sala['localizacao'], 'necessidade_interditacao':sala['necessidade_interditacao'], 'equipamentos_defeituosos':sala['equipamentos_defeituosos']} for sala in Salas.listar_salas_com_equipamentos_mais_defeituoso_predio(predio_id)]
+
+    context['is_admin'] = request.user.groups.filter(name=TipoUsuario.ADMINISTRADOR.name).exists()
+
     return HttpResponse(render(request, 'locais/paginas/predio/predio.html', context))
 
 
@@ -293,6 +300,7 @@ def predios_equipamentos(request, predio_id):
     context['salas'] = [{'input': str(sala.sala_id), 'output': 'Sala ' + sala.localizacao} for sala in Salas.listar_salas_predio(predio_id)]
     context['equipamentos'] = equipamentos
     context['estados'] = [{'input': estado.name, 'output': estado.label} for estado in [tipo_estado for tipo_estado in EstadoEquipamento]]
+    context['is_admin'] = request.user.groups.filter(name=TipoUsuario.ADMINISTRADOR.name).exists()
 
     return HttpResponse(render(request, 'locais/paginas/predio/equipamento/predio_equipamentos.html', context))
 
@@ -308,6 +316,7 @@ def predios_setores(request, predio_id):
     context['total_equipamentos'] = info_predio['total_equipamentos']
     context['total_setores'] = info_predio['total_setores']
     context['setores'] = [{'setor_id': setor['setor_id'], 'setor': setor['setor'], 'predio': setor['predio_nome'], 'localizacao': setor['localizacao'],'quantidade_salas': setor['salas']} for setor in Setores.listar_setores_predio(predio_id)]
+    context['is_admin'] = request.user.groups.filter(name=TipoUsuario.ADMINISTRADOR.name).exists()
     return HttpResponse(render(request, 'locais/paginas/predio/setor/predio_setores.html', context))
 
 @login_required
@@ -337,4 +346,5 @@ def predios_salas(request, predio_id):
     context['salas'] = salas
     context['setores'] = [{'input': str(setor.setor_id), 'output': setor.setor} for setor in Setores.listar_setores_predio_filtro(predio_id)]
     context['estados'] = [{'input': estado.name, 'output': estado.label} for estado in[tipo_estado for tipo_estado in EstadoSala]]
+    context['is_admin'] = request.user.groups.filter(name=TipoUsuario.ADMINISTRADOR.name).exists()
     return HttpResponse(render(request, 'locais/paginas/predio/sala/predio_salas.html', context))
