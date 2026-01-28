@@ -14,14 +14,14 @@ class Equipamentos(models.Model):
     posicao = models.IntegerField(null=False, blank=False)
     fileira = models.CharField(max_length=50, choices=Fileira.choices, null=False, blank=False)
     tipo = models.TextField(null=False, blank=False, choices=TipoEquipamento.choices)
-    serial = models.CharField(null=False, unique=True, max_length=13)
+    serial = models.CharField(null=False, max_length=13)
     estado_atual = models.CharField(null=False, blank=False, choices=EstadoEquipamento.choices, default=EstadoEquipamento.FUNCIONANDO, max_length=50)
     fabricante = models.CharField(null=False, blank=False, max_length=100)
     data_aquisicao = models.DateField(null=False, blank=False)
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['posicao', 'fileira'], name='u_posicao_fileira')
+            models.UniqueConstraint(fields=['posicao', 'fileira', 'sala'], name='u_posicao_fileira_sala')
         ]
         verbose_name = 'Equipamentos'
         verbose_name_plural = 'Equipamentos'

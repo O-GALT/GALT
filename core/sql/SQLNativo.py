@@ -98,6 +98,7 @@ class SQLNativo:
                     INNER JOIN locais_setores se USING (setor_id)
                     INNER JOIN locais_predios p USING (predio_id)
                     WHERE p.predio_id = %s
+                    AND r.estado_atual = 'ABERTO'
                 ),
 
                 predios AS (
@@ -514,6 +515,7 @@ class SQLNativo:
                         INNER JOIN locais_salas s USING(sala_id)
                         INNER JOIN locais_setores se USING(setor_id)
                         WHERE se.setor_id = %s
+                        AND r.estado_atual = 'ABERTO'
                     )
                     
                     SELECT 

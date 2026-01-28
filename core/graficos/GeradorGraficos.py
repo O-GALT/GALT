@@ -258,45 +258,33 @@ class GeradorGraficos:
 
     @staticmethod
     def gerar_grafico_reports_por_tipo(equipamentos_reportes):
-        valores_matriz = [
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0]
+        TIPOS = [
+            TipoEquipamento.AR_CONDICIONADO,
+            TipoEquipamento.COMPUTADOR,
+            TipoEquipamento.PROJETOR,
         ]
 
-        lista_dias_equipamentos = []
+        # Inicializa todos os valores com zero
+        # index = dia * 3 + tipo
+        resultado = [0] * (7 * 3)
 
-        if equipamentos_reportes:
-            equipamento = 0
-            controlador = 0
-            while controlador < len(equipamentos_reportes):
-                map_equipamento_reporte = equipamentos_reportes[controlador]
+        for row in equipamentos_reportes:
+            dia_sql = row["dia"]  # 1..7 (domingo = 1)
+            tipo = row["tipo_equipamento"]
+            total = row["reportes"]
 
-                if equipamento == 0 and map_equipamento_reporte['tipo_equipamento'] == TipoEquipamento.AR_CONDICIONADO:
-                    valores_matriz[0][map_equipamento_reporte['dia']-1] = map_equipamento_reporte['reportes']
-                    equipamento = 1
-                else:
-                    equipamento = 1
+            # Converte: Segunda = 0 ... Domingo = 6
+            indice_dia = (dia_sql + 5) % 7
 
-                if equipamento == 1 and map_equipamento_reporte['tipo_equipamento'] == TipoEquipamento.COMPUTADOR:
-                    valores_matriz[1][map_equipamento_reporte['dia']-1] = map_equipamento_reporte['reportes']
-                    equipamento = 2
-                else:
-                    equipamento = 2
+            if tipo not in TIPOS:
+                continue
 
+            indice_tipo = TIPOS.index(tipo)
 
-                if equipamento == 2 and map_equipamento_reporte['tipo_equipamento'] == TipoEquipamento.PROJETOR:
-                    valores_matriz[2][map_equipamento_reporte['dia']-1] = map_equipamento_reporte['reportes']
+            indice_final = indice_dia * 3 + indice_tipo
 
-                controlador = controlador + 1
-                equipamento = 0
+            resultado[indice_final] = total
 
-        for dia in range(7):  # colunas
-
-            for equipamento in range(3):  # linhas
-                lista_dias_equipamentos.append(
-                    valores_matriz[equipamento][dia]
-                )
 
         # Exemplo de dados (substitua pelos teus valores reais)
         df = pd.DataFrame({
@@ -308,7 +296,7 @@ class GeradorGraficos:
                     "Sábado", "Sábado", "Sábado",
                     "Domingo", "Domingo", "Domingo"],
             "tipo": ["Ar-condicionado", "Computador", "Projetores"] * 7,
-            "valor": lista_dias_equipamentos
+            "valor": resultado
         })
 
         # Ordem dos dias (garante a sequência correta)
@@ -376,12 +364,14 @@ class GeradorGraficos:
     def gerar_grafico_indice_manutencoes(manutencoes_em_meses_query):
         # Dados de exemplo — substitua pelos reais
 
-        manutencoes_em_meses_valor = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        for i in range(12):
-            if i < len(manutencoes_em_meses_query):
-                manutencoes_em_meses_valor[i] = manutencoes_em_meses_query[i]['manutencoes']
-            else:
-                break
+        manutencoes_em_meses_valor = [0] * 12  # Jan..Dez
+
+        for row in manutencoes_em_meses_query:
+            mes_sql = row["mes"]  # 1..12 (ExtractMonth)
+            total = row["manutencoes"]
+
+            indice_mes = mes_sql - 1  # Jan = 0, Fev = 1, ..., Dez = 11
+            manutencoes_em_meses_valor[indice_mes] = total
 
         df = pd.DataFrame({
             "Mês": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dec"],

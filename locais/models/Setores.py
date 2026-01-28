@@ -15,7 +15,7 @@ class Setores(models.Model):
         verbose_name_plural = 'Setores'
 
     def __str__(self):
-        return self.setor
+        return self.setor + ' - ' + self.predio.predio
 
     @staticmethod
     def listar_setores_predio(predio_id):
