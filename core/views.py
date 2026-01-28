@@ -171,7 +171,7 @@ def editar_equipamento_modal(request, equipamento_id):
     if form.is_valid():
         admin = request.user
         form.save()
-        return HttpResponseRedirect(reverse('criar_recursos'))
+        return HttpResponseRedirect(reverse('ativos_equipamento_detail', args=[equipamento_id]))
     return render(request, 'core/pages/modais/modal-editar-equipamento.html', {'form': form, 'equipamento': equipamento})
 
 def editar_sala_modal(request, sala_id):
@@ -180,7 +180,7 @@ def editar_sala_modal(request, sala_id):
     if form.is_valid():
         admin = request.user
         form.save()
-        return HttpResponseRedirect(reverse('criar_recursos'))
+        return HttpResponseRedirect(reverse('locais_sala_detail', args=[sala_id]))
     return render(request, 'core/pages/modais/modal-editar-sala.html', {'form': form, 'sala': sala})
 
 def editar_predio_modal(request, predio_id):
@@ -189,7 +189,7 @@ def editar_predio_modal(request, predio_id):
     if form.is_valid():
         admin = request.user
         form.save()
-        return HttpResponseRedirect(reverse('criar_recursos'))
+        return HttpResponseRedirect(reverse('locais_predio_detail', args=[predio_id]))
     return render(request, 'core/pages/modais/modal-editar-predio.html', {'form': form, 'predio': predio})
 
 def editar_setor_modal(request, setor_id):
@@ -198,7 +198,7 @@ def editar_setor_modal(request, setor_id):
     if form.is_valid():
         admin = request.user
         form.save()
-        return HttpResponseRedirect(reverse('criar_recursos'))
+        return HttpResponseRedirect(reverse('locais_setor_detail', args=[setor_id]))
     return render(request, 'core/pages/modais/modal-editar-setor.html', {'form': form, 'setor': setor})
 
 @login_required
@@ -218,8 +218,9 @@ def excluir_setor(request, setor_id):
     setor = get_object_or_404(Setores, setor_id=setor_id)
 
     if request.method == "POST":
-            setor.delete()
-            return redirect("home")
+        predio_id = setor.predio.predio_id
+        setor.delete()
+        return redirect("locais_predio_setores", predio_id=predio_id)
 
     return render(request, 'core/pages/modais/modal-exclusao-setor.html', {
         'setor': setor
@@ -229,8 +230,9 @@ def excluir_sala(request, sala_id):
     sala = get_object_or_404(Salas, sala_id=sala_id)
 
     if request.method == "POST":
-            sala.delete()
-            return redirect("home")
+        predio_id = sala.setor.predio.predio_id
+        sala.delete()
+        return redirect("locais_predio_salas", predio_id=predio_id)
 
     return render(request, 'core/pages/modais/modal-exclusao-sala.html', {
         'sala': sala
@@ -240,8 +242,9 @@ def excluir_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamentos, equipamento_id=equipamento_id)
 
     if request.method == "POST":
-            equipamento.delete()
-            return redirect("home")
+        sala_id = equipamento.sala.sala_id
+        equipamento.delete()
+        return redirect("locais_sala_detail", sala_id=sala_id)
 
     return render(request, 'core/pages/modais/modal-exclusao-equipamento.html', {
         'objeto': equipamento
