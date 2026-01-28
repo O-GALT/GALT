@@ -19,7 +19,7 @@
 
 <hr>
 
-<form class="modal-form" action="{% url 'criar_predio_modal' %}" method="post">
+<form class="modal-form" action="{% url 'editar_predio_modal' request.resolver_match.kwargs.predio_id %}" method="post">
     {% csrf_token %}
 
     <div class="form-row">
@@ -35,7 +35,7 @@
 
     <div class="modal-actions">
         <a onclick="closeModal('modal')"><button type="button" class="btn-cancel">Cancelar</button></a>
-        <button type="submit" class="btn-create">Criar</button>
+        <button type="submit" class="btn-create">Editar</button>
     </div>
 
     <script>

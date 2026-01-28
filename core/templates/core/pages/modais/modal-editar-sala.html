@@ -16,7 +16,7 @@
 
 <hr>
 
-<form class="modal-form" action="{% url 'criar_sala_modal' %}" method="post">
+<form class="modal-form" action="{% url 'editar_sala_modal' request.resolver_match.kwargs.sala_id %}" method="post">
     {% csrf_token %}
 
     <hr>
@@ -44,7 +44,7 @@
 
     <div class="modal-actions">
         <a onclick="closeModal('modal')"><button type="button" class="btn-cancel">Cancelar</button></a>
-        <button type="submit" class="btn-create">Criar</button>
+        <button type="submit" class="btn-create">Editar</button>
     </div>
 
 </form>

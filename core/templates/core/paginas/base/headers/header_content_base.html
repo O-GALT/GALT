@@ -7,6 +7,9 @@
 {% endblock %}
 
 {% block content %}
+<div id="modal-container"></div>
+
+
     <div class="container">
         <div class="conteudo-esquerda">
             <div class="objeto">
@@ -22,8 +25,52 @@
             <nav class="quantidade-objeto">
                 {% block quantidade_objeto %}{% endblock %}
             </nav>
+
+            {% if request.resolver_match.url_name in 'locais_predio_detail' %}
+            {% include 'core/partials/botao/botoes.html' with acao_editar="editar_predio_modal" acao_excluir="excluir_predio" id=predio_id %}
+            {% endif %}
+            
+            {% if request.resolver_match.url_name in 'locais_setor_detail' %}
+            {% include 'core/partials/botao/botoes.html' with acao_editar="editar_setor_modal" acao_excluir="excluir_setor" id=objeto_id %}
+            {% endif %}
+
+            {% if request.resolver_match.url_name in 'locais_sala_detail' %}
+            {% include 'core/partials/botao/botoes.html' with acao_editar="editar_sala_modal" acao_excluir="excluir_sala" id=sala_id %}
+            {% endif %}
+
+            {% if request.resolver_match.url_name in 'ativos_equipamento_detail' %}
+            {% include 'core/partials/botao/botoes.html' with acao_editar="editar_equipamento_modal" acao_excluir="excluir_equipamento" id=equipamento_id %}
+            {% endif %}
+
             {% block filtro %}{% endblock %}
             {% block responsavel %}{% endblock %}
         </div>
     </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const modalContainer = document.getElementById("modal-container");
+
+        document.querySelectorAll(".open-modal").forEach(card => {
+            card.addEventListener("click", async () => {
+                const url = card.dataset.modalUrl;
+
+                const response = await fetch(url);
+                const html = await response.text();
+
+                modalContainer.innerHTML = html;
+
+                const modal = modalContainer.querySelector(".modal-overlay");
+                modal.style.display = "flex";
+            });
+        });
+    });
+
+    function closeModal() {
+        document.getElementById("modal").style.display = "none";
+    }
+
+    function toggleDropdown() {
+        document.getElementById('dropdown').classList.toggle('open');
+    }
+</script>
 {% endblock %}

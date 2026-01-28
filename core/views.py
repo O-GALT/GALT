@@ -12,7 +12,7 @@ from core.essenciais import TipoUsuario, EstadoEquipamento, TipoEquipamento, Fil
 
 from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse, FileResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 from core.essenciais import Acao, TipoAlvo
@@ -25,6 +25,9 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 
 from suporte.models import Reportes
+
+from locais.models import Predios, Salas, Setores
+from ativos.models import Equipamentos
 
 
 def pagina_login(request):
@@ -162,6 +165,91 @@ def criar_equipamento_modal(request):
         return HttpResponseRedirect(reverse('criar_recursos'))
     return render(request, 'core/pages/modais/modal-criar-equipamento.html', {'form': form})
 
+def editar_equipamento_modal(request, equipamento_id):
+    equipamento = get_object_or_404(Equipamentos, pk=equipamento_id)
+    form = EquipamentoForm(request.POST or None, instance=equipamento)
+    if form.is_valid():
+        admin = request.user
+        form.save()
+        return HttpResponseRedirect(reverse('ativos_equipamento_detail', args=[equipamento_id]))
+    return render(request, 'core/pages/modais/modal-editar-equipamento.html', {'form': form, 'equipamento': equipamento})
+
+def editar_sala_modal(request, sala_id):
+    sala = get_object_or_404(Salas, pk=sala_id)
+    form = SalaForm(request.POST or None, instance=sala)
+    if form.is_valid():
+        admin = request.user
+        form.save()
+        return HttpResponseRedirect(reverse('locais_sala_detail', args=[sala_id]))
+    return render(request, 'core/pages/modais/modal-editar-sala.html', {'form': form, 'sala': sala})
+
+def editar_predio_modal(request, predio_id):
+    predio = get_object_or_404(Predios, pk=predio_id)
+    form = PredioForm(request.POST or None, instance=predio)
+    if form.is_valid():
+        admin = request.user
+        form.save()
+        return HttpResponseRedirect(reverse('locais_predio_detail', args=[predio_id]))
+    return render(request, 'core/pages/modais/modal-editar-predio.html', {'form': form, 'predio': predio})
+
+def editar_setor_modal(request, setor_id):
+    setor = get_object_or_404(Setores, pk=setor_id)
+    form = SetorForm(request.POST or None, instance=setor)
+    if form.is_valid():
+        admin = request.user
+        form.save()
+        return HttpResponseRedirect(reverse('locais_setor_detail', args=[setor_id]))
+    return render(request, 'core/pages/modais/modal-editar-setor.html', {'form': form, 'setor': setor})
+
+@login_required
+@nivel_acesso_permitido([TipoUsuario.ADMINISTRADOR])
+def excluir_predio(request, predio_id):
+    predio = get_object_or_404(Predios, predio_id=predio_id)
+
+    if request.method == "POST":
+        predio.delete()
+        return redirect("home")
+
+    return render(request, 'core/pages/modais/modal-exclusao-predio.html', {
+        'predio': predio
+    })
+
+def excluir_setor(request, setor_id):
+    setor = get_object_or_404(Setores, setor_id=setor_id)
+
+    if request.method == "POST":
+        predio_id = setor.predio.predio_id
+        setor.delete()
+        return redirect("locais_predio_setores", predio_id=predio_id)
+
+    return render(request, 'core/pages/modais/modal-exclusao-setor.html', {
+        'setor': setor
+    })
+
+def excluir_sala(request, sala_id):
+    sala = get_object_or_404(Salas, sala_id=sala_id)
+
+    if request.method == "POST":
+        predio_id = sala.setor.predio.predio_id
+        sala.delete()
+        return redirect("locais_predio_salas", predio_id=predio_id)
+
+    return render(request, 'core/pages/modais/modal-exclusao-sala.html', {
+        'sala': sala
+    })
+
+def excluir_equipamento(request, equipamento_id):
+    equipamento = get_object_or_404(Equipamentos, equipamento_id=equipamento_id)
+
+    if request.method == "POST":
+        sala_id = equipamento.sala.sala_id
+        equipamento.delete()
+        return redirect("locais_sala_detail", sala_id=sala_id)
+
+    return render(request, 'core/pages/modais/modal-exclusao-equipamento.html', {
+        'objeto': equipamento
+    })
+
 def gerar_qr_code(request, url):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))  # não envia nada
@@ -212,3 +300,5 @@ def custom_page_not_found_view(request, exception):
 
 def custom_permission_denied_view(request, exception):
     return render(request, 'core/pages/not_access/not_access.html', status=403)
+
+

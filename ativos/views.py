@@ -23,6 +23,7 @@ def index(request):
 def equipamento(request, equipamento_id):
     info_equipamento = SQLNativo.carregar_indicadores_equipamento(equipamento_id)[0]
     dados_do_equipamento = {
+        'equipamento_id': equipamento_id,
         'qr_code_url': 'equipamento_visao_usuario,' + str(equipamento_id),
         "modelo": "Dell Optiplex 7090",
         "tipo": TipoEquipamento(info_equipamento['tipo']).label,

@@ -1,0 +1,49 @@
+{% extends 'core/pages/base/modal/modal_base.html' %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/base/modal/modal_concluido.css' %}">
+{% endblock %}
+
+{% block modal_content %}
+
+        <div class="modal-header">
+            <div class="header-left">
+                <img src="{% static 'core/icons/lixeira_vermelha.png' %}" alt="Excluir">
+                <div>
+                    <h2>Excluir recurso</h2>
+                    <p>Deseja realmente excluir este recurso?</p>
+                </div>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <div style="padding: 0 20px; margin-bottom: 15px;">
+            <p style="color:#666; font-size:0.9rem; line-height:1.4;">
+                A exclusão é definitiva e todos os equipamentos vinculados a este recurso também serão removidos,
+                caso não tenham sido previamente reassociados a outro local.
+            </p>
+
+        </div>
+
+        <form class="modal-form" action="{% url 'excluir_setor' request.resolver_match.kwargs.setor_id %}" method="post">
+            {% csrf_token %}
+
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel" onclick="closeModal('modal')">Cancelar</button>
+                <button type="submit" class="btn-create" style="background:#D93025;">Deletar</button>
+            </div>
+        </form>
+
+    <script>
+        function toggleDropdown() {
+            document.getElementById('dropdown').classList.toggle('open');
+        }
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+    </script>
+{% endblock %}
