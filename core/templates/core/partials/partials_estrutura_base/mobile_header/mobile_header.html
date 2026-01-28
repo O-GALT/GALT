@@ -1,6 +1,6 @@
 {% load static %}
 
-{% url 'predios' as url_predios %}
+{% url 'home' as url_predios %}
 {% url 'predios_setores' as url_predios_setores %}
 {% url 'predios_salas' as url_predios_salas %}
 {% url 'predios_equipamentos' as url_predios_equipamentos %}
@@ -86,7 +86,7 @@
 
 
         <!-- Links para as seções da página de dashboard -->
-        {% if request.path == url_predios or request.path == url_predios_equipamentos or request.path == url_predios_salas or request.path == url_predios_setores %}
+        {% if  request.resolver_match.url_name == 'locais_predio_detail'  or request.resolver_match.url_name == 'locais_predio_equipamentos'  or request.resolver_match.url_name == 'locais_predio_salas'  or request.resolver_match.url_name == 'locais_predio_setores'  or request.resolver_match.url_name == 'locais_setor_detail' or request.resolver_match.url_name == 'locais_sala_detail'  or request.resolver_match.url_name == 'ativos_equipamento_detail' %}
 
             <ul class="menu-links">
                 <li>
@@ -94,25 +94,25 @@
                 </li>
 
                 <li>
-                    <a href="{{ url_predios }}">
+                    <a href="{% url 'locais_predio_detail' request.resolver_match.kwargs.predio_id   %}">
                         Visão Geral
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ url_predios_setores }}" class="setores">
+                    <a href="{% url 'locais_predio_setores' request.resolver_match.kwargs.predio_id   %}" class="setores">
                         Setores
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ url_predios_salas }}">
+                    <a href="{% url 'locais_predio_salas' request.resolver_match.kwargs.predio_id   %}">
                         Salas/Laboratios
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ url_predios_equipamentos }}">
+                    <a href="{% url 'locais_predio_equipamentos' request.resolver_match.kwargs.predio_id   %}">
                         Equipamentos
                     </a>
                 </li>
